@@ -83,8 +83,6 @@ class TestbookApp {
   updateUserInterface() {
     const guestControls = document.getElementById('authGuestControls');
     const profileWrap = document.getElementById('candidateProfileWrap');
-    const navAdmin = document.getElementById('navLinkAdmin');
-    const dropAdmin = document.getElementById('dropAdminItem');
     const clearHistoryBtn = document.getElementById('btnClearHistory');
 
     if (this.currentUser) {
@@ -122,15 +120,10 @@ class TestbookApp {
       const elDropRole = document.getElementById('dropUserRole');
       if (elDropRole) elDropRole.innerText = (this.currentUser.role || 'STUDENT').toUpperCase();
 
-      const isAdmin = this.currentUser.role === 'admin';
-      if (navAdmin) navAdmin.style.display = isAdmin ? 'inline-block' : 'none';
-      if (dropAdmin) dropAdmin.style.display = isAdmin ? 'flex' : 'none';
       if (clearHistoryBtn) clearHistoryBtn.style.display = (this.historyData && this.historyData.length > 0) ? 'inline-block' : 'none';
     } else {
       if (guestControls) guestControls.style.display = 'flex';
       if (profileWrap) profileWrap.style.display = 'none';
-      if (navAdmin) navAdmin.style.display = 'none';
-      if (dropAdmin) dropAdmin.style.display = 'none';
       if (clearHistoryBtn) clearHistoryBtn.style.display = 'none';
     }
   }
@@ -271,7 +264,7 @@ class TestbookApp {
 
   // --- Views Navigation Helpers ---
   hideAllViews() {
-    const views = ['dashboardView', 'instructionsView', 'testInterfaceView', 'resultView', 'historyView', 'studyMaterialsView', 'adminView'];
+    const views = ['dashboardView', 'instructionsView', 'testInterfaceView', 'resultView', 'historyView', 'studyMaterialsView'];
     views.forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
@@ -322,18 +315,8 @@ class TestbookApp {
     this.switchStudyTab(subTab);
   }
 
-  async showAdminView() {
-    if (!this.currentUser || this.currentUser.role !== 'admin') {
-      alert('Administrator access required. Please sign in with your admin credentials.');
-      this.openAuthModal('login');
-      return;
-    }
-    this.stopTimer();
-    this.hideAllViews();
-    document.getElementById('adminView').style.display = 'block';
-    this.setActiveNav('navLinkAdmin');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    await this.loadAdminData();
+  showAdminView() {
+    this.showDashboard();
   }
 
   // --- Tests List & Dashboard Metrics ---
@@ -1184,11 +1167,11 @@ class TestbookApp {
       const data = await res.json();
       data.forEach(item => {
         if (item.id === 'mat_ga_plan') {
-          document.getElementById('gaPlanMarkdownContainer').innerHTML = this.renderMarkdown(item.content);
-        } else if (item.id === 'mat_math_tracker') {
-          document.getElementById('mathTrackerMarkdownContainer').innerHTML = this.renderMarkdown(item.content);
+          const el = document.getElementById('gaPlanMarkdownContainer');
+          if (el) el.innerHTML = this.renderMarkdown(item.content);
         } else if (item.id === 'mat_formula_vault') {
-          document.getElementById('formulaVaultMarkdownContainer').innerHTML = this.renderMarkdown(item.content);
+          const el = document.getElementById('formulaVaultMarkdownContainer');
+          if (el) el.innerHTML = this.renderMarkdown(item.content);
         }
       });
       this.materialsLoaded = true;
@@ -1203,19 +1186,24 @@ class TestbookApp {
     document.querySelectorAll('.study-sub-tab').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.study-tab-content').forEach(c => c.style.display = 'none');
 
-    if (tab === 'ga') {
-      document.getElementById('tabBtnGA').classList.add('active');
-      document.getElementById('studyContentGA').style.display = 'block';
-    } else if (tab === 'math') {
-      document.getElementById('tabBtnMath').classList.add('active');
-      document.getElementById('studyContentMath').style.display = 'block';
-    } else if (tab === 'formula') {
-      document.getElementById('tabBtnFormula').classList.add('active');
-      document.getElementById('studyContentFormula').style.display = 'block';
+    if (tab === 'formula') {
+      const btn = document.getElementById('tabBtnFormula');
+      const content = document.getElementById('studyContentFormula');
+      if (btn) btn.classList.add('active');
+      if (content) content.style.display = 'block';
     } else if (tab === 'notes') {
-      document.getElementById('tabBtnNotes').classList.add('active');
-      document.getElementById('studyContentNotes').style.display = 'block';
+      const btn = document.getElementById('tabBtnNotes');
+      const content = document.getElementById('studyContentNotes');
+      if (btn) btn.classList.add('active');
+      if (content) content.style.display = 'block';
       this.loadStudentNotes();
+    } else {
+      // Default to GA Plan
+      this.currentStudyTab = 'ga';
+      const btn = document.getElementById('tabBtnGA');
+      const content = document.getElementById('studyContentGA');
+      if (btn) btn.classList.add('active');
+      if (content) content.style.display = 'block';
     }
   }
 

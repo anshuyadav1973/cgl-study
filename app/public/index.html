@@ -24,7 +24,6 @@
         <button class="nav-link-btn active" id="navLinkTests" onclick="app.showDashboard()">Mock Tests</button>
         <button class="nav-link-btn" id="navLinkMaterials" onclick="app.showStudyMaterialsView()">Study Vault & Notes</button>
         <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">Attempt History</button>
-        <button class="nav-link-btn admin-link" id="navLinkAdmin" onclick="app.showAdminView()">Admin Portal</button>
       </nav>
 
       <div class="test-header-info" id="headerTestInfo" style="display:none;">
@@ -101,10 +100,6 @@
             <button class="dropdown-item" onclick="app.showStudyMaterialsView('notes'); app.toggleProfileDropdown(false);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
               My Personal Notes
-            </button>
-            <button class="dropdown-item admin-only-item" id="dropAdminItem" onclick="app.showAdminView(); app.toggleProfileDropdown(false);" style="display:none;">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-              Admin Control Panel
             </button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item text-danger" onclick="app.logoutUser()">
@@ -434,7 +429,7 @@
           <div>
             <div class="series-pill">STUDENT VAULT</div>
             <h1>Study Materials, Syllabi & Notes</h1>
-            <p>Structured preparation resources for SSC CGL Mains 2026: 60-day General Awareness plan, syllabus mastery tracker, Tier-2 formula vault, and your personal study notes.</p>
+            <p>Structured preparation resources for SSC CGL Mains 2026: 60-day General Awareness plan, Tier-2 formula vault, and your personal study notes.</p>
           </div>
           <button class="btn btn-primary" onclick="app.openNoteModal()">+ Create Personal Note</button>
         </div>
@@ -442,7 +437,6 @@
         <!-- Material Tabs -->
         <div class="study-sub-tabs">
           <button class="study-sub-tab active" id="tabBtnGA" onclick="app.switchStudyTab('ga')">60-Day General Awareness Plan</button>
-          <button class="study-sub-tab" id="tabBtnMath" onclick="app.switchStudyTab('math')">Mathematics Syllabus Tracker</button>
           <button class="study-sub-tab" id="tabBtnFormula" onclick="app.switchStudyTab('formula')">Formula Vault & Tricks</button>
           <button class="study-sub-tab" id="tabBtnNotes" onclick="app.switchStudyTab('notes')">My Personal Notes (<span id="userNotesCount">0</span>)</button>
         </div>
@@ -454,14 +448,7 @@
           </div>
         </div>
 
-        <!-- Tab 2: Math Syllabus & Mastery Tracker -->
-        <div class="study-tab-content" id="studyContentMath" style="display:none;">
-          <div class="material-card" id="mathTrackerMarkdownContainer">
-            <div style="padding:20px; color:#64748b;">Loading Mathematics Tracker...</div>
-          </div>
-        </div>
-
-        <!-- Tab 3: Formula Vault -->
+        <!-- Tab 2: Formula Vault -->
         <div class="study-tab-content" id="studyContentFormula" style="display:none;">
           <div class="material-card" id="formulaVaultMarkdownContainer">
             <div style="padding:20px; color:#64748b;">Loading Formula Vault...</div>
@@ -472,130 +459,6 @@
         <div class="study-tab-content" id="studyContentNotes" style="display:none;">
           <div class="notes-grid" id="studentNotesGrid">
             <!-- Dynamically populated personal notes -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- VIEW 7: Admin Control Panel View -->
-    <section class="view-panel" id="adminView" style="display:none;">
-      <div class="admin-container">
-        <div class="admin-header">
-          <div>
-            <div class="series-pill" style="background:#dc2626; color:#fff;">ADMINISTRATION</div>
-            <h1>Educational Platform Management</h1>
-            <p>Monitor student registrations, view all mock test submissions, manage mock tests, and connect your permanent Supabase PostgreSQL cloud database.</p>
-          </div>
-          <button class="btn btn-secondary" onclick="app.showDashboard()">← Back to Portal</button>
-        </div>
-
-        <!-- Admin Overview Metrics -->
-        <div class="admin-metrics-row">
-          <div class="admin-metric-card">
-            <div class="a-num" id="adminTotalStudents">0</div>
-            <div class="a-lbl">Registered Students</div>
-          </div>
-          <div class="admin-metric-card">
-            <div class="a-num" id="adminTotalSubmissions">0</div>
-            <div class="a-lbl">Total Test Submissions</div>
-          </div>
-          <div class="admin-metric-card">
-            <div class="a-num" id="adminAvgScore">0</div>
-            <div class="a-lbl">Platform Average Score</div>
-          </div>
-          <div class="admin-metric-card">
-            <div class="a-num" id="adminAvgAcc">0%</div>
-            <div class="a-lbl">Average Accuracy</div>
-          </div>
-        </div>
-
-        <!-- Supabase Cloud Database Setup Card -->
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <div>
-              <h3>Permanent Cloud Database: Supabase PostgreSQL</h3>
-              <p>Connect your free Supabase PostgreSQL project to store student accounts, test submissions, and notes permanently in the cloud with automated backups and HTTPS.</p>
-            </div>
-            <span class="db-status-pill" id="adminDbStatusBadge">Checking...</span>
-          </div>
-
-          <div class="admin-db-form">
-            <div class="form-row">
-              <div class="form-group col">
-                <label>Supabase Project URL</label>
-                <input type="text" id="adminSupaUrl" placeholder="https://your-project-ref.supabase.co">
-              </div>
-              <div class="form-group col">
-                <label>Supabase API Key (Anon or Service Role)</label>
-                <input type="password" id="adminSupaKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
-              </div>
-            </div>
-            <div class="admin-db-actions">
-              <button class="btn btn-primary" onclick="app.saveSupabaseConfig()">Save & Test Connection</button>
-              <button class="btn btn-secondary" onclick="app.syncDataToSupabase()">Sync Local Records to Cloud</button>
-              <button class="btn btn-outline" onclick="app.downloadSupabaseSql()">View Supabase SQL Schema</button>
-            </div>
-            <div id="adminDbSyncMessage" class="db-message-box" style="display:none;"></div>
-          </div>
-        </div>
-
-        <!-- Students Directory -->
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Registered Students Roster</h3>
-            <span class="test-count-badge" id="adminStudentsBadge">0 Students</span>
-          </div>
-          <div class="table-responsive">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Student Name</th>
-                  <th>Email</th>
-                  <th>Target Exam</th>
-                  <th>Joined Date</th>
-                  <th>Tests Taken</th>
-                  <th>Highest Score</th>
-                </tr>
-              </thead>
-              <tbody id="adminStudentsTableBody">
-                <tr><td colspan="6" style="text-align:center; color:#64748b;">Loading students...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Recent Test Submissions -->
-        <div class="admin-card">
-          <div class="admin-card-header">
-            <h3>Recent Platform Submissions</h3>
-          </div>
-          <div class="table-responsive">
-            <table class="admin-table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Test Title</th>
-                  <th>Score</th>
-                  <th>Accuracy</th>
-                  <th>Time Spent</th>
-                  <th>Submitted At</th>
-                </tr>
-              </thead>
-              <tbody id="adminSubmissionsTableBody">
-                <tr><td colspan="6" style="text-align:center; color:#64748b;">Loading submissions...</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <!-- Danger Zone: Purge Test Data -->
-        <div class="admin-card" style="border-color:#fecaca; background:#fff5f5;">
-          <div class="admin-card-header">
-            <div>
-              <h3 style="color:#dc2626;">Danger Zone: Purge Test Records</h3>
-              <p style="color:#991b1b;">Permanently delete all mock test attempts and score records across both local storage and the Supabase cloud database.</p>
-            </div>
-            <button class="btn btn-secondary" onclick="app.adminPurgeAllData()" style="background:#dc2626; border-color:#dc2626; color:#fff;">⚠️ Purge All Test Records</button>
           </div>
         </div>
       </div>
@@ -817,6 +680,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=3.0"></script>
+  <script src="app.js?v=4.0"></script>
 </body>
 </html>
