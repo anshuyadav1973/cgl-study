@@ -298,10 +298,12 @@ class TestbookApp {
     const headerTimer = document.getElementById('headerTimerSection');
     const calcBtn = document.getElementById('calcBtn');
     const langSelect = document.getElementById('langSelectorWrap');
+    const navLinks = document.getElementById('tbNavLinks');
     if (headerTestInfo) headerTestInfo.style.display = 'none';
     if (headerTimer) headerTimer.style.display = 'none';
     if (calcBtn) calcBtn.style.display = 'none';
     if (langSelect) langSelect.style.display = 'none';
+    if (navLinks) navLinks.style.display = 'flex';
   }
 
   setActiveNav(linkId) {
@@ -796,17 +798,26 @@ class TestbookApp {
       };
     }
 
-    document.getElementById('headerTestInfo').style.display = 'flex';
-    document.getElementById('headerTestTitle').innerText = this.currentTest.title;
-    document.getElementById('headerTimerSection').style.display = 'flex';
-    document.getElementById('calcBtn').style.display = 'flex';
-    document.getElementById('langSelectorWrap').style.display = 'flex';
-    document.getElementById('secQCount').innerText = `${this.currentTest.questions.length} Qs`;
-
     this.hideAllViews();
     document.getElementById('testInterfaceView').style.display = 'flex';
 
-    this.totalDurationSeconds = (this.currentTest.durationMinutes || 35) * 60;
+    const hInfo = document.getElementById('headerTestInfo');
+    if (hInfo) hInfo.style.display = 'flex';
+    const hTitle = document.getElementById('headerTestTitle');
+    if (hTitle) hTitle.innerText = this.currentTest.title;
+    const hTimer = document.getElementById('headerTimerSection');
+    if (hTimer) hTimer.style.display = 'flex';
+    const cBtn = document.getElementById('calcBtn');
+    if (cBtn) cBtn.style.display = 'flex';
+    const lWrap = document.getElementById('langSelectorWrap');
+    if (lWrap) lWrap.style.display = 'flex';
+    const sQ = document.getElementById('secQCount');
+    if (sQ) sQ.innerText = `${this.currentTest.questions.length} Qs`;
+
+    const navLinks = document.getElementById('tbNavLinks');
+    if (navLinks) navLinks.style.display = 'none';
+
+    this.totalDurationSeconds = (this.currentTest.durationMinutes || 25) * 60;
     this.timeRemaining = this.totalDurationSeconds;
     this.startTimer();
 

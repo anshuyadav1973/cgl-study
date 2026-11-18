@@ -86,7 +86,7 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                                     "title": data.get("title", filename[:-5]),
                                     "subtitle": data.get("subtitle", ""),
                                     "category": data.get("category", "General"),
-                                    "durationMinutes": data.get("durationMinutes", 35),
+                                    "durationMinutes": data.get("durationMinutes", 25),
                                     "numQuestions": len(data.get("questions", [])),
                                     "marksPerQuestion": data.get("marksPerQuestion", 3),
                                     "negativeMarks": data.get("negativeMarks", 1)
