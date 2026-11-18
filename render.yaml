@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: ssc-cgl-testbook-portal
+    name: blackhole-cgl-portal
     runtime: python
     buildCommand: ""
     startCommand: "python3 app/server.py"
