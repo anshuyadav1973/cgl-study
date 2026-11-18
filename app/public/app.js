@@ -20,6 +20,7 @@ class TestbookApp {
     }
     this.token = localStorage.getItem('cgl_session_v3') || null;
     this.currentUser = null;
+    this.pendingTestId = null;
     this.historyData = [];
     this.materialsLoaded = false;
     this.currentStudyTab = 'ga';
@@ -126,6 +127,10 @@ class TestbookApp {
       if (profileWrap) profileWrap.style.display = 'none';
       if (clearHistoryBtn) clearHistoryBtn.style.display = 'none';
     }
+
+    if (this.tests && this.tests.length > 0) {
+      this.renderTestCards();
+    }
   }
 
   toggleProfileDropdown(forceState) {
@@ -138,12 +143,20 @@ class TestbookApp {
     }
   }
 
-  openAuthModal(tab = 'login') {
+  openAuthModal(tab = 'login', infoMessage = null) {
     const modal = document.getElementById('authModal');
     if (modal) modal.style.display = 'flex';
     this.switchAuthTab(tab);
     const alertBox = document.getElementById('authAlertBox');
-    if (alertBox) alertBox.style.display = 'none';
+    if (alertBox) {
+      if (infoMessage) {
+        alertBox.className = 'auth-alert info';
+        alertBox.innerText = infoMessage;
+        alertBox.style.display = 'block';
+      } else {
+        alertBox.style.display = 'none';
+      }
+    }
   }
 
   closeAuthModal() {
@@ -198,8 +211,14 @@ class TestbookApp {
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadHistory();
-      const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
-      alert(`Welcome back, ${welcomeName}!`);
+      if (this.pendingTestId) {
+        const testToStart = this.pendingTestId;
+        this.pendingTestId = null;
+        await this.selectTest(testToStart);
+      } else {
+        const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
+        alert(`Welcome back, ${welcomeName}!`);
+      }
     } catch (err) {
       alertBox.className = 'auth-alert error';
       alertBox.innerText = 'Network error while logging in.';
@@ -234,7 +253,13 @@ class TestbookApp {
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadHistory();
-      alert(`Account created successfully! Welcome, ${this.currentUser.full_name}!`);
+      if (this.pendingTestId) {
+        const testToStart = this.pendingTestId;
+        this.pendingTestId = null;
+        await this.selectTest(testToStart);
+      } else {
+        alert(`Account created successfully! Welcome, ${this.currentUser.full_name}!`);
+      }
     } catch (err) {
       alertBox.className = 'auth-alert error';
       alertBox.innerText = 'Network error while registering.';
@@ -364,7 +389,10 @@ class TestbookApp {
         </div>
         <div class="test-card-actions">
           <span class="test-past-score">+3.0 Correct / -1.0 Wrong</span>
-          <button class="btn btn-primary" onclick="app.selectTest('${t.id}')">Start Test</button>
+          ${this.currentUser 
+            ? `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')">Start Test</button>`
+            : `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')" style="background:#2563eb; display:inline-flex; align-items:center; gap:6px;"><span>🔒</span> Sign In to Start</button>`
+          }
         </div>
       `;
       grid.appendChild(card);
@@ -712,8 +740,19 @@ class TestbookApp {
 
   // --- Active Test Execution & Timer ---
   async selectTest(testId) {
+    if (!this.currentUser) {
+      this.pendingTestId = testId;
+      this.openAuthModal('login', 'Please sign in or create a free candidate account before starting this mock test.');
+      return;
+    }
+
     try {
-      const res = await fetch(`/api/tests/${testId}`);
+      const res = await fetch(`/api/tests/${testId}`, { headers: this.getAuthHeaders() });
+      if (res.status === 401) {
+        this.pendingTestId = testId;
+        this.openAuthModal('login', 'Sign in required to access test content. Please log in.');
+        return;
+      }
       this.currentTest = await res.json();
       this.showInstructions();
     } catch (err) {
@@ -722,6 +761,10 @@ class TestbookApp {
   }
 
   showInstructions() {
+    if (!this.currentUser) {
+      this.openAuthModal('login', 'Please sign in before starting any test.');
+      return;
+    }
     if (!this.currentTest) return;
     this.hideAllViews();
     document.getElementById('instructionsView').style.display = 'flex';
@@ -733,6 +776,10 @@ class TestbookApp {
   }
 
   startTest() {
+    if (!this.currentUser) {
+      this.openAuthModal('login', 'Please sign in before starting any test.');
+      return;
+    }
     if (!document.getElementById('instAgreeCheck').checked) {
       alert('Please check the agreement box before proceeding.');
       return;

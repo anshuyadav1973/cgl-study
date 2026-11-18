@@ -95,8 +95,11 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                             pass
             return self.send_json(tests)
 
-        # API: Specific Test Details
+        # API: Specific Test Details (Protected: Login required to access test content)
         if path.startswith("/api/tests/"):
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Sign in required to access test content. Please log in or register."}, status=401)
             test_id = path.split("/api/tests/")[1].split("?")[0]
             target_file = None
             if os.path.exists(TESTS_DIR):
