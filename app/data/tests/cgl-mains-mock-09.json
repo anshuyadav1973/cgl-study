@@ -1,0 +1,714 @@
+{
+  "id": "cgl-mains-mock-09",
+  "title": "SSC CGL Mains 2026 - Statistics, Probability, P&C & DI #09",
+  "subtitle": "25 High-Weightage Questions from Modern Math & Data Interpretation",
+  "category": "Modern Maths & DI",
+  "durationMinutes": 35,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "25 Questions on Statistics (Mean, Median, Mode, SD), Permutations, Probability & DI."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "Find the median of the following numbers: 32, 25, 33, 27, 35, 29 & 30.",
+      "question_hi": "निम्नलिखित संख्याओ की मध्यिका ज्ञात कीजिये? 32, 25, 33, 27, 35, 29 & 30",
+      "options": [
+        {
+          "id": "A",
+          "text": "27"
+        },
+        {
+          "id": "B",
+          "text": "32"
+        },
+        {
+          "id": "C",
+          "text": "30"
+        },
+        {
+          "id": "D",
+          "text": "29"
+        }
+      ],
+      "correct": "C",
+      "solution": "Sorted order: 25, 27, 29, 30, 32, 33, 35.\nTotal n = 7 (odd). Median is 4th value = 30.",
+      "trick": "Middle element = 30."
+    },
+    {
+      "id": 2,
+      "topic": "Statistics",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "The weights of 7 cousins in a family (in kg) are 54, 62, 65, 70, 60, 59, 55. Find the median weight.",
+      "question_hi": "एक परिवार में 7 चचेरे भाइयों का भार (किग्रा) में 54, 62, 65, 70, 60, 59, 55 है। माध्यिका का भार ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "70 kg"
+        },
+        {
+          "id": "B",
+          "text": "60 kg"
+        },
+        {
+          "id": "C",
+          "text": "61 kg"
+        },
+        {
+          "id": "D",
+          "text": "61.5 kg"
+        }
+      ],
+      "correct": "B",
+      "solution": "Sorted order: 54, 55, 59, 60, 62, 65, 70.\n4th element = 60 kg.",
+      "trick": "4th element in sorted order is 60 kg."
+    },
+    {
+      "id": 3,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "What is the mode of the given data? 5, 7, 9, 7, 3, 7, 5, 7, 8, 6, 7.",
+      "question_hi": "दिए गए डेटा का मोड क्या है? 5, 7, 9, 7, 3, 7, 5, 7, 8, 6, 7",
+      "options": [
+        {
+          "id": "A",
+          "text": "7"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "3"
+        }
+      ],
+      "correct": "A",
+      "solution": "Number 7 appears 5 times, which has the highest frequency. Mode = 7.",
+      "trick": "Most frequent value = 7."
+    },
+    {
+      "id": 4,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "The median of a set of 11 distinct observations is 73.2. If each of the largest five observations of the set is increased by 3, then the median of the new set will:",
+      "question_hi": "11 भिन्न प्रेक्षणों के एक समुच्चय की माध्यिका 73.2 है। यदि समुच्चय के सबसे बड़े पाँच प्रेक्षणों में से प्रत्येक को 3 से बढ़ा दिया जाए, तो नए समुच्चय की माध्यिका क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "be 3 times the original"
+        },
+        {
+          "id": "B",
+          "text": "increase by 3"
+        },
+        {
+          "id": "C",
+          "text": "remain the same as original"
+        },
+        {
+          "id": "D",
+          "text": "decrease by 3"
+        }
+      ],
+      "correct": "C",
+      "solution": "In an ordered set of 11 observations, the median is the 6th observation.\nIncreasing only the largest 5 observations (7th, 8th, 9th, 10th, 11th) does not affect the 6th observation.\nTherefore, the median remains exactly the same (73.2).",
+      "trick": "The 6th value does not change, so median remains unchanged."
+    },
+    {
+      "id": 5,
+      "topic": "Statistics",
+      "exam": "CDS Elementary Mathematics 03/09/2023",
+      "question_en": "The sum of deviations of n numbers from 10 and 20 are a, b respectively. If b/a = –4, then what is the mean of these numbers?",
+      "question_hi": "10 और 20 से n संख्याओं के विचलन का योग क्रमशः a, b है। यदि b/a = –4, तो इन संख्याओं का माध्य क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12"
+        },
+        {
+          "id": "B",
+          "text": "14"
+        },
+        {
+          "id": "C",
+          "text": "16"
+        },
+        {
+          "id": "D",
+          "text": "18"
+        }
+      ],
+      "correct": "A",
+      "solution": "Sum of deviations: a = ∑(xi - 10) = n x̄ - 10n = n(x̄ - 10).\nb = ∑(xi - 20) = n x̄ - 20n = n(x̄ - 20).\nb / a = (x̄ - 20) / (x̄ - 10) = -4\n⇒ x̄ - 20 = -4(x̄ - 10) = -4x̄ + 40\n⇒ 5x̄ = 60 ⇒ x̄ = 12.",
+      "trick": "(x̄ - 20)/(x̄ - 10) = -4 ⇒ 5x̄ = 60 ⇒ x̄ = 12."
+    },
+    {
+      "id": 6,
+      "topic": "Permutation & Combination",
+      "exam": "SSC CGL Tier II, 17/02/2018",
+      "question_en": "How many 100-digit positive numbers are there?",
+      "question_hi": "100 अंको की कितनी धनात्मक संख्याएँ है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9 × 10⁹⁹"
+        },
+        {
+          "id": "B",
+          "text": "9 × 10¹⁰⁰"
+        },
+        {
+          "id": "C",
+          "text": "10¹⁰⁰"
+        },
+        {
+          "id": "D",
+          "text": "11 × 100⁹⁸"
+        }
+      ],
+      "correct": "A",
+      "solution": "First digit can be chosen from {1, 2, ..., 9} (9 ways).\nRemaining 99 digits can each be chosen from {0, 1, ..., 9} (10 ways each).\nTotal count = 9 × 10⁹⁹.",
+      "trick": "9 × 10⁹⁹."
+    },
+    {
+      "id": 7,
+      "topic": "Permutation & Combination",
+      "exam": "SSC Stenographer 07/08/2025",
+      "question_en": "If 6 people are seated at a round table, how many distinct seating arrangements are possible?",
+      "question_hi": "यदि 6 व्यक्ति एक गोल मेज पर बैठे हों, तो कितनी अलग-अलग बैठने की व्यवस्था संभव है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "360"
+        },
+        {
+          "id": "B",
+          "text": "720"
+        },
+        {
+          "id": "C",
+          "text": "120"
+        },
+        {
+          "id": "D",
+          "text": "240"
+        }
+      ],
+      "correct": "C",
+      "solution": "Circular permutations of n objects = (n - 1)!.\nHere n = 6 ⇒ (6 - 1)! = 5! = 120.",
+      "trick": "5! = 120."
+    },
+    {
+      "id": 8,
+      "topic": "Permutation & Combination",
+      "exam": "SSC Stenographer 06/08/2025",
+      "question_en": "In how many ways can 5 people be seated in a row such that A and B are not next to each other?",
+      "question_hi": "5 व्यक्तियों को एक पंक्ति में कितने तरीकों से बैठाया जा सकता है कि A और B एक दूसरे के बगल में न हों?",
+      "options": [
+        {
+          "id": "A",
+          "text": "36"
+        },
+        {
+          "id": "B",
+          "text": "54"
+        },
+        {
+          "id": "C",
+          "text": "72"
+        },
+        {
+          "id": "D",
+          "text": "48"
+        }
+      ],
+      "correct": "C",
+      "solution": "Total arrangements of 5 people = 5! = 120.\nArrangements where A and B are together: Treat (AB) as 1 entity ⇒ 4! × 2! = 24 × 2 = 48.\nArrangements where A and B are not together = 120 - 48 = 72.",
+      "trick": "5! - 4! × 2! = 120 - 48 = 72."
+    },
+    {
+      "id": 9,
+      "topic": "Permutation & Combination",
+      "exam": "Allahabad High Court, 05/01/2025",
+      "question_en": "In how many ways can the letters of the word RUMOUR be arranged?",
+      "question_hi": "RUMOUR शब्द के अक्षरों को कितने तरीकों से व्यवस्थित किया जा सकता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "180"
+        },
+        {
+          "id": "B",
+          "text": "720"
+        },
+        {
+          "id": "C",
+          "text": "360"
+        },
+        {
+          "id": "D",
+          "text": "90"
+        }
+      ],
+      "correct": "A",
+      "solution": "Total letters = 6 (R appears 2 times, U appears 2 times, M appears 1 time, O appears 1 time).\nTotal permutations = 6! / (2! × 2!) = 720 / 4 = 180.",
+      "trick": "720 / 4 = 180."
+    },
+    {
+      "id": 10,
+      "topic": "Permutation & Combination",
+      "exam": "IMP. PYQ FOR UPCOMING EXAMS",
+      "question_en": "How many different words can be formed from the letters of the word ‘EQUATION’ without changing the relative order of vowels and consonants?",
+      "question_hi": "स्वर और व्यंजन के सापेक्ष क्रम को बदले बिना ‘EQUATION’ शब्द के अक्षरों से कितने अलग-अलग शब्द बनाए जा सकते हैं?",
+      "options": [
+        {
+          "id": "A",
+          "text": "120"
+        },
+        {
+          "id": "B",
+          "text": "240"
+        },
+        {
+          "id": "C",
+          "text": "360"
+        },
+        {
+          "id": "D",
+          "text": "720"
+        }
+      ],
+      "correct": "D",
+      "solution": "Vowels in EQUATION: E, U, A, I, O (5 vowels).\nConsonants: Q, T, N (3 consonants).\nSince relative positions are fixed (vowels take vowel positions, consonants take consonant positions):\nArrangements = 5! × 3! = 120 × 6 = 720.",
+      "trick": "5! × 3! = 120 × 6 = 720."
+    },
+    {
+      "id": 11,
+      "topic": "Permutation & Combination",
+      "exam": "IMP. PYQ FOR UPCOMING EXAMS",
+      "question_en": "Find the number of ways in which 12 different beads can be arranged to form a necklace.",
+      "question_hi": "एक हार बनाने के लिए 12 अलग-अलग मोतियों को कितने तरीकों से व्यवस्थित किया जा सकता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "11! / 2"
+        },
+        {
+          "id": "B",
+          "text": "12! / 2"
+        },
+        {
+          "id": "C",
+          "text": "10! / 2"
+        },
+        {
+          "id": "D",
+          "text": "13! / 2"
+        }
+      ],
+      "correct": "A",
+      "solution": "For a necklace (where clockwise and counterclockwise arrangements are identical):\nNumber of circular arrangements = (n - 1)! / 2 = (12 - 1)! / 2 = 11! / 2.",
+      "trick": "(n - 1)! / 2 = 11! / 2."
+    },
+    {
+      "id": 12,
+      "topic": "Permutation & Combination",
+      "exam": "IMP. PYQ FOR UPCOMING EXAMS",
+      "question_en": "If 19C_3r = 19C_(r+3), then find the value of r.",
+      "question_hi": "यदि 19C_3r = 19C_(r+3) तो r का मान ज्ञात कीजिए?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "4"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct": "B",
+      "solution": "If nCx = nCy, then either x = y or x + y = n.\nCase 1: 3r = r + 3 ⇒ 2r = 3 (not an integer).\nCase 2: 3r + (r + 3) = 19 ⇒ 4r + 3 = 19 ⇒ 4r = 16 ⇒ r = 4.",
+      "trick": "3r + r + 3 = 19 ⇒ 4r = 16 ⇒ r = 4."
+    },
+    {
+      "id": 13,
+      "topic": "Probability",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "A die is thrown twice and a coin is tossed three times. What is the probability of getting a 5 on both throws of the die and getting a head on all three tosses of the coin?",
+      "question_hi": "एक पासे को दो बार फेंका जाता है और एक सिक्के को तीन बार उछाला जाता है। पासे पर प्रत्येक बार 5 आने और सिक्के पर प्रत्येक बार चित आने की प्रायिकता ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1/100"
+        },
+        {
+          "id": "B",
+          "text": "1/288"
+        },
+        {
+          "id": "C",
+          "text": "1/200"
+        },
+        {
+          "id": "D",
+          "text": "1/50"
+        }
+      ],
+      "correct": "B",
+      "solution": "P(5 on die) = 1/6. For two throws: (1/6) × (1/6) = 1/36.\nP(Head on coin) = 1/2. For three tosses: (1/2)³ = 1/8.\nCombined probability = (1/36) × (1/8) = 1/288.",
+      "trick": "(1/6)² × (1/2)³ = 1/36 × 1/8 = 1/288."
+    },
+    {
+      "id": 14,
+      "topic": "Probability",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "The probability of solving a problem by three students A, B and C are 3/7, 5/9 & 1/5 respectively. What is the probability that the problem is solved?",
+      "question_hi": "तीन छात्रों A, B और C द्वारा एक समस्या को हल करने की प्रायिकता क्रमशः 3/7, 5/9 और 1/5 है। समस्या के हल होने की प्रायिकता क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "64/315"
+        },
+        {
+          "id": "B",
+          "text": "32/315"
+        },
+        {
+          "id": "C",
+          "text": "251/315"
+        },
+        {
+          "id": "D",
+          "text": "155/315"
+        }
+      ],
+      "correct": "C",
+      "solution": "P(Problem solved) = 1 - P(None solves it)\nP(A fails) = 1 - 3/7 = 4/7.\nP(B fails) = 1 - 5/9 = 4/9.\nP(C fails) = 1 - 1/5 = 4/5.\nP(All fail) = (4/7) × (4/9) × (4/5) = 64 / 315.\nP(Solved) = 1 - 64 / 315 = 251 / 315.",
+      "trick": "1 - (4/7 × 4/9 × 4/5) = 1 - 64/315 = 251/315."
+    },
+    {
+      "id": 15,
+      "topic": "Probability",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "Three cards are drawn one after another with replacement from a pack of cards. What is the probability of getting first card a Jack, second card a black card, and third card an even numbered card?",
+      "question_hi": "ताश की एक गड्डी से प्रतिस्थापन के साथ एक के बाद एक तीन कार्ड निकाले जाते हैं। पहला कार्ड जैक (गुलाम), दूसरा कार्ड काला कार्ड और तीसरा कार्ड सम संख्या वाला कार्ड होने की प्रायिकता क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5/169"
+        },
+        {
+          "id": "B",
+          "text": "5/338"
+        },
+        {
+          "id": "C",
+          "text": "25/26"
+        },
+        {
+          "id": "D",
+          "text": "20/338"
+        }
+      ],
+      "correct": "B",
+      "solution": "1) P(Jack) = 4/52 = 1/13.\n2) P(Black card) = 26/52 = 1/2.\n3) Even numbered cards in a pack: 2, 4, 6, 8, 10 (5 per suit × 4 suits = 20 cards) ⇒ P(Even) = 20/52 = 5/13.\nSince drawing with replacement: P = (1/13) × (1/2) × (5/13) = 5 / 338.",
+      "trick": "(1/13) × (1/2) × (5/13) = 5 / 338."
+    },
+    {
+      "id": 16,
+      "topic": "Probability",
+      "exam": "SSC Stenographer 08/08/2025",
+      "question_en": "A bag has 4 fair coins and 4 double-headed coins. A coin is drawn and flipped 3 times, all heads. What is the probability it’s double-headed?",
+      "question_hi": "एक थैले में 4 निष्पक्ष सिक्के और 4 दोमुँहे सिक्के हैं। एक सिक्का निकाला जाता है और उसे तीन बार उछाला जाता है, सभी पर चित आता है। क्या संभावना है कि वह दोमुँहा हो?",
+      "options": [
+        {
+          "id": "A",
+          "text": "4/5"
+        },
+        {
+          "id": "B",
+          "text": "8/9"
+        },
+        {
+          "id": "C",
+          "text": "2/3"
+        },
+        {
+          "id": "D",
+          "text": "3/4"
+        }
+      ],
+      "correct": "B",
+      "solution": "By Bayes' theorem:\nP(Fair) = 4/8 = 1/2. P(3 Heads | Fair) = (1/2)³ = 1/8.\nP(Double-headed) = 4/8 = 1/2. P(3 Heads | Double) = 1³ = 1.\nP(Double | 3 Heads) = [1/2 × 1] / [1/2 × 1 + 1/2 × 1/8] = 1 / [1 + 1/8] = 1 / (9/8) = 8/9.",
+      "trick": "1 / (1 + 1/8) = 8 / 9."
+    },
+    {
+      "id": 17,
+      "topic": "Probability",
+      "exam": "SSC Selection Post 29/07/2025",
+      "question_en": "An item is produced by one of three machines, A, B, or C. Machine A produces 50% of the items, B produces 30%, and C produces 20%. The defect rates are 1% for A, 2% for B, and 3% for C. If an item is chosen at random, what is the probability that it is defective?",
+      "question_hi": "एक वस्तु तीन मशीनों, A, B या C में से किसी एक द्वारा बनाई जाती है। मशीन A 50% वस्तुएँ बनाती है, B 30% और C 20% बनाती है। दोष दर A के लिए 1%, B के लिए 2% और C के लिए 3% है। यदि कोई वस्तु यादृच्छिक रूप से चुनी जाती है, तो इसकी क्या संभावना है कि वह दोषपूर्ण है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "0.015"
+        },
+        {
+          "id": "B",
+          "text": "0.017"
+        },
+        {
+          "id": "C",
+          "text": "0.019"
+        },
+        {
+          "id": "D",
+          "text": "0.021"
+        }
+      ],
+      "correct": "B",
+      "solution": "Total probability theorem:\nP(Defective) = P(A)P(D|A) + P(B)P(D|B) + P(C)P(D|C)\n= (0.50 × 0.01) + (0.30 × 0.02) + (0.20 × 0.03)\n= 0.005 + 0.006 + 0.006 = 0.017.",
+      "trick": "0.5% + 0.6% + 0.6% = 1.7% = 0.017."
+    },
+    {
+      "id": 18,
+      "topic": "Probability",
+      "exam": "SSC Selection Post 02/08/2025",
+      "question_en": "A company has two machines, M1 and M2, producing widgets. M1 produces 60% of the widgets and M2 produces 40%. 3% of M1’s widgets are defective, and 5% of M2’s widgets are defective. If a randomly selected widget is found to be defective, what is the probability it came from M1?",
+      "question_hi": "एक कंपनी के दो मशीनें M1 और M2 हैं। M1 कुल का 60% उत्पादन करता है और M2 40%। M1 के 3% और M2 के 5% विजेट्स दोषपूर्ण होते हैं। यदि चुना गया विजेट दोषपूर्ण पाया जाता है, तो उसकी मशीन M1 से आने की संभावना क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "0.36"
+        },
+        {
+          "id": "B",
+          "text": "0.47"
+        },
+        {
+          "id": "C",
+          "text": "0.53"
+        },
+        {
+          "id": "D",
+          "text": "0.64"
+        }
+      ],
+      "correct": "B",
+      "solution": "P(M1) = 0.60, P(D|M1) = 0.03 ⇒ P(M1 ∩ D) = 0.60 × 0.03 = 0.018.\nP(M2) = 0.40, P(D|M2) = 0.05 ⇒ P(M2 ∩ D) = 0.40 × 0.05 = 0.020.\nTotal P(D) = 0.018 + 0.020 = 0.038.\nP(M1 | D) = 0.018 / 0.038 = 18 / 38 = 9 / 19 ≈ 0.473 ≈ 0.47.",
+      "trick": "18 / (18 + 20) = 18/38 = 9/19 ≈ 0.47."
+    },
+    {
+      "id": 19,
+      "topic": "Data Interpretation",
+      "exam": "SSC CGL MAINS 2020",
+      "question_en": "During 2015 to 2019, production of cement (in million tonnes) by company C in 2018 is 350 and in 2019 is 400. In 2020, the production of cement by company C increased by the same percentage as in 2019 over its previous year. What was the production of cement by company C in 2020 (in million tonnes, correct to one decimal place)?",
+      "question_hi": "2018 में कंपनी C का सीमेंट उत्पादन 350 और 2019 में 400 मिलियन टन था। 2020 में कंपनी C के उत्पादन में उतनी ही प्रतिशत वृद्धि हुई जितनी 2019 में पिछले वर्ष की तुलना में हुई थी। 2020 में कंपनी C का उत्पादन कितना था?",
+      "options": [
+        {
+          "id": "A",
+          "text": "454.6"
+        },
+        {
+          "id": "B",
+          "text": "455.8"
+        },
+        {
+          "id": "C",
+          "text": "457.1"
+        },
+        {
+          "id": "D",
+          "text": "452.4"
+        }
+      ],
+      "correct": "C",
+      "solution": "Increase% in 2019 over 2018 = (400 - 350) / 350 = 50 / 350 = 1/7.\nProduction in 2020 = 400 × (1 + 1/7) = 400 × (8/7) = 3200 / 7 ≈ 457.1 million tonnes.",
+      "trick": "400 × 8/7 = 3200 / 7 = 457.1."
+    },
+    {
+      "id": 20,
+      "topic": "Data Interpretation",
+      "exam": "SSC CGL MAINS 2020",
+      "question_en": "The production of cement by company A in 2016 was 280 and company C in 2018 was 350. The production of cement by company B in 2017 was 200 and in 2019 was 360. What is the ratio of (A in 2016 + C in 2018) to (B in 2017 + B in 2019)?",
+      "question_hi": "कंपनी A द्वारा 2016 में और कंपनी C द्वारा 2018 में किए गए सीमेंट के कुल उत्पादन का, कंपनी B द्वारा 2017 और 2019 में किए गए सीमेंट के कुल उत्पादन से अनुपात कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9 : 8"
+        },
+        {
+          "id": "B",
+          "text": "7 : 6"
+        },
+        {
+          "id": "C",
+          "text": "8 : 7"
+        },
+        {
+          "id": "D",
+          "text": "10 : 9"
+        }
+      ],
+      "correct": "A",
+      "solution": "Numerator = 280 + 350 = 630.\nDenominator = 200 + 360 = 560.\nRatio = 630 : 560 = 63 : 56 = 9 : 8.",
+      "trick": "630 / 560 = 9/8."
+    },
+    {
+      "id": 21,
+      "topic": "Data Interpretation",
+      "exam": "SSC CGL MAINS 2020",
+      "question_en": "The average production of cement by company B in 2015, 2016 and 2018 (productions 150, 180, 300) is what percentage less than the average production of cement by company C in 2015 and 2017 (productions 200, 250)?",
+      "question_hi": "कंपनी B द्वारा 2015, 2016 और 2018 में किया गया सीमेंट का औसत उत्पादन, कंपनी C द्वारा 2015 और 2017 में किए गए सीमेंट के औसत उत्पादन से कितने प्रतिशत कम है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "7 3/7%"
+        },
+        {
+          "id": "B",
+          "text": "7 1/7%"
+        },
+        {
+          "id": "C",
+          "text": "5 1/3%"
+        },
+        {
+          "id": "D",
+          "text": "6 2/3%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Average of B (2015, 2016, 2018) = (150 + 180 + 300) / 3 = 630 / 3 = 210.\nAverage of C (2015, 2017) = (200 + 250) / 2 = 450 / 2 = 225.\nDifference = 225 - 210 = 15.\nPercentage less = (15 / 225) × 100% = 1/15 × 100% = 20/3% = 6 2/3%.",
+      "trick": "15 / 225 = 1/15 = 6 2/3%."
+    },
+    {
+      "id": 22,
+      "topic": "Data Interpretation",
+      "exam": "UP SI 15/03/2026",
+      "question_en": "In State C, 24% of the population is below the poverty line. The ratio of males to females below the poverty line is 1:2. If the female population below the poverty line is 3.6 million, what will be the male population above the poverty line if the ratio of males to females above poverty line is 2:3?",
+      "question_hi": "यदि राज्य C के लिए गरीबी रेखा के नीचे महिलाओं की जनसंख्या 3.6 मिलियन है, तो राज्य के लिए गरीबी रेखा के ऊपर पुरुषों की जनसंख्या कितनी होगी (जहाँ गरीबी रेखा से नीचे 24% और ऊपर पुरुष:महिला 2:3 है)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6.84 million"
+        },
+        {
+          "id": "B",
+          "text": "7.84 million"
+        },
+        {
+          "id": "C",
+          "text": "9.84 million"
+        },
+        {
+          "id": "D",
+          "text": "8.84 million"
+        }
+      ],
+      "correct": "A",
+      "solution": "Below poverty line: Males : Females = 1 : 2.\n2 units = 3.6 million ⇒ 1 unit = 1.8 million.\nTotal population below poverty line = 1.8 + 3.6 = 5.4 million.\nThis represents 24% of total population ⇒ 24% = 5.4 million.\nPopulation above poverty line = 100% - 24% = 76%.\nAbove poverty line total = (5.4 / 24) × 76 = 17.1 million.\nRatio of males to females above poverty line is 2 : 3 (Total 5 units).\nMale population above poverty line = 17.1 × (2/5) = 6.84 million.",
+      "trick": "5.4 × (76/24) × (2/5) = 6.84 million."
+    },
+    {
+      "id": 23,
+      "topic": "Data Interpretation",
+      "exam": "SSC SELECTION POST XII GRADUATE LEVEL",
+      "question_en": "A batsman scored 9000 runs in ODI and 7500 runs in Tests. In ODI, 22% of runs were scored against Pakistan. In Tests, 23% of runs were scored against Sri Lanka. Find the ratio of runs scored against Pakistan in ODI to that against Sri Lanka in Tests.",
+      "question_hi": "वनडे (ODI) में पाकिस्तान के विरुद्ध बनाए गए रनों का टेस्ट मैचों में श्रीलंका के विरुद्ध बनाए गए रनों से अनुपात ज्ञात कीजिए (वनडे कुल 9000, टेस्ट कुल 7500)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "122 : 31"
+        },
+        {
+          "id": "B",
+          "text": "129 : 125"
+        },
+        {
+          "id": "C",
+          "text": "132 : 115"
+        },
+        {
+          "id": "D",
+          "text": "131 : 129"
+        }
+      ],
+      "correct": "C",
+      "solution": "Runs against Pakistan in ODI = 9000 × 22% = 1980.\nRuns against Sri Lanka in Tests = 7500 × 23% = 1725.\nRatio = 1980 : 1725.\nDividing both by 15: 1980 / 15 = 132, 1725 / 15 = 115.\nRatio = 132 : 115.",
+      "trick": "(90 × 22) : (75 × 23) = (6 × 22) : (5 × 23) = 132 : 115."
+    },
+    {
+      "id": 24,
+      "topic": "Data Interpretation",
+      "exam": "SSC IMPORTANT PTQ",
+      "question_en": "Students placed in five companies (A, G, Y, T, F) in 2012 were 12.6, 9.8, 10.4, 14.9, 9.8 (total 57.5 thousand) and in 2014 were 19.3, 13.4, 13.4, 11.8, 7.8 (total 65.7 thousand). What is the difference between the total students placed in 2014 and 2012?",
+      "question_hi": "वर्ष 2014 और 2012 में सभी कंपनियों में नौकरी पाने वाले छात्रों की संख्या के बीच अंतर (हजारों में) कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9000"
+        },
+        {
+          "id": "B",
+          "text": "7800"
+        },
+        {
+          "id": "C",
+          "text": "8200"
+        },
+        {
+          "id": "D",
+          "text": "7500"
+        }
+      ],
+      "correct": "C",
+      "solution": "Total placed in 2014 = 19.3 + 13.4 + 13.4 + 11.8 + 7.8 = 65.7 thousand.\nTotal placed in 2012 = 12.6 + 9.8 + 10.4 + 14.9 + 9.8 = 57.5 thousand.\nDifference = 65.7 - 57.5 = 8.2 thousand = 8200.",
+      "trick": "65.7 - 57.5 = 8.2 thousand = 8200."
+    },
+    {
+      "id": 25,
+      "topic": "Data Interpretation",
+      "exam": "IMP. PYQ FOR UPCOMING EXAMS",
+      "question_en": "The total population of State B is 7,200. 25% of the population is below the poverty line. The ratio of males to females below the poverty line is 3:5. What is the number of females below the poverty line in State B?",
+      "question_hi": "यदि राज्य B की कुल जनसंख्या 7,200 है, तो उस राज्य में गरीबी रेखा से नीचे की महिलाओं की संख्या कितनी है (जहाँ गरीबी रेखा के नीचे 25% और अनुपात 3:5 है)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1,025"
+        },
+        {
+          "id": "B",
+          "text": "1,125"
+        },
+        {
+          "id": "C",
+          "text": "1,075"
+        },
+        {
+          "id": "D",
+          "text": "1,250"
+        }
+      ],
+      "correct": "B",
+      "solution": "Population below poverty line = 25% of 7200 = 1800.\nRatio of males to females = 3 : 5 (Total 8 units).\nFemales below poverty line = (5/8) × 1800 = 5 × 225 = 1125.",
+      "trick": "7200 × 0.25 × 5/8 = 1800 × 5/8 = 1125."
+    }
+  ]
+}

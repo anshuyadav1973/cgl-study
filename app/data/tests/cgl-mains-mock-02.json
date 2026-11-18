@@ -1,0 +1,716 @@
+{
+  "id": "cgl-mains-mock-02",
+  "title": "SSC CGL Mains 2026 - Arithmetic Super Mock #02",
+  "subtitle": "25 High-Frequency Arithmetic Questions (Latest 2025–26 PYQs)",
+  "category": "Arithmetic Chapterwise",
+  "durationMinutes": 30,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "25 Questions covering Percentage, Profit & Loss, Discount, SI & CI, Time & Work, TSD & Ratio.",
+    "Duration: 30 minutes. Marking: +3 for correct, -1 for incorrect.",
+    "All questions are from latest SSC CGL/CHSL Tier-2 2025-2026 exams."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Percentage",
+      "exam": "SSC CGL Tier-II, 20/01/2025",
+      "question_en": "Two years ago, the population of a town was 9487500. Due to migration to big cities, it decreases every year at the rate of 8%. The present population of the town is:",
+      "question_hi": "दो वर्ष पूर्व, एक कस्बे की जनसंख्या 9487500 थी। बड़े शहरों में प्रवास के कारण यह प्रतिवर्ष 8% की दर से घटती जाती है। कस्बे की वर्तमान जनसंख्या क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9060110"
+        },
+        {
+          "id": "B",
+          "text": "7060320"
+        },
+        {
+          "id": "C",
+          "text": "8070120"
+        },
+        {
+          "id": "D",
+          "text": "8030220"
+        }
+      ],
+      "correct": "D",
+      "solution": "Population = 9487500 × (1 - 8/100)² = 9487500 × (23/25) × (23/25) = 8030220.",
+      "trick": "Digital sum of 23 × 23 = 5 × 5 = 25 → 7. Check digital sum of options: (d) 8+0+3+0+2+2+0 = 15 → 6; 9487500 (DS 6) × 7 = 42 → 6."
+    },
+    {
+      "id": 2,
+      "topic": "Percentage",
+      "exam": "SSC CGL Tier-II, 11/09/2020",
+      "question_en": "If A is 28% more than B and C is 25% less than the sum of A and B, then by what percent will C be more than A (correct to one decimal place)?",
+      "question_hi": "यदि A, B से 28% अधिक है, और C, A और B के योग से 25% कम है, तो C, A से कितने प्रतिशत अधिक होगा (एक दशमलव पूर्णांक के निकटतम)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "33.6%"
+        },
+        {
+          "id": "B",
+          "text": "32.2%"
+        },
+        {
+          "id": "C",
+          "text": "43%"
+        },
+        {
+          "id": "D",
+          "text": "28%"
+        }
+      ],
+      "correct": "A",
+      "solution": "Let B = 100. Then A = 128.\nSum (A + B) = 228.\nC = 75% of 228 = 228 × (3/4) = 171.\nC is more than A by: 171 - 128 = 43.\nPercentage = (43 / 128) × 100% ≈ 33.6%.",
+      "trick": "43 / 128 ≈ 43 / 1.28 ≈ 33.59% ≈ 33.6%."
+    },
+    {
+      "id": 3,
+      "topic": "Percentage",
+      "exam": "SSC CHSL Tier-II, 26/06/2023",
+      "question_en": "Geeta buys an apartment and pays EMI for the same. Her monthly income is ₹80,000. She spends 15% on children’s education, 40% on household chores, sends 10% to GPF, saves 15% in savings bank account and pays the remaining amount as EMI. What amount does she pay as EMI?",
+      "question_hi": "गीता एक अपार्टमेंट खरीदती है और उसके लिए EMI का भुगतान करती है। उसकी मासिक आय ₹80,000 है। वह बच्चों की शिक्षा पर 15%, घरेलू कामकाज पर 40% खर्च करती है, GPF में 10% भेजती है, बचत बैंक खाते में 15% की बचत करती है और शेष राशि का भुगतान EMI के रूप में करती है। वह EMI के रूप में कितनी राशि का भुगतान करती है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹14,000"
+        },
+        {
+          "id": "B",
+          "text": "₹16,000"
+        },
+        {
+          "id": "C",
+          "text": "₹20,000"
+        },
+        {
+          "id": "D",
+          "text": "₹18,000"
+        }
+      ],
+      "correct": "B",
+      "solution": "Total percentage spent = 15% + 40% + 10% + 15% = 80%.\nRemaining for EMI = 100% - 80% = 20%.\nEMI = 20% of 80,000 = ₹16,000.",
+      "trick": "80,000 × (100 - 80)/100 = 80,000 × 0.20 = ₹16,000."
+    },
+    {
+      "id": 4,
+      "topic": "Ratio & Proportion",
+      "exam": "SSC CGL Tier-II, 20/01/2025",
+      "question_en": "Adi and Dia together have ₹1,440. If 3/10 of Adi’s amount is equal to 3/5 of Dia’s amount, how much amount does Dia have?",
+      "question_hi": "आदि और दीया के पास कुल मिलाकर ₹1,440 हैं। यदि आदि की राशि का 3/10 भाग, दीया की राशि के 3/5 भाग के बराबर है, तो दीया के पास कितनी राशि है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹480"
+        },
+        {
+          "id": "B",
+          "text": "₹540"
+        },
+        {
+          "id": "C",
+          "text": "₹464"
+        },
+        {
+          "id": "D",
+          "text": "₹512"
+        }
+      ],
+      "correct": "A",
+      "solution": "(3/10) × Adi = (3/5) × Dia ⇒ Adi / Dia = (3/5) / (3/10) = 2 / 1.\nRatio of Adi : Dia = 2 : 1. Total = 3 units = ₹1,440.\nDia's share = 1 unit = 1440 / 3 = ₹480.",
+      "trick": "Dia = 1440 × 1/3 = ₹480."
+    },
+    {
+      "id": 5,
+      "topic": "Ratio & Proportion",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "Two numbers are in the ratio 5:9. When 4 is subtracted from the first number, and 6 is added to the second number, the resulting ratio becomes 1:2. Find the sum of the original numbers.",
+      "question_hi": "दो संख्याएँ 5:9 के अनुपात में हैं। जब पहली संख्या में से 4 घटाया जाता है और दूसरी संख्या में 6 जोड़ा जाता है, तो परिणामी अनुपात 1 : 2 हो जाता है। मूल संख्याओं का योग ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "152"
+        },
+        {
+          "id": "B",
+          "text": "138"
+        },
+        {
+          "id": "C",
+          "text": "184"
+        },
+        {
+          "id": "D",
+          "text": "196"
+        }
+      ],
+      "correct": "D",
+      "solution": "(5x - 4) / (9x + 6) = 1/2\n⇒ 10x - 8 = 9x + 6 ⇒ x = 14.\nSum of original numbers = 5x + 9x = 14x = 14 × 14 = 196.",
+      "trick": "The sum must be a multiple of (5 + 9) = 14. 196 is a multiple of 14 (14 × 14 = 196)."
+    },
+    {
+      "id": 6,
+      "topic": "Profit & Loss",
+      "exam": "SSC CGL Tier-II, 18/01/2025",
+      "question_en": "A man buys 10 identical articles for a total of ₹15. If he sells each of them for ₹1.7, then his profit percentage will be:",
+      "question_hi": "एक व्यक्ति कुल ₹15 में 10 एक समान वस्तुएं खरीदता है। यदि वह उनमें से प्रत्येक वस्तु को ₹1.7 में बेचता है, तो उसका लाभ प्रतिशत होगा:",
+      "options": [
+        {
+          "id": "A",
+          "text": "14.33%"
+        },
+        {
+          "id": "B",
+          "text": "12.76%"
+        },
+        {
+          "id": "C",
+          "text": "13.33%"
+        },
+        {
+          "id": "D",
+          "text": "11.76%"
+        }
+      ],
+      "correct": "C",
+      "solution": "Cost price of 1 article = 15 / 10 = ₹1.5.\nSelling price of 1 article = ₹1.7.\nProfit = 1.7 - 1.5 = ₹0.2.\nProfit% = (0.2 / 1.5) × 100% = 2/15 × 100% = 13.33%.",
+      "trick": "CP = 15, Total SP = 10 × 1.7 = 17. Profit = 2. Profit% = (2/15) × 100 = 13.33%."
+    },
+    {
+      "id": 7,
+      "topic": "Profit & Loss",
+      "exam": "SSC CGL Tier-II, 18/02/2018",
+      "question_en": "A trader had 2000 kg of rice. He sold a part of it at 10% profit and the rest at 16% profit, so that he made a total profit of 14.2%. How much rice (in kg) did he sell at 10% profit?",
+      "question_hi": "किसी विक्रेता के पास 2000 किग्रा चावल है। इसके एक भाग को वह 10% लाभ पर तथा बचे हुए भाग को 16% लाभ पर बेचता है ताकि उसे कुल लाभ 14.2% हो उसने कितने किग्रा चावल 10% लाभ पर बेचा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1400 kg"
+        },
+        {
+          "id": "B",
+          "text": "600 kg"
+        },
+        {
+          "id": "C",
+          "text": "800 kg"
+        },
+        {
+          "id": "D",
+          "text": "1000 kg"
+        }
+      ],
+      "correct": "B",
+      "solution": "By Alligation:\n10%                 16%\n           14.2%\n(16 - 14.2)      (14.2 - 10)\n    1.8     :       4.2\n     3      :        7\nTotal units = 3 + 7 = 10 units = 2000 kg.\nRice sold at 10% = 3 units = (3/10) × 2000 = 600 kg.",
+      "trick": "Alligation ratio = 1.8 : 4.2 = 3 : 7. Quantity at 10% = 2000 × 3/10 = 600 kg."
+    },
+    {
+      "id": 8,
+      "topic": "Profit & Loss",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "Given that the cost price of 20 items equals the selling price of x items, and the profit percentage is 25%, determine the value of x.",
+      "question_hi": "यह देखते हुए कि 20 वस्तुओं का क्रय मूल्य x वस्तुओं के विक्रय मूल्य के बराबर है, और लाभ प्रतिशत 25% है, x का मान ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "14"
+        },
+        {
+          "id": "B",
+          "text": "16"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "18"
+        }
+      ],
+      "correct": "B",
+      "solution": "20 × CP = x × SP ⇒ SP / CP = 20 / x.\nProfit% = 25% = 1/4 ⇒ SP / CP = 5 / 4.\n5 / 4 = 20 / x ⇒ 5x = 80 ⇒ x = 16.",
+      "trick": "x = 20 / 1.25 = 16."
+    },
+    {
+      "id": 9,
+      "topic": "Discount",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "Two successive discounts of 10% and 10% will be equal to single discount of:",
+      "question_hi": "10% और 10% की दो क्रमिक छूटें एकल छूट के बराबर होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20%"
+        },
+        {
+          "id": "B",
+          "text": "18%"
+        },
+        {
+          "id": "C",
+          "text": "19%"
+        },
+        {
+          "id": "D",
+          "text": "21%"
+        }
+      ],
+      "correct": "C",
+      "solution": "Single equivalent discount = d1 + d2 - (d1 × d2)/100\n= 10 + 10 - (10 × 10)/100 = 20 - 1 = 19%.",
+      "trick": "10 + 10 - 1 = 19%."
+    },
+    {
+      "id": 10,
+      "topic": "Discount",
+      "exam": "SSC CGL MAINS 2024",
+      "question_en": "Murlidhar, the owner of a grocery store, offers a discount scheme ‘buy 5 water bottles get 1 for free’ to his customers. What is the effective percentage discount offered by Murlidhar? (correct up to two decimal places)",
+      "question_hi": "एक किराने की दुकान का मालिक, मुरलीधर अपने ग्राहकों को एक स्कीम ‘5 पानी की बोतलें खरीदें और 1 बोतल मुफ्त पाएं’ प्रदान करता है। मुरलीधर द्वारा दी गई प्रभावी प्रतिशत छूट कितनी है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "13.67%"
+        },
+        {
+          "id": "B",
+          "text": "20.00%"
+        },
+        {
+          "id": "C",
+          "text": "13.33%"
+        },
+        {
+          "id": "D",
+          "text": "16.67%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Effective discount = (Free items / Total items) × 100%\n= (1 / (5 + 1)) × 100% = (1/6) × 100% = 16.67%.",
+      "trick": "1 / 6 = 16.67%."
+    },
+    {
+      "id": 11,
+      "topic": "Discount",
+      "exam": "ICAR TECHNICIAN, 04/03/2022",
+      "question_en": "A trader gains 25% when he sells an article after giving 10% discount on its marked price. If he gives 22% discount on the same marked price of the article, then his gain percentage is:",
+      "question_hi": "एक व्यापारी को 25% का लाभ होता है जब वह एक वस्तु को उसके अंकित मूल्य पर 10% की छूट देकर बेचता है। यदि वह वस्तु के सामान अंकित मूल्य पर 22% की छूट देता है, तो उसका लाभ प्रतिशत है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "13%"
+        },
+        {
+          "id": "B",
+          "text": "12%"
+        },
+        {
+          "id": "C",
+          "text": "9 7/13%"
+        },
+        {
+          "id": "D",
+          "text": "8 1/3%"
+        }
+      ],
+      "correct": "D",
+      "solution": "CP × (100 + 25) = MP × (100 - 10)\n⇒ 125 CP = 90 MP ⇒ MP/CP = 125/90 = 25/18.\nLet CP = 18, MP = 25.\nNew SP after 22% discount = 25 × (1 - 0.22) = 25 × 0.78 = 19.5.\nNew Profit = 19.5 - 18 = 1.5.\nProfit% = (1.5 / 18) × 100% = (1/12) × 100% = 8 1/3%.",
+      "trick": "SP2/SP1 = 78/90 ⇒ SP2 = 125 × 78/90 = 108.33% of CP ⇒ Gain = 8 1/3%."
+    },
+    {
+      "id": 12,
+      "topic": "Time & Work",
+      "exam": "SSC CHSL Tier-II, 02/11/2023",
+      "question_en": "A and B can complete work in 9 days, while B and C can complete the same work in 18 days. When working together A, B and C can finish the same work in 8 days. How many days will it take for A and C to complete the work together?",
+      "question_hi": "A और B एक काम को 9 दिनों में पूरा कर सकते हैं, जबकि B और C उसी काम को 18 दिनों में पूरा कर सकते हैं। A, B और C साथ मिलकर काम करते हुए उसी काम को 8 दिनों में पूरा कर सकते हैं। A और C को साथ मिलकर काम पूरा करने में कितने दिन लगेंगे?",
+      "options": [
+        {
+          "id": "A",
+          "text": "11"
+        },
+        {
+          "id": "B",
+          "text": "13"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "14"
+        }
+      ],
+      "correct": "C",
+      "solution": "LCM(9, 18, 8) = 72 units (Total Work).\nEfficiency (A + B) = 72 / 9 = 8 units/day.\nEfficiency (B + C) = 72 / 18 = 4 units/day.\nEfficiency (A + B + C) = 72 / 8 = 9 units/day.\nEfficiency of C = 9 - 8 = 1 unit/day.\nEfficiency of A = 9 - 4 = 5 units/day.\nCombined efficiency of A + C = 5 + 1 = 6 units/day.\nTime for A + C = 72 / 6 = 12 days.",
+      "trick": "(A + C) = (A + B + C) - B = 9 - (8 + 4 - 9) = 9 - 3 = 6. Days = 72/6 = 12."
+    },
+    {
+      "id": 13,
+      "topic": "Time & Work",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "A and B together can complete a piece of work in 48 days. A is 4 times as efficient as B. In how many days B alone can complete the work?",
+      "question_hi": "A और B मिलकर एक कार्य को 48 दिन में पूरा कर सकते है। A, B का 4 गुना कार्य कुशल है। B अकेले कार्य को कितने दिन में पूरा कर सकता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "220 days"
+        },
+        {
+          "id": "B",
+          "text": "240 days"
+        },
+        {
+          "id": "C",
+          "text": "120 days"
+        },
+        {
+          "id": "D",
+          "text": "320 days"
+        }
+      ],
+      "correct": "B",
+      "solution": "Efficiency of A : B = 4 : 1.\nCombined efficiency = 4 + 1 = 5 units/day.\nTotal Work = 48 × 5 = 240 units.\nTime taken by B alone = 240 / 1 = 240 days.",
+      "trick": "Days for B = 48 × (4 + 1) / 1 = 240 days."
+    },
+    {
+      "id": 14,
+      "topic": "Time & Work",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A man works twice as fast as a woman and a woman works twice as fast as a child. If 18 men can complete a job in 10 days, how many days would 36 women and 72 children together require to finish the same job?",
+      "question_hi": "एक पुरुष एक महिला से दोगुना तेज काम करता है और एक महिला एक बच्चे से दोगुना तेज काम करती है। यदि 18 पुरुष एक काम को 10 दिनों में पूरा कर सकते हैं, तो 36 महिलाएं और 72 बच्चे मिलकर उसी काम को पूरा करने में कितने दिन लेंगे?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6 days"
+        },
+        {
+          "id": "B",
+          "text": "8 days"
+        },
+        {
+          "id": "C",
+          "text": "5 days"
+        },
+        {
+          "id": "D",
+          "text": "7 days"
+        }
+      ],
+      "correct": "C",
+      "solution": "Efficiencies: Child = 1, Woman = 2, Man = 4.\nTotal work = 18 × 4 × 10 = 720 units.\nCombined daily work of 36 women and 72 children = 36(2) + 72(1) = 72 + 72 = 144 units/day.\nDays required = 720 / 144 = 5 days.",
+      "trick": "36 women = 18 men, 72 children = 18 men. Total = 36 men. Time = 18 × 10 / 36 = 5 days."
+    },
+    {
+      "id": 15,
+      "topic": "Pipe & Cistern",
+      "exam": "SSC CGL Tier-II, 11/09/2019",
+      "question_en": "Pipes A, B and C can fill a tank in 30 h, 40 h and 60 h respectively. Pipes A, B and C are opened at 7 a.m., 8 a.m., and 10 a.m., respectively on the same day. When will the tank be full?",
+      "question_hi": "पाइप A, B और C क्रमशः 30 घंटे, 40 घंटे और 60 घंटे में एक टैंक भर सकते हैं। पाइप A, B और C उसी दिन क्रमशः 7 बजे, 8 बजे और 10 बजे खोले जाते हैं। टंकी कब भरी जाएगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10.20 pm"
+        },
+        {
+          "id": "B",
+          "text": "10.00 pm"
+        },
+        {
+          "id": "C",
+          "text": "9.40 pm"
+        },
+        {
+          "id": "D",
+          "text": "9.20 pm"
+        }
+      ],
+      "correct": "D",
+      "solution": "Total capacity = LCM(30, 40, 60) = 120 units.\nEfficiency A = 4, B = 3, C = 2 units/hour.\nFrom 7 am to 10 am (3 hrs), A fills: 3 × 4 = 12 units.\nFrom 8 am to 10 am (2 hrs), B fills: 2 × 3 = 6 units.\nFilled till 10 am = 12 + 6 = 18 units.\nRemaining = 120 - 18 = 102 units.\nAll open together: A + B + C = 4 + 3 + 2 = 9 units/hour.\nTime needed = 102 / 9 = 34 / 3 hours = 11 hours 20 minutes.\nTank full time = 10:00 am + 11h 20m = 9:20 pm.",
+      "trick": "102/9 = 11 hrs 20 mins. 10:00 am + 11h 20m = 9:20 pm."
+    },
+    {
+      "id": 16,
+      "topic": "Pipe & Cistern",
+      "exam": "SSC CGL Tier-II, 03/02/2022",
+      "question_en": "Two pipes A and B can fill a tank in 12 minutes and 24 minutes, respectively, while a third pipe C can empty the full tank in 32 minutes. All the three pipes are opened simultaneously. However, pipe C is closed 2 minutes before the tank is filled. In how much time (in minutes) will the tank be full?",
+      "question_hi": "दो पाइप A और B एक टंकी को क्रमशः 12 मिनट और 24 मिनट में भर सकते हैं, वहीं पाइप C पूरी भरी हुई टंकी को 32 मिनट में खाली कर सकती है। तीनों पाइपों को एक साथ खोल दिया गया। हालांकि पाइप C को टंकी भरने के 2 मिनट पहले बंद कर दिया गया। टंकी कितने समय (मिनट में) में पूरी तरह भर जाएगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "9 minutes"
+        },
+        {
+          "id": "B",
+          "text": "10 minutes"
+        },
+        {
+          "id": "C",
+          "text": "12 minutes"
+        },
+        {
+          "id": "D",
+          "text": "8 minutes"
+        }
+      ],
+      "correct": "B",
+      "solution": "Total capacity = LCM(12, 24, 32) = 96 units.\nEfficiency A = +8, B = +4, C = -3.\nLet total time be T minutes. A and B work for T mins, C works for (T - 2) mins.\n(8 + 4)T - 3(T - 2) = 96\n⇒ 12T - 3T + 6 = 96 ⇒ 9T = 90 ⇒ T = 10 minutes.",
+      "trick": "96 - (-3 × 2) = 96 - 6 = 90. T = 90 / (8 + 4 - 3) = 90 / 9 = 10 minutes."
+    },
+    {
+      "id": 17,
+      "topic": "Simple Interest",
+      "exam": "SSC CHSL Tier-II, 26/06/2023",
+      "question_en": "A sum of money doubles itself in 4 years at simple interest. In what time will it become 7 times at the same rate of interest?",
+      "question_hi": "कोई धनराशि साधारण ब्याज पर 4 वर्ष में स्वयं की दोगुनी हो जाती है। उसी ब्याज दर पर वह कितने समय में 7 गुना हो जाएगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "24 years"
+        },
+        {
+          "id": "B",
+          "text": "23 years"
+        },
+        {
+          "id": "C",
+          "text": "21 years"
+        },
+        {
+          "id": "D",
+          "text": "25 years"
+        }
+      ],
+      "correct": "A",
+      "solution": "Doubling means SI = 1P in 4 years.\nFor 7 times, SI = 6P.\nTime = 4 × 6 = 24 years.",
+      "trick": "(n2 - 1)/(n1 - 1) × t1 = (7 - 1)/(2 - 1) × 4 = 6 × 4 = 24 years."
+    },
+    {
+      "id": 18,
+      "topic": "Simple Interest",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "The simple interest on an amount of ₹x in 5 years is 2/5 of the principal. What is the annual rate of interest?",
+      "question_hi": "5 वर्षों में ₹x की राशि पर साधारण ब्याज, मूलधन का 2/5 है। ब्याज की वार्षिक दर क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5%"
+        },
+        {
+          "id": "B",
+          "text": "12%"
+        },
+        {
+          "id": "C",
+          "text": "8%"
+        },
+        {
+          "id": "D",
+          "text": "10%"
+        }
+      ],
+      "correct": "C",
+      "solution": "SI = (2/5)P.\nSI = (P × R × T) / 100 ⇒ (2/5)P = (P × R × 5) / 100\n⇒ 2/5 = R / 20 ⇒ R = 8%.",
+      "trick": "R = (2/5 × 100) / 5 = 40% / 5 = 8%."
+    },
+    {
+      "id": 19,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 19/01/2026",
+      "question_en": "At what annual interest rate will ₹15,625 become ₹19,683 in 1 year and 6 months, if the interest is compounded every six months?",
+      "question_hi": "किस वार्षिक ब्याज दर पर ₹15,625 की राशि 1 साल 6 महीने में ₹19,683 हो जाएगी, यदि ब्याज हर छह महीने में चक्रवृद्धि किया जाता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20%"
+        },
+        {
+          "id": "B",
+          "text": "18%"
+        },
+        {
+          "id": "C",
+          "text": "8%"
+        },
+        {
+          "id": "D",
+          "text": "16%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Time = 1.5 years = 3 half-years (n = 3).\nA/P = 19683 / 15625 = (1 + r/100)³.\nTaking cube root: ∛19683 / ∛15625 = 27 / 25.\n1 + r/100 = 27/25 ⇒ r/100 = 2/25 ⇒ r = 8% per half-year.\nAnnual rate = 8% × 2 = 16%.",
+      "trick": "∛19683/15625 = 27/25 ⇒ half-year rate = 2/25 = 8% ⇒ annual = 16%."
+    },
+    {
+      "id": 20,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "The compound interest on ₹10,000 at 20% per annum is ₹4,641. If the compounding is done half-yearly, then for how many years was the sum invested?",
+      "question_hi": "₹10,000 पर 20% वार्षिक दर से चक्रवृद्धि ब्याज ₹4,641 है। यदि चक्रवृद्धि अर्धवार्षिक रूप से की गई हो, तो मूलधन कितने वर्षों के लिए निवेश किया गया?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2 years"
+        },
+        {
+          "id": "B",
+          "text": "3 years"
+        },
+        {
+          "id": "C",
+          "text": "4 years"
+        },
+        {
+          "id": "D",
+          "text": "6 years"
+        }
+      ],
+      "correct": "A",
+      "solution": "Amount A = 10000 + 4641 = ₹14641.\nRate per half-year = 20% / 2 = 10% = 0.1.\nA = P(1 + r)^n ⇒ 14641 = 10000(1.1)^n\n⇒ 1.4641 = (1.1)^n ⇒ (1.1)⁴ = (1.1)^n ⇒ n = 4 half-years = 2 years.",
+      "trick": "(1.1)⁴ = 1.4641. n = 4 half-years = 2 years."
+    },
+    {
+      "id": 21,
+      "topic": "Average",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "The average of 20 numbers is 32. If two numbers are 29 and 31, then what is the average of the remaining numbers (Answer correct up to two decimal places)?",
+      "question_hi": "20 संख्याओ का औसत 32 है। यदि दो संख्याएँ 29 और 31 है, तो शेष संख्याओं का औसत क्या है (दशमलव के दो स्थान तक सही उत्तर दे)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "32.22"
+        },
+        {
+          "id": "B",
+          "text": "34.44"
+        },
+        {
+          "id": "C",
+          "text": "31.24"
+        },
+        {
+          "id": "D",
+          "text": "30.22"
+        }
+      ],
+      "correct": "A",
+      "solution": "Total sum = 20 × 32 = 640.\nSum of remaining 18 numbers = 640 - (29 + 31) = 640 - 60 = 580.\nAverage of remaining = 580 / 18 = 290 / 9 = 32.22.",
+      "trick": "Deficit = (32 - 29) + (32 - 31) = +3 + 1 = +4. New average = 32 + 4/18 = 32 + 0.22 = 32.22."
+    },
+    {
+      "id": 22,
+      "topic": "Time, Speed & Distance",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "Vipin travels one-third of the distance of a journey at a speed of 30 km/h and the remaining distance at a speed of 40 km/h. If he took a total of 12 hours to complete the journey, what was the total distance (in km) of the journey?",
+      "question_hi": "विपिन किसी यात्रा की एक तिहाई दूरी 30 किमी/घंटा की चाल से और शेष दूरी 40 किमी/घंटा की चाल से तय करता है। यदि उसे यात्रा पूरी करने में कुल 12 घंटे लगे, तो यात्रा की कुल दूरी (किमी में) कितनी थी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "445 km"
+        },
+        {
+          "id": "B",
+          "text": "450 km"
+        },
+        {
+          "id": "C",
+          "text": "412 km"
+        },
+        {
+          "id": "D",
+          "text": "432 km"
+        }
+      ],
+      "correct": "D",
+      "solution": "Let total distance = 3x.\nDistance 1 = x at 30 km/h ⇒ time = x / 30.\nDistance 2 = 2x at 40 km/h ⇒ time = 2x / 40 = x / 20.\nTotal time = x/30 + x/20 = 5x / 60 = x / 12.\nGiven: x / 12 = 12 ⇒ x = 144 km.\nTotal distance = 3x = 3 × 144 = 432 km.",
+      "trick": "Total distance = 3 × 144 = 432 km."
+    },
+    {
+      "id": 23,
+      "topic": "Train",
+      "exam": "SSC CHSL MAINS 10/04/2026",
+      "question_en": "A train 120 m long crosses another train 180 m long moving in the opposite direction in 6 seconds. If the speed of the first train is 54 km/h, what is the speed of the second train?",
+      "question_hi": "एक 120 मी लंबी रेलगाड़ी विपरीत दिशा में चल रही 180 मी लंबी दूसरी रेलगाड़ी को 6 सेकंड में पार करती है। यदि पहली रेलगाड़ी की चाल 54 किमी/घंटा है, तो दूसरी रेलगाड़ी की चाल क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "126 km/h"
+        },
+        {
+          "id": "B",
+          "text": "124 km/h"
+        },
+        {
+          "id": "C",
+          "text": "122 km/h"
+        },
+        {
+          "id": "D",
+          "text": "120 km/h"
+        }
+      ],
+      "correct": "A",
+      "solution": "Total distance = 120 + 180 = 300 m.\nRelative speed = 300 / 6 = 50 m/s = 50 × (18/5) = 180 km/h.\nS1 + S2 = 180 km/h.\nS2 = 180 - 54 = 126 km/h.",
+      "trick": "Relative speed = 300/6 = 50 m/s = 180 km/h. S2 = 180 - 54 = 126 km/h."
+    },
+    {
+      "id": 24,
+      "topic": "Boat & Stream",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "A man can row a boat at a speed of 10 km/h in still water. If the river is flowing at 4.5 km/h, it takes 2 hours to go to a point and come back to the starting point. At what distance (in km) is the place located (rounded off to two decimal places)?",
+      "question_hi": "एक आदमी शांत जल में 10 किमी/घंटा की चाल से नाव चला सकता है। यदि नदी 4.5 किमी/घंटा की चाल से बह रही है, तो उसे एक स्थान तक जाने और आरंभिक बिंदु तक वापस आने में 2 घंटे का समय लगता है। वह स्थान कितनी दूरी (किमी में) पर स्थित है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6.25 km"
+        },
+        {
+          "id": "B",
+          "text": "5.50 km"
+        },
+        {
+          "id": "C",
+          "text": "7.98 km"
+        },
+        {
+          "id": "D",
+          "text": "8.98 km"
+        }
+      ],
+      "correct": "C",
+      "solution": "Downstream speed = 10 + 4.5 = 14.5 km/h.\nUpstream speed = 10 - 4.5 = 5.5 km/h.\nDistance d = (D × U / (D + U)) × Total time\n= (14.5 × 5.5 / 20) × 2 = (14.5 × 5.5) / 10 = 79.75 / 10 = 7.975 ≈ 7.98 km.",
+      "trick": "d = (10² - 4.5²) / (2 × 10) × 2 = (100 - 20.25) / 10 = 79.75 / 10 = 7.98 km."
+    },
+    {
+      "id": 25,
+      "topic": "Partnership",
+      "exam": "SSC CHSL Tier-2, 26/06/2023",
+      "question_en": "A and B start a business jointly. The investment made by A is equal to seven times the investment made by B. Find A’s share (in ₹) of the annual profit of ₹2,75,000.",
+      "question_hi": "A और B संयुक्त रूप से एक व्यवसाय शुरू करते हैं। A द्वारा किया गया निवेश B द्वारा किए गए निवेश के सात गुना के बराबर है। ₹2,75,000 के वार्षिक लाभ में से A का हिस्सा (₹ में) ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹2,41,225"
+        },
+        {
+          "id": "B",
+          "text": "₹2,40,625"
+        },
+        {
+          "id": "C",
+          "text": "₹2,42,365"
+        },
+        {
+          "id": "D",
+          "text": "₹2,45,625"
+        }
+      ],
+      "correct": "B",
+      "solution": "Investment ratio A : B = 7 : 1.\nTotal units = 7 + 1 = 8 units.\n8 units = ₹2,75,000.\nA's share = (7/8) × 275000 = 7 × 34375 = ₹2,40,625.",
+      "trick": "275000 × 7 / 8 = 240625."
+    }
+  ]
+}

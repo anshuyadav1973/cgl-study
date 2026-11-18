@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testbook Test Portal - SSC CGL Mains 2026</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="testbook-theme">
+  <!-- Top Navigation Bar -->
+  <header class="tb-header">
+    <div class="header-left">
+      <div class="tb-brand" onclick="app.showDashboard()">
+        <span class="tb-logo-icon">⚡</span>
+        <div class="brand-text">
+          <span class="brand-name">testbook</span>
+          <span class="brand-badge">PASS PRO</span>
+        </div>
+      </div>
+
+      <nav class="tb-nav-links" id="tbNavLinks">
+        <button class="nav-link-btn active" id="navLinkTests" onclick="app.showDashboard()">Mock Tests</button>
+        <button class="nav-link-btn" id="navLinkMaterials" onclick="app.showStudyMaterialsView()">Study Vault & Notes</button>
+        <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">Attempt History</button>
+        <button class="nav-link-btn admin-link" id="navLinkAdmin" onclick="app.showAdminView()" style="display:none;">Admin Portal</button>
+      </nav>
+
+      <div class="test-header-info" id="headerTestInfo" style="display:none;">
+        <span class="divider">|</span>
+        <span class="test-title-header" id="headerTestTitle">SSC CGL Mains 2026</span>
+      </div>
+    </div>
+
+    <div class="header-center" id="headerTimerSection" style="display:none;">
+      <div class="timer-badge" id="timerBadge">
+        <svg class="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span class="timer-label">Time Left:</span>
+        <span class="timer-digits" id="timerDisplay">35:00</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Calculator Button (Active Test only) -->
+      <button class="btn-calc" id="calcBtn" title="Open Virtual Calculator" onclick="app.toggleCalculator()" style="display:none;">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+          <line x1="8" y1="6" x2="16" y2="6"></line>
+          <line x1="16" y1="14" x2="16" y2="18"></line>
+          <path d="M16 10h.01M12 10h.01M8 10h.01M12 14h.01M8 14h.01M12 18h.01M8 18h.01"></path>
+        </svg>
+        <span>Calculator</span>
+      </button>
+
+      <!-- Language Switcher (Active Test only) -->
+      <div class="lang-selector-wrap" id="langSelectorWrap" style="display:none;">
+        <label for="langSelect">View in:</label>
+        <select id="langSelect" onchange="app.setLanguage(this.value)">
+          <option value="bilingual">Bilingual (English + हिन्दी)</option>
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
+
+      <!-- Auth Controls (Logged Out State) -->
+      <div class="auth-guest-controls" id="authGuestControls" style="display:none;">
+        <button class="btn-login-header" onclick="app.openAuthModal('login')">Sign In</button>
+        <button class="btn-register-header" onclick="app.openAuthModal('register')">Register Free</button>
+      </div>
+
+      <!-- Candidate Profile (Logged In State) -->
+      <div class="candidate-profile-wrap" id="candidateProfileWrap">
+        <div class="candidate-profile" onclick="app.toggleProfileDropdown()" title="Click to view profile options">
+          <div class="avatar" id="candidateAvatar">AY</div>
+          <div class="candidate-meta">
+            <span class="c-name" id="candidateName">Anshul Yadav</span>
+            <span class="c-id" id="candidateExam">SSC CGL 2026</span>
+          </div>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px; opacity:0.8;">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+
+        <!-- Profile Dropdown Menu -->
+        <div class="profile-dropdown-menu" id="profileDropdown" style="display:none;">
+          <div class="dropdown-header">
+            <div class="drop-user-name" id="dropUserName">Anshul Yadav</div>
+            <div class="drop-user-email" id="dropUserEmail">anshul@cglstudy.com</div>
+            <span class="drop-user-role" id="dropUserRole">ADMIN</span>
+          </div>
+          <div class="dropdown-items">
+            <button class="dropdown-item" onclick="app.showHistoryView(); app.toggleProfileDropdown(false);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              My Attempt History (<span id="dropAttemptCount">0</span>)
+            </button>
+            <button class="dropdown-item" onclick="app.showStudyMaterialsView('notes'); app.toggleProfileDropdown(false);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+              My Personal Notes
+            </button>
+            <button class="dropdown-item admin-only-item" id="dropAdminItem" onclick="app.showAdminView(); app.toggleProfileDropdown(false);" style="display:none;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+              Admin Control Panel
+            </button>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item text-danger" onclick="app.logoutUser()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Log Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="app-container">
+    <!-- VIEW 1: Dashboard / Tests Selection -->
+    <section class="view-panel" id="dashboardView">
+      <div class="dashboard-hero">
+        <div class="hero-content">
+          <div class="series-pill">SSC CGL MAINS 2026 • MATHEMATICS 1000+ PYQs</div>
+          <h1>Testbook Live Test Series & Study Portal</h1>
+          <p>Practice latest TCS Examination Pattern questions with real-time timer, marking scheme (+3, -1), authentic Testbook question palette, bilingual explanations, and cloud-saved attempt history.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" onclick="app.showStudyMaterialsView()">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            Study Vault & Notes
+          </button>
+          <button class="btn btn-secondary" onclick="app.showHistoryView()">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Attempt History
+          </button>
+          <button class="btn btn-outline-light" onclick="app.openNewTestModal()">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            + Add New Test
+          </button>
+        </div>
+      </div>
+
+      <div class="dashboard-stats-bar" id="historySummaryBar">
+        <div class="stat-box" onclick="app.showHistoryView()" style="cursor:pointer;" title="Click to view full history">
+          <span class="stat-num" id="statTestsAttempted">0</span>
+          <span class="stat-lbl">Your Attempted Tests (View History ↗)</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statAvgScore">0%</span>
+          <span class="stat-lbl">Average Score</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-num" id="statAccuracy">0%</span>
+          <span class="stat-lbl">Overall Accuracy</span>
+        </div>
+        <div class="stat-box highlight">
+          <span class="stat-num" id="statTotalTests">10</span>
+          <span class="stat-lbl">Available Mock Tests</span>
+        </div>
+      </div>
+
+      <!-- Recent Attempt Banner -->
+      <div id="recentAttemptBanner" class="recent-attempt-container" style="display:none;"></div>
+
+      <!-- Test Cards List -->
+      <div class="test-cards-section">
+        <div class="section-heading-row">
+          <h2>Available 25-Question Mock Tests</h2>
+          <span class="test-count-badge" id="testListCountBadge">10 Tests Available</span>
+        </div>
+        <div class="test-grid" id="testListGrid">
+          <!-- Dynamically populated tests -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: Pre-Test Instructions Screen -->
+    <section class="view-panel" id="instructionsView" style="display:none;">
+      <div class="instructions-card">
+        <div class="inst-header">
+          <div class="inst-tag">EXAM INSTRUCTIONS</div>
+          <h2 id="instTestTitle">Test Title</h2>
+          <p id="instTestSubtitle">Subtitle</p>
+        </div>
+
+        <div class="inst-meta-grid">
+          <div class="meta-item">
+            <span class="label">Total Questions</span>
+            <span class="val" id="instTotalQuestions">25</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Duration</span>
+            <span class="val" id="instDuration">35 Mins</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Maximum Marks</span>
+            <span class="val" id="instMaxMarks">75 Marks</span>
+          </div>
+          <div class="meta-item">
+            <span class="label">Marking Scheme</span>
+            <span class="val text-success">+3 for Correct, -1 for Wrong</span>
+          </div>
+        </div>
+
+        <div class="inst-body">
+          <h3>Please read the following instructions carefully:</h3>
+          <ul id="instBulletList">
+            <li>The test clock will be set at the server. The countdown timer in the top right corner displays remaining time.</li>
+            <li>Each question carries <strong>3 marks</strong>. Every incorrect answer results in a deduction of <strong>1 mark</strong> (SSC CGL Tier-2 standard).</li>
+            <li>No marks are deducted for unattempted questions.</li>
+            <li>You can navigate to any question directly using the Question Palette on the right.</li>
+            <li>To answer, select an option and click <strong>Save & Next</strong>.</li>
+            <li>Use <strong>Mark for Review & Next</strong> if you wish to revisit the question later.</li>
+          </ul>
+
+          <div class="symbol-guide">
+            <h4>Question Palette Symbol Guide:</h4>
+            <div class="symbols-grid">
+              <div class="sym-item"><span class="badge-sample not-visited">1</span> Not Visited</div>
+              <div class="sym-item"><span class="badge-sample not-answered">2</span> Not Answered</div>
+              <div class="sym-item"><span class="badge-sample answered">3</span> Answered</div>
+              <div class="sym-item"><span class="badge-sample marked">4</span> Marked for Review</div>
+              <div class="sym-item"><span class="badge-sample marked-answered">5</span> Answered & Marked for Review</div>
+            </div>
+          </div>
+
+          <div class="agreement-box">
+            <label class="checkbox-container">
+              <input type="checkbox" id="instAgreeCheck" checked>
+              <span class="checkmark"></span>
+              I have read and understood all the instructions. I declare that I am ready to attempt the test.
+            </label>
+          </div>
+        </div>
+
+        <div class="inst-footer">
+          <button class="btn btn-secondary" onclick="app.showDashboard()">Back to Tests</button>
+          <button class="btn btn-primary btn-large" onclick="app.startTest()">I am ready to begin</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 3: Active Test Interface (Testbook Layout) -->
+    <section class="view-panel test-active-view" id="testInterfaceView" style="display:none;">
+      <div class="section-tabs-bar">
+        <div class="section-tab active">
+          <span class="sec-title">Quantitative Aptitude</span>
+          <span class="sec-badge" id="secQCount">25 Qs</span>
+        </div>
+        <div class="section-tools">
+          <span class="marks-pill"><strong class="plus">+3.0</strong> <span class="minus">-1.0</span></span>
+        </div>
+      </div>
+
+      <div class="test-layout-grid">
+        <div class="question-pane">
+          <div class="question-header">
+            <div class="q-title-left">
+              <span class="q-badge" id="currentQNumberBadge">Question 1</span>
+              <span class="q-topic-tag" id="currentQTopicTag">Percentage</span>
+              <span class="q-exam-tag" id="currentQExamTag">SSC CGL Mains 2026</span>
+            </div>
+            <div class="q-header-right">
+              <button class="btn-text-action" id="markReviewTopBtn" onclick="app.toggleMarkReview()">
+                <span id="markReviewTopText">☆ Mark for Review</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="question-scroll-body" id="questionContentArea">
+            <div class="q-text-en" id="qTextEn">Loading question...</div>
+            <div class="q-text-hi" id="qTextHi">प्रश्न लोड हो रहा है...</div>
+            <div class="options-container" id="optionsContainer"></div>
+          </div>
+
+          <div class="test-action-bar">
+            <div class="action-left">
+              <button class="btn btn-purple" onclick="app.markReviewAndNext()">Mark for Review & Next</button>
+              <button class="btn btn-outline" onclick="app.clearResponse()">Clear Response</button>
+            </div>
+            <div class="action-right">
+              <button class="btn btn-outline" id="prevBtn" onclick="app.goToPrevQuestion()">Previous</button>
+              <button class="btn btn-primary" id="saveNextBtn" onclick="app.saveAndNext()">Save & Next</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="palette-sidebar">
+          <div class="palette-status-summary">
+            <div class="stat-pill"><span class="dot green"></span><span id="countAnswered">0</span> Answered</div>
+            <div class="stat-pill"><span class="dot red"></span><span id="countNotAnswered">0</span> Not Answered</div>
+            <div class="stat-pill"><span class="dot gray"></span><span id="countNotVisited">25</span> Not Visited</div>
+            <div class="stat-pill"><span class="dot purple"></span><span id="countMarked">0</span> Marked</div>
+            <div class="stat-pill"><span class="dot purple-green"></span><span id="countMarkedAnswered">0</span> Ans & Marked</div>
+          </div>
+
+          <div class="palette-box">
+            <div class="palette-title">
+              <span>Section: Mathematics</span>
+            </div>
+            <div class="palette-grid" id="paletteGrid"></div>
+          </div>
+
+          <div class="sidebar-submit-wrap">
+            <button class="btn btn-submit-test" onclick="app.promptSubmitTest()">Submit Test</button>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- VIEW 4: Results & Detailed Solutions View -->
+    <section class="view-panel" id="resultView" style="display:none;">
+      <div class="result-container">
+        <div class="result-top-nav">
+          <button class="btn btn-outline" onclick="app.showHistoryView()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            All Past Attempts
+          </button>
+          <button class="btn btn-outline" onclick="app.showDashboard()">Dashboard</button>
+        </div>
+
+        <div class="result-banner">
+          <div class="banner-main">
+            <div class="banner-badge" id="resBannerBadge">PERFORMANCE ANALYSIS</div>
+            <h1 id="resTestTitle">SSC CGL Mains 2026 Mock Test</h1>
+            <p id="resAttemptTimestamp">Comprehensive score report and solution breakdown.</p>
+          </div>
+          <div class="score-highlight-card">
+            <div class="big-score" id="resScoreVal">0</div>
+            <div class="score-total">out of <span id="resMaxMarks">75</span></div>
+            <div class="rank-pred" id="resPercentage">0% Marks</div>
+          </div>
+        </div>
+
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-icon accuracy">🎯</div>
+            <div class="metric-data">
+              <span class="m-val" id="resAccuracy">0%</span>
+              <span class="m-lbl">Accuracy</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon attempted">📝</div>
+            <div class="metric-data">
+              <span class="m-val" id="resAttempted">0 / 25</span>
+              <span class="m-lbl">Attempted</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon correct">✅</div>
+            <div class="metric-data">
+              <span class="m-val" id="resCorrect">0</span>
+              <span class="m-lbl">Correct (+3 each)</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon incorrect">❌</div>
+            <div class="metric-data">
+              <span class="m-val" id="resIncorrect">0</span>
+              <span class="m-lbl">Incorrect (-1 each)</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon time">⏱️</div>
+            <div class="metric-data">
+              <span class="m-val" id="resTimeTaken">0m 0s</span>
+              <span class="m-lbl">Time Spent</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="solutions-section">
+          <div class="sol-header-bar">
+            <h2>Detailed Step-by-Step Solutions (विस्तृत व्याख्या सहित हल)</h2>
+            <div class="sol-filters">
+              <button class="filter-chip active" onclick="app.filterSolutions('all')">All (<span id="filterAllCount">25</span>)</button>
+              <button class="filter-chip chip-correct" onclick="app.filterSolutions('correct')">Correct (<span id="filterCorrectCount">0</span>)</button>
+              <button class="filter-chip chip-incorrect" onclick="app.filterSolutions('incorrect')">Incorrect (<span id="filterIncorrectCount">0</span>)</button>
+              <button class="filter-chip chip-unattempted" onclick="app.filterSolutions('unattempted')">Unattempted (<span id="filterUnattemptedCount">0</span>)</button>
+            </div>
+          </div>
+
+          <div class="solutions-list" id="solutionsListArea"></div>
+
+          <div class="result-actions">
+            <button class="btn btn-secondary btn-large" onclick="app.showHistoryView()">View Full History</button>
+            <button class="btn btn-primary btn-large" onclick="app.showDashboard()">Take Another Test</button>
+            <button class="btn btn-outline btn-large" onclick="app.reattemptCurrentTest()">Re-attempt This Test</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 5: History View (Multi-tenant Student Attempt Log) -->
+    <section class="view-panel" id="historyView" style="display:none;">
+      <div class="history-container">
+        <div class="history-header">
+          <div>
+            <div class="series-pill">CANDIDATE LOG</div>
+            <h1>Your Test Attempt History</h1>
+            <p>Every test you attempt is permanently saved in the database under your account. Review questions, answers, and complete step-by-step solutions anytime.</p>
+          </div>
+          <button class="btn btn-primary" onclick="app.showDashboard()">← Back to Mock Tests</button>
+        </div>
+
+        <div class="history-list-wrap">
+          <div id="historyListContainer" class="history-cards-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 6: Study Materials & Personal Notes View -->
+    <section class="view-panel" id="studyMaterialsView" style="display:none;">
+      <div class="study-vault-container">
+        <div class="study-header">
+          <div>
+            <div class="series-pill">STUDENT VAULT</div>
+            <h1>Study Materials, Syllabi & Notes</h1>
+            <p>Structured preparation resources for SSC CGL Mains 2026: 60-day General Awareness plan, syllabus mastery tracker, Tier-2 formula vault, and your personal study notes.</p>
+          </div>
+          <button class="btn btn-primary" onclick="app.openNoteModal()">+ Create Personal Note</button>
+        </div>
+
+        <!-- Material Tabs -->
+        <div class="study-sub-tabs">
+          <button class="study-sub-tab active" id="tabBtnGA" onclick="app.switchStudyTab('ga')">60-Day General Awareness Plan</button>
+          <button class="study-sub-tab" id="tabBtnMath" onclick="app.switchStudyTab('math')">Mathematics Syllabus Tracker</button>
+          <button class="study-sub-tab" id="tabBtnFormula" onclick="app.switchStudyTab('formula')">Formula Vault & Tricks</button>
+          <button class="study-sub-tab" id="tabBtnNotes" onclick="app.switchStudyTab('notes')">My Personal Notes (<span id="userNotesCount">0</span>)</button>
+        </div>
+
+        <!-- Tab 1: GA 60-Day Plan -->
+        <div class="study-tab-content" id="studyContentGA">
+          <div class="material-card" id="gaPlanMarkdownContainer">
+            <div style="padding:20px; color:#64748b;">Loading 60-Day Strategy...</div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Math Syllabus & Mastery Tracker -->
+        <div class="study-tab-content" id="studyContentMath" style="display:none;">
+          <div class="material-card" id="mathTrackerMarkdownContainer">
+            <div style="padding:20px; color:#64748b;">Loading Mathematics Tracker...</div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Formula Vault -->
+        <div class="study-tab-content" id="studyContentFormula" style="display:none;">
+          <div class="material-card" id="formulaVaultMarkdownContainer">
+            <div style="padding:20px; color:#64748b;">Loading Formula Vault...</div>
+          </div>
+        </div>
+
+        <!-- Tab 4: Student Personal Notes -->
+        <div class="study-tab-content" id="studyContentNotes" style="display:none;">
+          <div class="notes-grid" id="studentNotesGrid">
+            <!-- Dynamically populated personal notes -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 7: Admin Control Panel View -->
+    <section class="view-panel" id="adminView" style="display:none;">
+      <div class="admin-container">
+        <div class="admin-header">
+          <div>
+            <div class="series-pill" style="background:#dc2626; color:#fff;">ADMINISTRATION</div>
+            <h1>Educational Platform Management</h1>
+            <p>Monitor student registrations, view all mock test submissions, manage mock tests, and connect your permanent Supabase PostgreSQL cloud database.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="app.showDashboard()">← Back to Portal</button>
+        </div>
+
+        <!-- Admin Overview Metrics -->
+        <div class="admin-metrics-row">
+          <div class="admin-metric-card">
+            <div class="a-num" id="adminTotalStudents">0</div>
+            <div class="a-lbl">Registered Students</div>
+          </div>
+          <div class="admin-metric-card">
+            <div class="a-num" id="adminTotalSubmissions">0</div>
+            <div class="a-lbl">Total Test Submissions</div>
+          </div>
+          <div class="admin-metric-card">
+            <div class="a-num" id="adminAvgScore">0</div>
+            <div class="a-lbl">Platform Average Score</div>
+          </div>
+          <div class="admin-metric-card">
+            <div class="a-num" id="adminAvgAcc">0%</div>
+            <div class="a-lbl">Average Accuracy</div>
+          </div>
+        </div>
+
+        <!-- Supabase Cloud Database Setup Card -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div>
+              <h3>Permanent Cloud Database: Supabase PostgreSQL</h3>
+              <p>Connect your free Supabase PostgreSQL project to store student accounts, test submissions, and notes permanently in the cloud with automated backups and HTTPS.</p>
+            </div>
+            <span class="db-status-pill" id="adminDbStatusBadge">Checking...</span>
+          </div>
+
+          <div class="admin-db-form">
+            <div class="form-row">
+              <div class="form-group col">
+                <label>Supabase Project URL</label>
+                <input type="text" id="adminSupaUrl" placeholder="https://your-project-ref.supabase.co">
+              </div>
+              <div class="form-group col">
+                <label>Supabase API Key (Anon or Service Role)</label>
+                <input type="password" id="adminSupaKey" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+              </div>
+            </div>
+            <div class="admin-db-actions">
+              <button class="btn btn-primary" onclick="app.saveSupabaseConfig()">Save & Test Connection</button>
+              <button class="btn btn-secondary" onclick="app.syncDataToSupabase()">Sync Local Records to Cloud</button>
+              <button class="btn btn-outline" onclick="app.downloadSupabaseSql()">View Supabase SQL Schema</button>
+            </div>
+            <div id="adminDbSyncMessage" class="db-message-box" style="display:none;"></div>
+          </div>
+        </div>
+
+        <!-- Students Directory -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Registered Students Roster</h3>
+            <span class="test-count-badge" id="adminStudentsBadge">0 Students</span>
+          </div>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Email</th>
+                  <th>Target Exam</th>
+                  <th>Joined Date</th>
+                  <th>Tests Taken</th>
+                  <th>Highest Score</th>
+                </tr>
+              </thead>
+              <tbody id="adminStudentsTableBody">
+                <tr><td colspan="6" style="text-align:center; color:#64748b;">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Test Submissions -->
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Recent Platform Submissions</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Test Title</th>
+                  <th>Score</th>
+                  <th>Accuracy</th>
+                  <th>Time Spent</th>
+                  <th>Submitted At</th>
+                </tr>
+              </thead>
+              <tbody id="adminSubmissionsTableBody">
+                <tr><td colspan="6" style="text-align:center; color:#64748b;">Loading submissions...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL 1: Authentication Modal (Login / Register) -->
+  <div class="modal-overlay" id="authModal" style="display:none;">
+    <div class="modal-card auth-modal-card">
+      <div class="modal-header">
+        <h3 id="authModalTitle">Student Access</h3>
+        <button class="modal-close-btn" onclick="app.closeAuthModal()">&times;</button>
+      </div>
+
+      <!-- Auth Sub Tabs -->
+      <div class="auth-tabs-row">
+        <button class="auth-tab active" id="authTabLogin" onclick="app.switchAuthTab('login')">Sign In</button>
+        <button class="auth-tab" id="authTabRegister" onclick="app.switchAuthTab('register')">Create New Account</button>
+      </div>
+
+      <div class="modal-body">
+        <div id="authAlertBox" class="auth-alert" style="display:none;"></div>
+
+        <!-- LOGIN FORM -->
+        <form id="loginForm" onsubmit="app.handleLogin(event)">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="loginEmail" required placeholder="e.g. anshul@cglstudy.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" required placeholder="Enter your password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In to Testbook</button>
+        </form>
+
+        <!-- REGISTER FORM -->
+        <form id="registerForm" onsubmit="app.handleRegister(event)" style="display:none;">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="regFullName" required placeholder="e.g. Anshul Yadav">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" required placeholder="e.g. student@gmail.com">
+          </div>
+          <div class="form-group">
+            <label>Target Examination</label>
+            <select id="regTargetExam">
+              <option value="SSC CGL 2026">SSC CGL Mains 2026</option>
+              <option value="SSC CGL 2025">SSC CGL Tier-1/Tier-2 2025</option>
+              <option value="SSC CHSL 2026">SSC CHSL Tier-II</option>
+              <option value="SSC CPO 2026">SSC CPO Sub-Inspector</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Password (at least 6 characters)</label>
+            <input type="password" id="regPassword" required placeholder="Create a secure password" minlength="6">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Create Free Student Account</button>
+        </form>
+
+        <div class="auth-footer-text">
+          <span>🔒 Protected by secure password hashing and session encryption.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Create / Edit Personal Note Modal -->
+  <div class="modal-overlay" id="noteModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="noteModalTitle">Create Personal Study Note</h3>
+        <button class="modal-close-btn" onclick="app.closeNoteModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editNoteId">
+        <div class="form-row">
+          <div class="form-group col" style="flex:2;">
+            <label>Note Title</label>
+            <input type="text" id="noteTitleInput" placeholder="e.g. Geometry Circle Tangent Shortcuts">
+          </div>
+          <div class="form-group col" style="flex:1;">
+            <label>Subject / Topic</label>
+            <select id="noteTopicInput">
+              <option value="Algebra">Algebra</option>
+              <option value="Geometry">Geometry</option>
+              <option value="Mensuration">Mensuration</option>
+              <option value="Trigonometry">Trigonometry</option>
+              <option value="Commercial Maths">Commercial Maths</option>
+              <option value="Speed & Work">Speed & Work</option>
+              <option value="General Awareness">General Awareness</option>
+              <option value="Exam Strategy">Exam Strategy</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Note Content (Markdown & formulas supported)</label>
+          <textarea id="noteContentInput" rows="8" placeholder="Type your personal formulas, weak areas, and revision points here..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="app.closeNoteModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="app.saveNote()">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Submit Test Confirmation Modal -->
+  <div class="modal-overlay" id="submitModal" style="display:none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Submit Testbook Examination</h3>
+        <button class="modal-close-btn" onclick="app.closeSubmitModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to submit the test? Here is your question summary:</p>
+        <div class="submit-summary-grid">
+          <div class="summary-box">
+            <span class="num" id="modalTotalQ">25</span>
+            <span class="lbl">Total Questions</span>
+          </div>
+          <div class="summary-box green">
+            <span class="num" id="modalAnsQ">0</span>
+            <span class="lbl">Answered</span>
+          </div>
+          <div class="summary-box red">
+            <span class="num" id="modalNotAnsQ">0</span>
+            <span class="lbl">Not Answered</span>
+          </div>
+          <div class="summary-box purple">
+            <span class="num" id="modalMarkedQ">0</span>
+            <span class="lbl">Marked for Review</span>
+          </div>
+          <div class="summary-box gray">
+            <span class="num" id="modalNotVisQ">0</span>
+            <span class="lbl">Not Visited</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="app.closeSubmitModal()">Resume Test</button>
+        <button class="btn btn-primary" onclick="app.finalSubmitTest()">Yes, Final Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: Custom Test Creator Modal -->
+  <div class="modal-overlay" id="newTestModal" style="display:none;">
+    <div class="modal-card modal-large">
+      <div class="modal-header">
+        <h3>Add Custom Mock Test</h3>
+        <button class="modal-close-btn" onclick="app.closeNewTestModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Test Title</label>
+          <input type="text" id="newTestTitle" placeholder="e.g. SSC CGL Mains 2026 - Speed Mock #11">
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <label>Category</label>
+            <input type="text" id="newTestCategory" placeholder="e.g. Geometry Special">
+          </div>
+          <div class="form-group col">
+            <label>Duration (Minutes)</label>
+            <input type="number" id="newTestDuration" value="35">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Test JSON Data (paste full JSON with questions array)</label>
+          <textarea id="newTestJson" rows="12" placeholder='{\n  "title": "My Custom Test",\n  "questions": [...]\n}'></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="app.closeNewTestModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="app.saveNewTest()">Save Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 5: Virtual Calculator Modal -->
+  <div class="modal-overlay" id="calcModal" style="display:none;">
+    <div class="modal-card calc-card">
+      <div class="modal-header">
+        <h3>Exam Calculator</h3>
+        <button class="modal-close-btn" onclick="app.toggleCalculator()">&times;</button>
+      </div>
+      <div class="calc-body">
+        <input type="text" id="calcScreen" readonly value="0" class="calc-screen">
+        <div class="calc-keypad">
+          <button onclick="app.calcPress('C')">C</button>
+          <button onclick="app.calcPress('(')">(</button>
+          <button onclick="app.calcPress(')')">)</button>
+          <button onclick="app.calcPress('/')">/</button>
+
+          <button onclick="app.calcPress('7')">7</button>
+          <button onclick="app.calcPress('8')">8</button>
+          <button onclick="app.calcPress('9')">9</button>
+          <button onclick="app.calcPress('*')">×</button>
+
+          <button onclick="app.calcPress('4')">4</button>
+          <button onclick="app.calcPress('5')">5</button>
+          <button onclick="app.calcPress('6')">6</button>
+          <button onclick="app.calcPress('-')">-</button>
+
+          <button onclick="app.calcPress('1')">1</button>
+          <button onclick="app.calcPress('2')">2</button>
+          <button onclick="app.calcPress('3')">3</button>
+          <button onclick="app.calcPress('+')">+</button>
+
+          <button onclick="app.calcPress('0')">0</button>
+          <button onclick="app.calcPress('.')">.</button>
+          <button onclick="app.calcPress('sqrt')">√</button>
+          <button class="btn-equal" onclick="app.calcPress('=')">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

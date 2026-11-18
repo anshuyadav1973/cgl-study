@@ -1,0 +1,714 @@
+{
+  "id": "cgl-mains-mock-10",
+  "title": "SSC CGL Mains 2026 - All-India Grand Mock Test #10",
+  "subtitle": "25 Curated High-Difficulty Tier-2 Questions Across All 31 Chapters",
+  "category": "Full Length Mock",
+  "durationMinutes": 35,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "Full Tier-2 pattern 25 questions with balanced distribution across Arithmetic, Algebra, Geometry, Mensuration & Modern Math."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Percentage",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "If P is 25% more than Q and R is 40% less than the sum of P and Q, then by what percentage is R more than P?",
+      "question_hi": "यदि P, Q से 25% अधिक है और R, P और Q के योग से 40% कम है, तो R, P से कितने प्रतिशत अधिक है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6%"
+        },
+        {
+          "id": "B",
+          "text": "12%"
+        },
+        {
+          "id": "C",
+          "text": "8%"
+        },
+        {
+          "id": "D",
+          "text": "14%"
+        }
+      ],
+      "correct": "C",
+      "solution": "Let Q = 100 ⇒ P = 125.\nSum P + Q = 225.\nR = 225 × (1 - 0.40) = 225 × 0.60 = 135.\nR is more than P by 135 - 125 = 10.\nPercentage = (10 / 125) × 100% = 8%.",
+      "trick": "10 / 125 × 100% = 8%."
+    },
+    {
+      "id": 2,
+      "topic": "Ratio & Proportion",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "The third proportional to x and (x + 100) is 405. If x > 100, find the value of x.",
+      "question_hi": "x और (x + 100) का तृतीय समानुपाती 405 है। यदि x > 100, तो x का मान ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "125"
+        },
+        {
+          "id": "B",
+          "text": "150"
+        },
+        {
+          "id": "C",
+          "text": "80"
+        },
+        {
+          "id": "D",
+          "text": "225"
+        }
+      ],
+      "correct": "A",
+      "solution": "Third proportional formula: (x + 100)² / x = 405.\nTesting option (A) x = 125:\n(125 + 100)² / 125 = (225)² / 125 = 50625 / 125 = 405. (Matches!)\nTherefore, x = 125.",
+      "trick": "Option verification: (225 × 225) / 125 = 9 × 45 = 405."
+    },
+    {
+      "id": 3,
+      "topic": "Profit & Loss",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A dealer claims to sell goods at cost price but uses a weight of 960 grams in place of a standard kilogram. Determine the approximate percentage gain achieved by the dealer.",
+      "question_hi": "एक विक्रेता वस्तुओं को क्रय मूल्य पर बेचने का दावा करता है, लेकिन एक मानक किलोग्राम के स्थान पर 960 ग्राम के भार का उपयोग करता है। विक्रेता द्वारा प्राप्त अनुमानित लाभ प्रतिशत निर्धारित कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "5.18%"
+        },
+        {
+          "id": "B",
+          "text": "6.78%"
+        },
+        {
+          "id": "C",
+          "text": "7.42%"
+        },
+        {
+          "id": "D",
+          "text": "4.17%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Error = 1000 - 960 = 40 grams.\nGain% = (Error / True weight sold) × 100% = (40 / 960) × 100% = (1 / 24) × 100% = 4.166% ≈ 4.17%.",
+      "trick": "40 / 960 × 100% = 4.17%."
+    },
+    {
+      "id": 4,
+      "topic": "Discount",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "Find the single equivalent discount for successive discounts of 10%, 15%, and 20% on the marked price of a television.",
+      "question_hi": "एक टेलीविजन के अंकित मूल्य पर 10%, 15% तथा 20% की क्रमागत छूट दी जाती है। इन क्रमागत छूटों के बराबर एकल समतुल्य छूट ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "54.6%"
+        },
+        {
+          "id": "B",
+          "text": "41.9%"
+        },
+        {
+          "id": "C",
+          "text": "63.2%"
+        },
+        {
+          "id": "D",
+          "text": "38.8%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Multiplier = 0.90 × 0.85 × 0.80 = 0.765 × 0.80 = 0.612.\nEquivalent discount = (1 - 0.612) × 100% = 38.8%.",
+      "trick": "100 → 90 → 76.5 → 61.2 ⇒ Discount = 100 - 61.2 = 38.8%."
+    },
+    {
+      "id": 5,
+      "topic": "Time & Work",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A and B can do a piece of work in 28 days. B alone can do 83.33% of the same work in 25 days, in how many days can A alone do 8/15 part of the same work?",
+      "question_hi": "A और B एक काम को 28 दिनों में कर सकते हैं। B अकेला उसी काम का 83.33% भाग 25 दिनों में कर सकता है, तो A अकेला उसी काम का 8/15 भाग कितने दिनों में कर सकता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "124 days"
+        },
+        {
+          "id": "B",
+          "text": "150 days"
+        },
+        {
+          "id": "C",
+          "text": "224 days"
+        },
+        {
+          "id": "D",
+          "text": "228 days"
+        }
+      ],
+      "correct": "C",
+      "solution": "83.33% = 5/6. B completes full work in 25 × (6/5) = 30 days.\nA + B complete in 28 days.\nTotal work = LCM(28, 30) = 420 units.\nEfficiency of A + B = 420 / 28 = 15 units/day.\nEfficiency of B = 420 / 30 = 14 units/day.\nEfficiency of A = 15 - 14 = 1 unit/day.\nA alone does full work in 420 days.\nTime for 8/15 of work = 420 × (8/15) = 28 × 8 = 224 days.",
+      "trick": "B = 30 days. 1/A = 1/28 - 1/30 = 2/840 = 1/420. A takes 420 × 8/15 = 224 days."
+    },
+    {
+      "id": 6,
+      "topic": "Pipe & Cistern",
+      "exam": "SSC CGL Tier-II, 12/09/2019",
+      "question_en": "Pipes A and B can fill a tank in 16 hours and 24 hours respectively, and pipe C alone can empty the full tank in x hours. All the pipes were opened together at 10:30 a.m., but C was closed at 2:30 p.m. If the tank was full at 8:30 p.m. on the same day, then what is the value of x?",
+      "question_hi": "पाइप A और B क्रमशः 16 घंटे और 24 घंटे में एक टैंक भर सकते हैं, और अकेले पाइप C, x घंटे में पूरा टैंक खाली कर सकता हैं। सभी पाइप एक साथ सुबह 10:30 बजे खोले गए, लेकिन C को 2:30 बजे बंद कर दिया गया। अगर उसी दिन 8:30 बजे टंकी भर जाती है, तो x का मान क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "45"
+        },
+        {
+          "id": "B",
+          "text": "96"
+        },
+        {
+          "id": "C",
+          "text": "64"
+        },
+        {
+          "id": "D",
+          "text": "48"
+        }
+      ],
+      "correct": "B",
+      "solution": "Total time for A and B = 10:30 am to 8:30 pm = 10 hours.\nPipe C worked for = 10:30 am to 2:30 pm = 4 hours.\nTotal work = 48 units. Efficiency A = 3, B = 2 (Sum = 5 units/hr).\nA and B filled = 5 × 10 = 50 units.\nSince tank capacity is 48, C emptied 50 - 48 = 2 units in 4 hours.\nRate of C = 2/4 = 0.5 unit/hour.\nx = 48 / 0.5 = 96 hours.",
+      "trick": "C emptied 2 units in 4 hrs ⇒ rate = 0.5 ⇒ x = 48 / 0.5 = 96."
+    },
+    {
+      "id": 7,
+      "topic": "Simple Interest",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A sum of ₹5,000 amounts to ₹6,500 in 3 years at simple interest. If the rate of interest is doubled, what will be the amount of the same sum in 5 years?",
+      "question_hi": "₹5,000 की एक धनराशि 3 वर्षों में साधारण ब्याज पर ₹6,500 हो जाती है। यदि ब्याज की दर दोगुनी कर दी जाए, तो उसी धनराशि की 5 वर्षों में राशि क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹9,000"
+        },
+        {
+          "id": "B",
+          "text": "₹10,000"
+        },
+        {
+          "id": "C",
+          "text": "₹8,500"
+        },
+        {
+          "id": "D",
+          "text": "₹11,000"
+        }
+      ],
+      "correct": "B",
+      "solution": "SI for 3 years = 6500 - 5000 = ₹1500 ⇒ SI for 1 year = 1500 / 3 = ₹500.\nAt double rate, 1 year interest = 500 × 2 = ₹1000.\n5 years interest at double rate = 1000 × 5 = ₹5000.\nTotal amount = 5000 + 5000 = ₹10,000.",
+      "trick": "Amount = 5000 + (500 × 2 × 5) = 5000 + 5000 = ₹10,000."
+    },
+    {
+      "id": 8,
+      "topic": "Compound Interest",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A sum amounts to ₹16,900 in 2 years and ₹21,970 in 3 years at compound interest, compounded annually. What is the annual rate of interest?",
+      "question_hi": "एक राशि चक्रवृद्धि ब्याज पर, वार्षिक संयोजन से, 2 वर्षों में ₹16,900 और 3 वर्षों में ₹21,970 हो जाती है। वार्षिक ब्याज दर क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20%"
+        },
+        {
+          "id": "B",
+          "text": "25%"
+        },
+        {
+          "id": "C",
+          "text": "35%"
+        },
+        {
+          "id": "D",
+          "text": "30%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Interest in 3rd year = 21970 - 16900 = ₹5070.\nRate% = (5070 / 16900) × 100% = (507 / 1690) × 100% = 3/10 × 100% = 30%.",
+      "trick": "5070 / 16900 = 0.30 ⇒ 30%."
+    },
+    {
+      "id": 9,
+      "topic": "Average",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "The average weight of the first thirteen persons among fourteen persons is 78 kg. The weight of the 14th person is 39 kg more than the average weight of all the fourteen persons. Find the weight of the 14th person.",
+      "question_hi": "चौदह व्यक्तियों में से पहले तेरह व्यक्तियों का औसत वजन 78 किलोग्राम है। 14वें व्यक्ति का वजन सभी चौदह व्यक्तियों के औसत वजन से 39 किलोग्राम अधिक है। 14वें व्यक्ति का वजन ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "110 kg"
+        },
+        {
+          "id": "B",
+          "text": "118 kg"
+        },
+        {
+          "id": "C",
+          "text": "98 kg"
+        },
+        {
+          "id": "D",
+          "text": "120 kg"
+        }
+      ],
+      "correct": "D",
+      "solution": "Let average of 14 persons be A.\nWeight of 14th person = A + 39.\n14 A = 13 × 78 + (A + 39)\n⇒ 13 A = 13 × 78 + 39 ⇒ A = 78 + 3 = 81 kg.\nWeight of 14th person = 81 + 39 = 120 kg.",
+      "trick": "A = 78 + 39/13 = 78 + 3 = 81. 14th weight = 81 + 39 = 120 kg."
+    },
+    {
+      "id": 10,
+      "topic": "Time, Speed & Distance",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "Two cars start at the same time from A and B, 120 km apart. If they drive towards each other, they meet in 1 hour. If they drive in the same direction, the faster car overtakes the slower one in 6 hours. What is the speed of the faster car?",
+      "question_hi": "दो कारें A और B से एक ही समय पर चलना शुरू करती हैं, जिनके बीच की दूरी 120 km है। यदि वे एक-दूसरे की ओर चलती हैं, तो वे 1 घंटे में मिल जाती हैं। यदि वे एक ही दिशा में चलती हैं, तो तेज़ चलने वाली कार, धीमी चलने वाली कार को 6 घंटे में पीछे छोड़ देती है। तेज़ चलने वाली कार की गति क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "50 km/h"
+        },
+        {
+          "id": "B",
+          "text": "60 km/h"
+        },
+        {
+          "id": "C",
+          "text": "70 km/h"
+        },
+        {
+          "id": "D",
+          "text": "80 km/h"
+        }
+      ],
+      "correct": "C",
+      "solution": "Opposite direction: S1 + S2 = 120 / 1 = 120 km/h.\nSame direction: S1 - S2 = 120 / 6 = 20 km/h.\nAdding both equations: 2 S1 = 140 ⇒ S1 = 70 km/h.",
+      "trick": "(120 + 20) / 2 = 70 km/h."
+    },
+    {
+      "id": 11,
+      "topic": "Train",
+      "exam": "SSC CGL Tier-1, 24/07/2023",
+      "question_en": "In a 200-m linear race, if A gives B a start of 25 m, then A wins the race by 10 seconds. Alternatively, if A gives B a start of 45 m, the race ends in a dead heat. How long does A take to run 200m?",
+      "question_hi": "200m की रैखिक दौड़ में, यदि A, B को 25m का स्टार्ट देता है, तो A दौड़ को 10 सेकंड से जीत जाता है। वैकल्पिक रूप से, यदि A, B को 45 m का स्टार्ट देता है, तो दौड़ डेड हीट (बराबरी) में समाप्त हो जाती है। A को 200 m दौड़ने में कितना समय लगता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "78 seconds"
+        },
+        {
+          "id": "B",
+          "text": "77 seconds"
+        },
+        {
+          "id": "C",
+          "text": "78.5 seconds"
+        },
+        {
+          "id": "D",
+          "text": "77.5 seconds"
+        }
+      ],
+      "correct": "D",
+      "solution": "In second scenario, B covers 200 - 45 = 155 m in time t_A.\nIn first scenario, B covers 200 - 25 = 175 m in time t_A + 10s.\nSpeed of B = (175 - 155) / 10 = 20 / 10 = 2 m/s.\nTime taken by B for 155 m = 155 / 2 = 77.5 seconds.\nSince race ends in dead heat, time taken by A for 200m = 77.5 seconds.",
+      "trick": "B runs 20m in 10s ⇒ 2 m/s. A's time = 155 / 2 = 77.5 seconds."
+    },
+    {
+      "id": 12,
+      "topic": "Age",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "6 years ago, the ratio of the ages of A and B was 7 : 5. 4 years from now, the ratio of their ages will be 11 : 9. What is the age of A at present?",
+      "question_hi": "6 वर्ष पहले, A और B की आयु का अनुपात 7:5 था। अब से 4 वर्ष बाद, उनकी आयु का अनुपात 11:9 होगा। वर्तमान में A की आयु कितनी है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "22 1/2 years"
+        },
+        {
+          "id": "B",
+          "text": "23 1/2 years"
+        },
+        {
+          "id": "C",
+          "text": "24 1/2 years"
+        },
+        {
+          "id": "D",
+          "text": "21 1/2 years"
+        }
+      ],
+      "correct": "B",
+      "solution": "Difference between ratios = 11 - 7 = 4 units and 9 - 5 = 4 units.\nTime span = 6 + 4 = 10 years.\n4 units = 10 years ⇒ 1 unit = 2.5 years.\nAge of A 6 years ago = 7 × 2.5 = 17.5 years.\nPresent age of A = 17.5 + 6 = 23.5 = 23 1/2 years.",
+      "trick": "A = 7(2.5) + 6 = 17.5 + 6 = 23.5 years."
+    },
+    {
+      "id": 13,
+      "topic": "Partnership",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "A starts a business with ₹75000 and B joins the business 5 months later with an investment of ₹80000. After 1 year, they earn a profit of ₹4,08,800. Find the share of A and B (in ₹).",
+      "question_hi": "A ₹75000 के साथ एक व्यवसाय शुरू करता है और B 5 महीने बाद ₹80000 के निवेश के साथ व्यापार में शामिल हो जाता है। 1 वर्ष के बाद, वे ₹4,08,800 का लाभ अर्जित करते हैं। A और B का हिस्सा ज्ञात कीजिये (₹ में)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "252000 और 156800"
+        },
+        {
+          "id": "B",
+          "text": "250000 और 158800"
+        },
+        {
+          "id": "C",
+          "text": "248000 और 160800"
+        },
+        {
+          "id": "D",
+          "text": "249500 और 159300"
+        }
+      ],
+      "correct": "A",
+      "solution": "Ratio of profits = (75000 × 12) : (80000 × 7) = (75 × 12) : (80 × 7) = 900 : 560 = 45 : 28.\nTotal units = 45 + 28 = 73 units.\n73 units = ₹4,08,800 ⇒ 1 unit = 408800 / 73 = ₹5600.\nA's share = 45 × 5600 = ₹2,52,000.\nB's share = 28 × 5600 = ₹1,56,800.",
+      "trick": "45/73 × 408800 = 252000."
+    },
+    {
+      "id": 14,
+      "topic": "Mixture & Alligation",
+      "exam": "SSC CHSL MAINS 10/04/2026",
+      "question_en": "A container holds 60 litres of milk. 12 litres of milk is removed and replaced with water. This process is repeated two more times. How much milk remains in the container?",
+      "question_hi": "एक बर्तन में 60 लीटर दूध है। इसमें से 12 लीटर दूध निकालकर उतना ही पानी भर दिया जाता है। यह प्रक्रिया दो बार और दोहराई जाती है। बर्तन में अब कितना दूध बचा है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10.72 litres"
+        },
+        {
+          "id": "B",
+          "text": "20.72 litres"
+        },
+        {
+          "id": "C",
+          "text": "30.72 litres"
+        },
+        {
+          "id": "D",
+          "text": "40.72 litres"
+        }
+      ],
+      "correct": "C",
+      "solution": "Fraction replaced each time = 12 / 60 = 1/5.\nRemaining fraction after 3 operations = (1 - 1/5)³ = (4/5)³ = 64 / 125.\nRemaining milk = 60 × (64 / 125) = 12 × 64 / 25 = 768 / 25 = 30.72 litres.",
+      "trick": "60 × (0.8)³ = 60 × 0.512 = 30.72 litres."
+    },
+    {
+      "id": 15,
+      "topic": "Mixture & Alligation",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "If 80 liters of milk solution contains 60% milk, how much milk should be added to the solution to make milk 80%?",
+      "question_hi": "यदि 80 लीटर दूध के विलयन में 60% दूध है, तो विलयन में दूध को 80% बनाने के लिए कितना दूध मिलाना चाहिए?",
+      "options": [
+        {
+          "id": "A",
+          "text": "80 litres"
+        },
+        {
+          "id": "B",
+          "text": "60 litres"
+        },
+        {
+          "id": "C",
+          "text": "70 litres"
+        },
+        {
+          "id": "D",
+          "text": "50 litres"
+        }
+      ],
+      "correct": "A",
+      "solution": "Water remains constant.\nInitial water = 40% of 80 = 32 litres.\nIn new solution, water is 20% (since milk is 80%).\n20% of New Solution = 32 litres ⇒ New Solution = 32 × 5 = 160 litres.\nMilk added = 160 - 80 = 80 litres.",
+      "trick": "Milk to add = 80 × (80 - 60)/(100 - 80) = 80 × 20/20 = 80 litres."
+    },
+    {
+      "id": 16,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 03/02/2022",
+      "question_en": "5⁷¹ + 5⁷² + 5⁷³ + 5⁷⁴ + 5⁷⁵ is divisible by which of the following numbers?",
+      "question_hi": "5⁷¹ + 5⁷² + 5⁷³ + 5⁷⁴ + 5⁷⁵ दिए गए विकल्पों मे किस संख्या से विभाज्य है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "71"
+        },
+        {
+          "id": "B",
+          "text": "69"
+        },
+        {
+          "id": "C",
+          "text": "89"
+        },
+        {
+          "id": "D",
+          "text": "73"
+        }
+      ],
+      "correct": "A",
+      "solution": "= 5⁷¹ (1 + 5¹ + 5² + 5³ + 5⁴)\n= 5⁷¹ (1 + 5 + 25 + 125 + 625) = 5⁷¹ (781).\n781 = 11 × 71.\nTherefore, the number is completely divisible by 71.",
+      "trick": "1 + 5 + 25 + 125 + 625 = 781 = 71 × 11."
+    },
+    {
+      "id": 17,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 11/09/2019",
+      "question_en": "One of the factors of (8²ᵏ + 5²ᵏ), where k is an odd number, is:",
+      "question_hi": "(8²ᵏ + 5²ᵏ) का गुणनखंड क्या होगा (जहां k एक विषम संख्या है)?",
+      "options": [
+        {
+          "id": "A",
+          "text": "86"
+        },
+        {
+          "id": "B",
+          "text": "84"
+        },
+        {
+          "id": "C",
+          "text": "88"
+        },
+        {
+          "id": "D",
+          "text": "89"
+        }
+      ],
+      "correct": "D",
+      "solution": "8²ᵏ + 5²ᵏ = (8²)ᵏ + (5²)ᵏ = 64ᵏ + 25ᵏ.\nFor any odd k, (aᵏ + bᵏ) is divisible by (a + b).\nHere a = 64, b = 25 ⇒ a + b = 64 + 25 = 89.\nHence 89 is a factor.",
+      "trick": "64 + 25 = 89."
+    },
+    {
+      "id": 18,
+      "topic": "Simplification",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "If A = (58² – 25²) / (46² – 37²) and B = (26² – 15²) / (56² – 15²), then the value of 1/B – 20/A is:",
+      "question_hi": "यदि A = (58² – 25²) / (46² – 37²) और B = (26² – 15²) / (56² – 15²) है, तो 1/B – 20/A का मान क्या होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "0"
+        },
+        {
+          "id": "D",
+          "text": "–1"
+        }
+      ],
+      "correct": "B",
+      "solution": "A = [(58 - 25)(58 + 25)] / [(46 - 37)(46 + 37)] = (33 × 83) / (9 × 83) = 33 / 9 = 11 / 3.\nB = [(26 - 15)(26 + 15)] / [(56 - 15)(56 + 15)] = (11 × 41) / (41 × 71) = 11 / 71.\n1/B - 20/A = 71/11 - 20/(11/3) = 71/11 - 60/11 = 11 / 11 = 1.",
+      "trick": "71/11 - 60/11 = 11/11 = 1."
+    },
+    {
+      "id": 19,
+      "topic": "Surds & Indices",
+      "exam": "SSC CHSL MAINS 10/04/2026",
+      "question_en": "If √(45² + 28² + 53²) is expressed in the form √n, what is the value of n?",
+      "question_hi": "यदि √(45² + 28² + 53²) को √n के रूप में व्यक्त किया जाता है, तो n का मान कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5618"
+        },
+        {
+          "id": "B",
+          "text": "5628"
+        },
+        {
+          "id": "C",
+          "text": "5638"
+        },
+        {
+          "id": "D",
+          "text": "5648"
+        }
+      ],
+      "correct": "A",
+      "solution": "(28, 45, 53) forms a Pythagorean triplet (28² + 45² = 784 + 2025 = 2809 = 53²).\nSo 45² + 28² + 53² = 53² + 53² = 2 × 53² = 2 × 2809 = 5618.\nHence, n = 5618.",
+      "trick": "28² + 45² = 53². Expression = 2 × 53² = 5618."
+    },
+    {
+      "id": 20,
+      "topic": "LCM & HCF",
+      "exam": "SSC CGL Tier-II, 12/09/2019",
+      "question_en": "The HCF of two numbers is 21 and their LCM is 221 times the HCF. If one of the numbers lies between 200 and 300, then the sum of the digits of the other number is:",
+      "question_hi": "दो संख्याओं का HCF 21 है और उनका LCM, HCF का 221 गुना है। यदि दोनों संख्याओं में से एक 200 और 300 के बीच है, तो दूसरी संख्या के अंकों का योग है:",
+      "options": [
+        {
+          "id": "A",
+          "text": "17"
+        },
+        {
+          "id": "B",
+          "text": "18"
+        },
+        {
+          "id": "C",
+          "text": "14"
+        },
+        {
+          "id": "D",
+          "text": "15"
+        }
+      ],
+      "correct": "D",
+      "solution": "Let numbers be 21a and 21b, where gcd(a, b) = 1.\nLCM = 21ab = 221 × 21 ⇒ ab = 221.\n221 = 13 × 17 (coprime pair).\nNumber 1 = 21 × 13 = 273 (lies between 200 and 300).\nNumber 2 = 21 × 17 = 357.\nSum of digits of 357 = 3 + 5 + 7 = 15.",
+      "trick": "21 × 17 = 357 ⇒ 3 + 5 + 7 = 15."
+    },
+    {
+      "id": 21,
+      "topic": "Geometry",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+      "question_en": "Two circles have radii 8 cm and 7 cm and their centres are 25 cm apart. Find the length of a transverse common tangent.",
+      "question_hi": "दो वृत्तों की त्रिज्याएँ 8 cm और 7 cm हैं और उनके केंद्रों के बीच की दूरी 25 cm है। एक अनुप्रस्थ उभयनिष्ठ स्पर्श रेखा की लंबाई ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "15 cm"
+        },
+        {
+          "id": "B",
+          "text": "18 cm"
+        },
+        {
+          "id": "C",
+          "text": "20 cm"
+        },
+        {
+          "id": "D",
+          "text": "24 cm"
+        }
+      ],
+      "correct": "C",
+      "solution": "Length of Transverse Common Tangent (TCT) = √[d² - (r1 + r2)²]\n= √[25² - (8 + 7)²] = √[25² - 15²] = √(625 - 225) = √400 = 20 cm.",
+      "trick": "√(25² - 15²) = 20 cm."
+    },
+    {
+      "id": 22,
+      "topic": "Geometry",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+      "question_en": "A triangular field has sides 20 m, 21 m and 29 m. Find the altitude drawn to the hypotenuse.",
+      "question_hi": "एक त्रिभुजाकार खेत की भुजाएँ 20 m, 21 m और 29 m हैं। कर्ण पर खींचे गए शीर्षलंब की लंबाई ज्ञात कीजिए:",
+      "options": [
+        {
+          "id": "A",
+          "text": "210/29 m"
+        },
+        {
+          "id": "B",
+          "text": "420/29 m"
+        },
+        {
+          "id": "C",
+          "text": "29/420 m"
+        },
+        {
+          "id": "D",
+          "text": "29/21 m"
+        }
+      ],
+      "correct": "B",
+      "solution": "20² + 21² = 400 + 441 = 841 = 29² (Right-angled triangle).\nAltitude to hypotenuse p = (Perpendicular × Base) / Hypotenuse\n= (20 × 21) / 29 = 420 / 29 m.",
+      "trick": "p = (20 × 21)/29 = 420/29 m."
+    },
+    {
+      "id": 23,
+      "topic": "Algebra",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "If x + y + z = 0 and xy + yz + zx = –35, then find x⁴ + y⁴ + z⁴.",
+      "question_hi": "यदि x + y + z = 0 और xy + yz + zx = –35 है, तो x⁴ + y⁴ + z⁴ ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "2400"
+        },
+        {
+          "id": "B",
+          "text": "2450"
+        },
+        {
+          "id": "C",
+          "text": "3675"
+        },
+        {
+          "id": "D",
+          "text": "4900"
+        }
+      ],
+      "correct": "B",
+      "solution": "x² + y² + z² = (x + y + z)² - 2(xy + yz + zx) = 0 - 2(-35) = 70.\n(x² + y² + z²)² = x⁴ + y⁴ + z⁴ + 2(x²y² + y²z² + z²x²)\n70² = 4900.\nAlso, x²y² + y²z² + z²x² = (xy + yz + zx)² - 2xyz(x + y + z) = (-35)² - 0 = 1225.\nx⁴ + y⁴ + z⁴ = 4900 - 2(1225) = 4900 - 2450 = 2450.",
+      "trick": "Put z = 0 ⇒ x + y = 0 ⇒ y = -x. xy = -x² = -35 ⇒ x² = 35. x⁴ + y⁴ = 35² + 35² = 2 × 1225 = 2450."
+    },
+    {
+      "id": 24,
+      "topic": "Trigonometry",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "If tan A + tan²A = 1, then find cot²A – cot A.",
+      "question_hi": "यदि tan A + tan²A = 1, तो cot²A – cot A ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "0"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "–1"
+        }
+      ],
+      "correct": "B",
+      "solution": "tan A + tan²A = 1.\nDivide both sides by tan²A:\n(tan A / tan²A) + 1 = 1 / tan²A\n⇒ cot A + 1 = cot²A\n⇒ cot²A - cot A = 1.",
+      "trick": "Divide by tan²A: cot A + 1 = cot²A ⇒ cot²A - cot A = 1."
+    },
+    {
+      "id": 25,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "A set of data presented in the form of a frequency distribution table had a mode of 48.5. The lower boundary of the modal class was 46.5, the frequency of the modal class was 34, the frequency of the preceding class was 32 and the succeeding class was 25. What was the width of the modal class?",
+      "question_hi": "एक बारंबारता बंटन का बहुलक 48.5 था। बहुलक वर्ग की निचली सीमा 46.5 थी, बहुलक वर्ग की बारंबारता 34 थी, ठीक पहले वाले वर्ग की बारंबारता 32 थी और ठीक बाद वाले वर्ग की बारंबारता 25 थी। बहुलक वर्ग की चौड़ाई क्या थी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "11"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "12"
+        },
+        {
+          "id": "D",
+          "text": "10.5"
+        }
+      ],
+      "correct": "A",
+      "solution": "Mode = L + [(f1 - f0) / (2f1 - f0 - f2)] × h\n48.5 = 46.5 + [(34 - 32) / (68 - 32 - 25)] × h\n2 = [2 / 11] × h ⇒ h = 11.",
+      "trick": "2 = (2 / 11) × h ⇒ h = 11."
+    }
+  ]
+}

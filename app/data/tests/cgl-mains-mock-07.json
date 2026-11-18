@@ -1,0 +1,715 @@
+{
+  "id": "cgl-mains-mock-07",
+  "title": "SSC CGL Mains 2026 - Commercial Maths: Profit/Loss & SI/CI (25 Qs)",
+  "subtitle": "Successive Discounts, Dishonest Dealer, Installments, Half-yearly Compounding",
+  "category": "Commercial Maths",
+  "durationMinutes": 35,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "25 Questions covering Profit & Loss, Successive Discounts, Simple Interest & Compound Interest.",
+    "Tier-2 Marking: +3 correct, -1 wrong."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Profit & Loss",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "Sandeep earns 22% profit by selling an overcoat for ₹8540. Find the cost price of overcoat.",
+      "question_hi": "संदीप एक ओवरकोट को ₹8540 में बेचकर 22% लाभ अर्जित करता है। ओवरकोट का क्रयमूल्य ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹6500"
+        },
+        {
+          "id": "B",
+          "text": "₹7000"
+        },
+        {
+          "id": "C",
+          "text": "₹7500"
+        },
+        {
+          "id": "D",
+          "text": "₹6000"
+        }
+      ],
+      "correct": "B",
+      "solution": "SP = 122% of CP = ₹8540.\nCP = (8540 / 122) × 100 = 70 × 100 = ₹7000.",
+      "trick": "8540 / 1.22 = ₹7000."
+    },
+    {
+      "id": 2,
+      "topic": "Profit & Loss",
+      "exam": "SSC CHSL (Tier-I), 16/03/2023",
+      "question_en": "A trader buys two articles for ₹3000 each article. While selling, he earns a profit of 10 percent on one and loses 20 percent on the other. What will be his overall loss percentage?",
+      "question_hi": "एक व्यापारी ₹3000 प्रति वस्तु के हिसाब से दो वस्तुएँ खरीदता है। बेचते समय, वह एक वस्तु पर 10 प्रतिशत का लाभ कमाता है और दूसरे पर 20 प्रतिशत की हानि करता है। उसका कुल हानि प्रतिशत कितना होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "10%"
+        },
+        {
+          "id": "B",
+          "text": "20%"
+        },
+        {
+          "id": "C",
+          "text": "15%"
+        },
+        {
+          "id": "D",
+          "text": "5%"
+        }
+      ],
+      "correct": "D",
+      "solution": "When Cost Price (CP) is the same for both articles:\nNet profit/loss% = (Profit% + Loss%) / 2 = (10% - 20%) / 2 = -10% / 2 = -5% (5% Loss).",
+      "trick": "Same CP ⇒ Average of percentages = (10 - 20)/2 = -5%."
+    },
+    {
+      "id": 3,
+      "topic": "Profit & Loss",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "B purchased 15 kg apples at the rate of ₹180 per kg from a wholesaler who uses a weight of 950 grams for the 1kg weight. B sold all these apples at ₹180 per kg but used a weight of 750 grams for the kg weight. Find the percentage profit earned by B in the transaction (correct to 2 places of decimal).",
+      "question_hi": "B ने एक थोक विक्रेता से ₹180 प्रति किग्रा की दर से 15 किग्रा सेब खरीदे, जो एक किग्रा वज़न के लिए 950 ग्राम के वज़न का उपयोग करता है। B ने इन सभी सेबों को ₹180 प्रति किग्रा की दर से बेचा, लेकिन एक किग्रा वज़न के लिए 750 ग्राम के वज़न का उपयोग किया। इस लेन-देन में B द्वारा अर्जित लाभ प्रतिशत ज्ञात कीजिए:",
+      "options": [
+        {
+          "id": "A",
+          "text": "25.75%"
+        },
+        {
+          "id": "B",
+          "text": "26.67%"
+        },
+        {
+          "id": "C",
+          "text": "22.55%"
+        },
+        {
+          "id": "D",
+          "text": "33.33%"
+        }
+      ],
+      "correct": "B",
+      "solution": "Effective ratio of goods: B bought 950g for price of 1000g, and sells 750g for price of 1000g.\nProfit ratio = 950 / 750 = 19 / 15.\nProfit% = (19 - 15) / 15 × 100% = 4/15 × 100% = 26.67%.",
+      "trick": "Profit% = (950 - 750)/750 × 100% = 200/750 × 100% = 26.67%."
+    },
+    {
+      "id": 4,
+      "topic": "Profit & Loss",
+      "exam": "CDS Maths, 08/09/2019",
+      "question_en": "A trader sells two computers at the same price, making a profit of 30% on one and a loss of 30% on the other. What is the net loss or profit percentage on the transaction?",
+      "question_hi": "एक व्यापारी दो कंप्यूटरों को एक ही कीमत पर बेचता है, जिसमें से उसे एक पर 30% का लाभ होता है और दूसरे पर 30% की हानि होती है। इस लेनदेन में कितने प्रतिशत शुद्ध लाभ या हानि हुई?",
+      "options": [
+        {
+          "id": "A",
+          "text": "6% Loss"
+        },
+        {
+          "id": "B",
+          "text": "6% Profit"
+        },
+        {
+          "id": "C",
+          "text": "9% Loss"
+        },
+        {
+          "id": "D",
+          "text": "9% Profit"
+        }
+      ],
+      "correct": "C",
+      "solution": "When selling price is same and profit% = loss% = x%:\nAlways a net loss = x² / 100% = 30² / 100% = 9% Loss.",
+      "trick": "30² / 100 = 9% Loss."
+    },
+    {
+      "id": 5,
+      "topic": "Profit & Loss",
+      "exam": "SSC SELECTION PHASE HIGHER LEVEL 2026",
+      "question_en": "A shopkeeper earns a profit of 19% on the cost price of an article after giving three consecutive discounts of 11%, 13% and 15% to a customer. What would have been the profit percentage, had the shopkeeper given discounts of 11% and 13% only?",
+      "question_hi": "एक दुकानदार किसी वस्तु के लागत मूल्य पर 19% का लाभ अर्जित करता है, जब वह ग्राहक को क्रमशः 11%, 13% और 15% की तीन क्रमिक छूट देता है। यदि दुकानदार केवल 11% और 13% की ही छूट देता, तो उसका लाभ प्रतिशत क्या होता?",
+      "options": [
+        {
+          "id": "A",
+          "text": "35%"
+        },
+        {
+          "id": "B",
+          "text": "40%"
+        },
+        {
+          "id": "C",
+          "text": "45%"
+        },
+        {
+          "id": "D",
+          "text": "50%"
+        }
+      ],
+      "correct": "B",
+      "solution": "Let CP = 100. Then SP1 = 119.\nSP1 is obtained after discounts 11%, 13%, and 15% (which is a multiplier of (1 - 0.15) = 0.85 = 17/20 on the intermediate price after 11% and 13% discounts).\nTherefore, SP2 (with only 11% and 13% discounts) = 119 / 0.85 = 119 / (17/20) = 7 × 20 = 140.\nProfit with only first two discounts = 140 - 100 = 40%.",
+      "trick": "SP2 = 119 / 0.85 = 140 ⇒ Profit = 40%."
+    },
+    {
+      "id": 6,
+      "topic": "Profit & Loss",
+      "exam": "SSC SELECTION PHASE GRADUATE LEVEL 2026",
+      "question_en": "A seller offers a 20% discount and still earns a 25% profit. If the profit made is ₹75, find the marked price of the article.",
+      "question_hi": "एक विक्रेता 20% की छूट देता है और फिर भी 25% का लाभ कमाता है। यदि अर्जित लाभ ₹75 है, तो वस्तु का अंकित मूल्य ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹504.25"
+        },
+        {
+          "id": "B",
+          "text": "₹468.75"
+        },
+        {
+          "id": "C",
+          "text": "₹490.00"
+        },
+        {
+          "id": "D",
+          "text": "₹570.00"
+        }
+      ],
+      "correct": "B",
+      "solution": "25% of CP = ₹75 ⇒ CP = 75 × 4 = ₹300.\nSelling Price SP = 300 + 75 = ₹375.\nSince discount is 20%: SP = 80% of MP ⇒ MP = 375 / 0.80 = ₹468.75.",
+      "trick": "MP = (300 × 1.25) / 0.80 = 375 / 0.8 = ₹468.75."
+    },
+    {
+      "id": 7,
+      "topic": "Profit & Loss",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "A scheme offers “Buy 3, Get 2 free” on the same kind of articles with equal marked price. Find the effective discount percentage.",
+      "question_hi": "एक योजना समान प्रकार की वस्तुओं पर, जिनका अंकित मूल्य समान है, “3 खरीदो, 2 निःशुल्क पाओ” की पेशकश करती है। प्रभावी छूट प्रतिशत ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "32%"
+        },
+        {
+          "id": "B",
+          "text": "36%"
+        },
+        {
+          "id": "C",
+          "text": "40%"
+        },
+        {
+          "id": "D",
+          "text": "45%"
+        }
+      ],
+      "correct": "C",
+      "solution": "Free items = 2. Total items taken = 3 + 2 = 5.\nEffective discount% = (2 / 5) × 100% = 40%.",
+      "trick": "2 / 5 = 40%."
+    },
+    {
+      "id": 8,
+      "topic": "Profit & Loss",
+      "exam": "SSC CHSL Tier-II, 10/01/2023",
+      "question_en": "Sohan sells sugar at cost price but uses a faulty weight and thereby gains 28%. How many grams of sugar does he give in place of 3.2 kg?",
+      "question_hi": "सोहन क्रय मूल्य पर चीनी बेचता है लेकिन वह खराब बांटों का प्रयोग करता है और इस प्रकार 28% का लाभ अर्जित करता है। वह 3.2 किग्रा चीनी के बदले कितने ग्राम चीनी दे रहा है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1500 g"
+        },
+        {
+          "id": "B",
+          "text": "1900 g"
+        },
+        {
+          "id": "C",
+          "text": "2200 g"
+        },
+        {
+          "id": "D",
+          "text": "2500 g"
+        }
+      ],
+      "correct": "D",
+      "solution": "28% profit = 28/100 = 7/25 ⇒ Ratio of SP/CP = 32/25.\nClaimed weight = 3.2 kg = 3200 g (corresponds to 32 units).\nActual weight given = 25 units = (3200 / 32) × 25 = 2500 grams.",
+      "trick": "3200 / 1.28 = 2500 g."
+    },
+    {
+      "id": 9,
+      "topic": "Discount",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "At a clearance sale, a shopkeeper gives 45% discount. If a customer paid ₹330 during the sale, then what is the marked price of that shirt?",
+      "question_hi": "निकासी बिक्री पर, एक दुकानदार 45% छूट देता है। यदि एक ग्राहक ने बिक्री के दौरान ₹330 का भुगतान किया, तो उस शर्ट का अंकित मूल्य क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹550"
+        },
+        {
+          "id": "B",
+          "text": "₹600"
+        },
+        {
+          "id": "C",
+          "text": "₹500"
+        },
+        {
+          "id": "D",
+          "text": "₹650"
+        }
+      ],
+      "correct": "B",
+      "solution": "SP = MP × (100 - 45)% = 55% of MP = ₹330.\nMP = (330 / 55) × 100 = 6 × 100 = ₹600.",
+      "trick": "330 / 0.55 = ₹600."
+    },
+    {
+      "id": 10,
+      "topic": "Discount",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "On the occasion of Republic Day, a retail store offers a scheme where customers can avail a discount of 26% on their total purchase. If Manish buys items worth ₹2,050, how much money (in ₹) will he save through the scheme discount?",
+      "question_hi": "गणतंत्र दिवस के अवसर पर एक खुदरा स्टोर एक स्कीम देता है, जहाँ ग्राहक अपनी कुल खरीद पर 26% की छूट का लाभ उठा सकते हैं। यदि मनीष ₹2,050 की वस्तुएँ खरीदता है, तो वह स्कीम छूट के द्वारा कितनी राशि (₹ में) बचाएगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹533"
+        },
+        {
+          "id": "B",
+          "text": "₹544"
+        },
+        {
+          "id": "C",
+          "text": "₹522"
+        },
+        {
+          "id": "D",
+          "text": "₹511"
+        }
+      ],
+      "correct": "A",
+      "solution": "Savings = 26% of ₹2050 = (26 / 100) × 2050 = 26 × 20.5 = ₹533.",
+      "trick": "2050 × 0.26 = 533."
+    },
+    {
+      "id": 11,
+      "topic": "Discount",
+      "exam": "SSC CHSL Tier-II, 02/11/2023",
+      "question_en": "For an electric bill for ₹50,000, what is the difference between a discount of 30% and two successive discounts of 26% and 5%?",
+      "question_hi": "₹50,000 के बिजली बिल के लिए, 30% की छूट और 26% एवं 5% की दो क्रमिक छूटों के बीच अंतर ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹140"
+        },
+        {
+          "id": "B",
+          "text": "₹150"
+        },
+        {
+          "id": "C",
+          "text": "₹130"
+        },
+        {
+          "id": "D",
+          "text": "₹120"
+        }
+      ],
+      "correct": "B",
+      "solution": "Single discount = 30%.\nTwo successive discounts of 26% and 5% = 26 + 5 - (26 × 5)/100 = 31 - 1.30 = 29.7%.\nDifference in percentage = 30% - 29.7% = 0.3%.\nDifference in amount = 0.3% of 50,000 = (0.3 / 100) × 50,000 = ₹150.",
+      "trick": "(30 - 29.7)% of 50000 = 0.3% of 50000 = ₹150."
+    },
+    {
+      "id": 12,
+      "topic": "Discount",
+      "exam": "SSC CHSL Tier-II, 02/11/2023",
+      "question_en": "A shopkeeper sold his goods at half the list price and thus lost 17%. If he had sold on the listed price, then his gain percentage would be:",
+      "question_hi": "एक दुकानदार ने अपना माल अंकित मूल्य से आधे दाम पर बेचा और इस प्रकार उसे 17% की हानि हुई। यदि उसने अपना माल अंकित मूल्य पर बेचा होता, तो उसकी लाभ प्रतिशतता कितनी होती?",
+      "options": [
+        {
+          "id": "A",
+          "text": "17%"
+        },
+        {
+          "id": "B",
+          "text": "41%"
+        },
+        {
+          "id": "C",
+          "text": "83%"
+        },
+        {
+          "id": "D",
+          "text": "66%"
+        }
+      ],
+      "correct": "D",
+      "solution": "Let CP = 100. Since he lost 17%, SP = 83.\nSP is half of list price (MP) ⇒ MP = 83 × 2 = 166.\nSelling at listed price yields SP = 166.\nGain% = (166 - 100)% = 66%.",
+      "trick": "MP = 2 × 83 = 166 ⇒ Profit = 66%."
+    },
+    {
+      "id": 13,
+      "topic": "Discount",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "A merchant fixes the sale price of his goods at 42% above the cost price. He sells his goods at a 15% discount on marked price. His percentage of profit (rounded off to the nearest integer) is:",
+      "question_hi": "एक व्यापारी अपने माल का विक्रय मूल्य, क्रय मूल्य से 42% अधिक अंकित करता है। वह अपना माल अंकित मूल्य पर 15% छूट देकर बेचता है। उसका लाभ प्रतिशत (निकटतम पूर्णांक तक) कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "21%"
+        },
+        {
+          "id": "B",
+          "text": "35%"
+        },
+        {
+          "id": "C",
+          "text": "27%"
+        },
+        {
+          "id": "D",
+          "text": "42%"
+        }
+      ],
+      "correct": "A",
+      "solution": "Net change% = a + b + (ab/100) = 42 - 15 - (42 × 15)/100 = 27 - 6.30 = 20.7% ≈ 21%.",
+      "trick": "1.42 × 0.85 = 1.207 ⇒ 20.7% ≈ 21%."
+    },
+    {
+      "id": 14,
+      "topic": "Simple Interest",
+      "exam": "SSC CGL Tier-II, 18/11/2024",
+      "question_en": "Find the simple interest (in ₹) on ₹2000 at 6.5% per annum rate of interest for the period from 14 February 2023 to 28 April 2023.",
+      "question_hi": "₹2000 पर, 6.5% वार्षिक ब्याज दर पर, 14 फरवरी 2023 से 28 अप्रैल 2023 की अवधि के लिए साधारण ब्याज (₹ में) की गणना करें।",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹24"
+        },
+        {
+          "id": "B",
+          "text": "₹27"
+        },
+        {
+          "id": "C",
+          "text": "₹26"
+        },
+        {
+          "id": "D",
+          "text": "₹25"
+        }
+      ],
+      "correct": "C",
+      "solution": "Days: Feb (28 - 14) = 14 days, March = 31 days, April = 28 days.\nTotal days = 14 + 31 + 28 = 73 days = 73 / 365 year = 1/5 year.\nSI = (2000 × 6.5 × 1/5) / 100 = (400 × 6.5) / 100 = ₹26.",
+      "trick": "73 days = 1/5 yr. SI = 2000 × 0.065 / 5 = ₹26."
+    },
+    {
+      "id": 15,
+      "topic": "Simple Interest",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "At 5% annual simple interest a sum amounts to ₹4160 in 6 years. Find the sum.",
+      "question_hi": "5% वार्षिक साधारण ब्याज दर से एक राशि 6 वर्षों में ₹4160 हो जाती है। राशि ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹3200"
+        },
+        {
+          "id": "B",
+          "text": "₹2900"
+        },
+        {
+          "id": "C",
+          "text": "₹2800"
+        },
+        {
+          "id": "D",
+          "text": "₹3100"
+        }
+      ],
+      "correct": "A",
+      "solution": "Amount A = P(1 + RT/100) = P(1 + 30/100) = 1.30 P.\n1.30 P = 4160 ⇒ P = 4160 / 1.30 = ₹3200.",
+      "trick": "4160 / 1.3 = ₹3200."
+    },
+    {
+      "id": 16,
+      "topic": "Simple Interest",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "The difference between the simple interest of two banks on ₹8000 in 3 years is ₹800. If the rate of interest per annum in two banks is R1 and R2, then what is the value of R1 – R2? (where R1 > R2)",
+      "question_hi": "3 वर्ष में ₹8000 पर दो बैंकों के साधारण ब्याज का अंतर ₹800 है। यदि दो बैंकों में ब्याज की प्रतिवर्ष दर R1 और R2 है, तो R1–R2 का मान क्या है? (जहाँ R1 > R2)",
+      "options": [
+        {
+          "id": "A",
+          "text": "2 1/3%"
+        },
+        {
+          "id": "B",
+          "text": "1 1/3%"
+        },
+        {
+          "id": "C",
+          "text": "3 1/3%"
+        },
+        {
+          "id": "D",
+          "text": "5 1/3%"
+        }
+      ],
+      "correct": "C",
+      "solution": "Difference in SI = [P × (R1 - R2) × T] / 100\n800 = [8000 × (R1 - R2) × 3] / 100 = 240 (R1 - R2)\n⇒ R1 - R2 = 800 / 240 = 10 / 3 = 3 1/3%.",
+      "trick": "(800 / (8000 × 3)) × 100 = 800 / 240 = 10/3 = 3 1/3%."
+    },
+    {
+      "id": 17,
+      "topic": "Simple Interest",
+      "exam": "SSC CHSL Tier-II, 10/04/2026",
+      "question_en": "A sum of money amounts to ₹12,000 in 5 years and ₹14,400 in 9 years at simple interest. What is the principal?",
+      "question_hi": "साधारण ब्याज पर, कोई धनराशि 5 वर्षों में ₹12,000 और 9 वर्षों में ₹14,400 हो जाती है। मूलधन कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹8000"
+        },
+        {
+          "id": "B",
+          "text": "₹9000"
+        },
+        {
+          "id": "C",
+          "text": "₹10000"
+        },
+        {
+          "id": "D",
+          "text": "₹10500"
+        }
+      ],
+      "correct": "B",
+      "solution": "Interest for 4 years (9 - 5) = 14400 - 12000 = ₹2400.\nInterest for 1 year = 2400 / 4 = ₹600.\nInterest for 5 years = 600 × 5 = ₹3000.\nPrincipal P = Amount after 5 yrs - 5 yrs Interest = 12000 - 3000 = ₹9000.",
+      "trick": "P = 12000 - 5 × (2400 / 4) = 12000 - 3000 = ₹9000."
+    },
+    {
+      "id": 18,
+      "topic": "Simple Interest",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "A sum of ₹15,600 is invested in a scheme of simple interest. The person receives ₹4,680 as interest after 3 years. If he had invested the same sum for 5 years at a rate 2% lower than the original rate, what would be the interest?",
+      "question_hi": "₹15,600 की एक धनराशि साधारण ब्याज की एक योजना में निवेश की जाती है। 3 वर्षों के बाद व्यक्ति को ₹4,680 ब्याज के रूप में प्राप्त होते हैं। यदि वही धनराशि 5 वर्षों के लिए मूल दर से 2% कम दर पर निवेश की जाती, तो कितना ब्याज प्राप्त होता?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹6,240"
+        },
+        {
+          "id": "B",
+          "text": "₹5,400"
+        },
+        {
+          "id": "C",
+          "text": "₹6,500"
+        },
+        {
+          "id": "D",
+          "text": "₹5,850"
+        }
+      ],
+      "correct": "A",
+      "solution": "Original SI for 1 year = 4680 / 3 = ₹1560.\nOriginal Rate R = (1560 / 15600) × 100% = 10%.\nNew Rate = 10% - 2% = 8%.\nNew SI for 5 years = (15600 × 8 × 5) / 100 = 156 × 40 = ₹6,240.",
+      "trick": "New SI = 15600 × 40% = ₹6,240."
+    },
+    {
+      "id": 19,
+      "topic": "Compound Interest",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "If a sum increases by 40% in 4 years at simple interest, then what will be the compound interest on ₹80000 after 4 years at the same interest rate?",
+      "question_hi": "यदि किसी राशि में साधारण ब्याज पर 4 वर्ष में 40% की वृद्धि होती है, तो सामान ब्याज दर पर 4 वर्ष बाद ₹80000 पर चक्रवृद्धि ब्याज क्या होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹29728"
+        },
+        {
+          "id": "B",
+          "text": "₹39724"
+        },
+        {
+          "id": "C",
+          "text": "₹17128"
+        },
+        {
+          "id": "D",
+          "text": "₹37128"
+        }
+      ],
+      "correct": "D",
+      "solution": "Simple interest rate R = 40% / 4 = 10% per annum.\nCI rate for 4 years at 10% = 46.41%.\nCI = 46.41% of 80000 = (46.41 / 100) × 80000 = 46.41 × 800 = ₹37,128.",
+      "trick": "Effective 4-year CI at 10% = 46.41%. 80000 × 0.4641 = ₹37128."
+    },
+    {
+      "id": 20,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "What will be the compound interest on an amount of ₹25000 after three years at 12% per annum, when the interest is compounded annually?",
+      "question_hi": "₹25000 की राशि पर तीन वर्ष बाद 12% वार्षिक दर से चक्रवृद्धि ब्याज कितना होगा, जब ब्याज वार्षिक रूप से चक्रवृद्धि होता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹9824.00"
+        },
+        {
+          "id": "B",
+          "text": "₹10520.00"
+        },
+        {
+          "id": "C",
+          "text": "₹10123.20"
+        },
+        {
+          "id": "D",
+          "text": "₹10132.20"
+        }
+      ],
+      "correct": "C",
+      "solution": "Using 3 : 3 : 1 ratio method:\nYear 1: 12% of 25000 = 3000\nYear 2: 12% of 3000 = 360\nYear 3: 12% of 360 = 43.2\nTotal CI = 3 × 3000 + 3 × 360 + 1 × 43.2 = 9000 + 1080 + 43.2 = ₹10,123.20.",
+      "trick": "3(3000) + 3(360) + 43.2 = ₹10123.20."
+    },
+    {
+      "id": 21,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "If the interest is compounded half yearly, then find the compound interest on an amount of ₹8000 at the rate of 20% per annum for 1 year.",
+      "question_hi": "यदि ब्याज अर्धवार्षिक रूप से चक्रवृद्धि होता है, तो ₹8000 की राशि पर 20% वार्षिक की दर से 1 वर्ष का चक्रवृद्धि ब्याज ज्ञात करें?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹1685"
+        },
+        {
+          "id": "B",
+          "text": "₹1675"
+        },
+        {
+          "id": "C",
+          "text": "₹1690"
+        },
+        {
+          "id": "D",
+          "text": "₹1680"
+        }
+      ],
+      "correct": "D",
+      "solution": "Half-yearly rate = 20% / 2 = 10%. Periods n = 2.\nEffective CI% = 10 + 10 + (10 × 10)/100 = 21%.\nCI = 21% of 8000 = 21 × 80 = ₹1680.",
+      "trick": "8000 × 21% = ₹1680."
+    },
+    {
+      "id": 22,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 29/01/2022",
+      "question_en": "A sum of money becomes ₹11,880 after 4 years and ₹17,820 after 6 years on compound interest, the interest is compounded annually. What is half of the sum (in ₹)?",
+      "question_hi": "एक धनराशि वार्षिक रूप से चक्रवृद्धि होने वाले चक्रवृद्धि ब्याज पर, 4 वर्ष के बाद ₹11,880 और 6 वर्ष के बाद ₹17,820 हो जाती है। उस धनराशि का आधा भाग (₹ में) कितना होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2,750"
+        },
+        {
+          "id": "B",
+          "text": "2,530"
+        },
+        {
+          "id": "C",
+          "text": "2,640"
+        },
+        {
+          "id": "D",
+          "text": "2,410"
+        }
+      ],
+      "correct": "C",
+      "solution": "Ratio in 2 years = 17820 / 11880 = 3/2.\nSo P × (3/2)² = 11880 ⇒ P × (9/4) = 11880\n⇒ P = (11880 × 4) / 9 = 1320 × 4 = ₹5280.\nHalf of the sum = 5280 / 2 = ₹2640.",
+      "trick": "Half sum = 5280 / 2 = ₹2640."
+    },
+    {
+      "id": 23,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 18/09/2020",
+      "question_en": "At what rate per cent per annum will a sum of ₹15,625 amount to ₹21,952 in three years, if the interest is compounded annually?",
+      "question_hi": "₹15,625 की धनराशि, वार्षिक रूप से चक्रवृद्धि किये जाने वाले कितने प्रतिशत ब्याज दर पर 3 वर्षों में ₹21,952 हो जाएगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12%"
+        },
+        {
+          "id": "B",
+          "text": "8%"
+        },
+        {
+          "id": "C",
+          "text": "9%"
+        },
+        {
+          "id": "D",
+          "text": "10%"
+        }
+      ],
+      "correct": "A",
+      "solution": "∛(21952 / 15625) = 28 / 25.\nRate = (28 - 25) / 25 × 100% = 3/25 × 100% = 12%.",
+      "trick": "∛21952 = 28, ∛15625 = 25 ⇒ 3/25 = 12%."
+    },
+    {
+      "id": 24,
+      "topic": "Compound Interest",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "Rajnish borrowed ₹1500 from a bank and repaid the entire amount with interest in two equal annual installments, the first installment being paid a year after Rajnish borrowed from the bank. If the rate of interest was 40% per annum, compounded annually, then what was the value (in ₹) of each installment paid by Rajnish?",
+      "question_hi": "रजनीश ने एक बैंक से ₹1500 उधार लिए और दो समान वार्षिक किस्तों में ब्याज सहित पूरी राशि चुका दी, रजनीश द्वारा बैंक से उधार लेने के एक साल बाद पहली किस्त का भुगतान किया गया। यदि ब्याज की दर 40% प्रति वर्ष थी, जो वार्षिक रूप से संयोजित होती है, तो रजनीश द्वारा भुगतान की गई प्रत्येक किस्त का मूल्य (₹ में) क्या था?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1125"
+        },
+        {
+          "id": "B",
+          "text": "1470"
+        },
+        {
+          "id": "C",
+          "text": "1225"
+        },
+        {
+          "id": "D",
+          "text": "1350"
+        }
+      ],
+      "correct": "C",
+      "solution": "Rate = 40% = 2/5 ⇒ Multiplier = 7/5.\nInstallment formula: P = x / (7/5) + x / (7/5)² = (5/7)x + (25/49)x = (60/49)x.\n1500 = (60/49)x ⇒ x = (1500 × 49) / 60 = 25 × 49 = ₹1225.",
+      "trick": "Installment must be a multiple of 7² = 49. Only 1225 is divisible by 49 (49 × 25 = 1225)."
+    },
+    {
+      "id": 25,
+      "topic": "Compound Interest",
+      "exam": "SSC SELECTION PHASE HIGHER SECONDARY 2026",
+      "question_en": "The difference between the CI and SI on a certain sum of money for 3 years at 5% per annum is ₹244. Find the principal.",
+      "question_hi": "एक निश्चित राशि पर 3 वर्षों के लिए 5% प्रति वर्ष की दर से CI और SI के बीच का अंतर ₹244 है। मूलधन ज्ञात कीजिए?",
+      "options": [
+        {
+          "id": "A",
+          "text": "₹24,000"
+        },
+        {
+          "id": "B",
+          "text": "₹35,000"
+        },
+        {
+          "id": "C",
+          "text": "₹32,000"
+        },
+        {
+          "id": "D",
+          "text": "₹28,000"
+        }
+      ],
+      "correct": "C",
+      "solution": "Difference for 3 years = P(R/100)² (3 + R/100).\nFor R = 5% = 1/20: Difference = P(1/400)(61/20) = 61 P / 8000.\n61 P / 8000 = 244 ⇒ P = (244 × 8000) / 61 = 4 × 8000 = ₹32,000.",
+      "trick": "P = 244 × 8000 / 61 = 4 × 8000 = ₹32,000."
+    }
+  ]
+}

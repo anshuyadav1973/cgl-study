@@ -1,0 +1,356 @@
+#!/usr/bin/env python3
+import http.server
+import socketserver
+import json
+import os
+import sys
+import urllib.parse
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PUBLIC_DIR = os.path.join(BASE_DIR, "public")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+TESTS_DIR = os.path.join(DATA_DIR, "tests")
+PORT = int(os.environ.get("PORT", 3000))
+
+# Import Database and Auth module
+sys.path.insert(0, os.path.dirname(BASE_DIR))
+import app.db as db
+
+class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=PUBLIC_DIR, **kwargs)
+
+    def get_auth_user(self):
+        auth_header = self.headers.get("Authorization", "")
+        token = None
+        if auth_header.startswith("Bearer "):
+            token = auth_header[7:].strip()
+        elif "token=" in self.path:
+            parsed = urllib.parse.urlparse(self.path)
+            params = urllib.parse.parse_qs(parsed.query)
+            token = params.get("token", [None])[0]
+
+        if token:
+            return db.get_user_from_token(token)
+        return None
+
+    def send_json(self, data, status=200):
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.end_headers()
+        self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, DELETE")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        self.end_headers()
+
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        # Health Check
+        if path == "/healthz" or path == "/api/health":
+            return self.send_json({"status": "healthy", "service": "SSC CGL Testbook Platform"})
+
+        # API: Current Authenticated User
+        if path == "/api/auth/me":
+            user = self.get_auth_user()
+            if user:
+                return self.send_json({"authenticated": True, "user": user})
+            return self.send_json({"authenticated": False, "user": None})
+
+        # API: Available Tests List
+        if path == "/api/tests":
+            tests = []
+            if os.path.exists(TESTS_DIR):
+                for filename in sorted(os.listdir(TESTS_DIR)):
+                    if filename.endswith(".json"):
+                        filepath = os.path.join(TESTS_DIR, filename)
+                        try:
+                            with open(filepath, "r", encoding="utf-8") as f:
+                                data = json.load(f)
+                                tests.append({
+                                    "id": data.get("id", filename[:-5]),
+                                    "title": data.get("title", filename[:-5]),
+                                    "subtitle": data.get("subtitle", ""),
+                                    "category": data.get("category", "General"),
+                                    "durationMinutes": data.get("durationMinutes", 35),
+                                    "numQuestions": len(data.get("questions", [])),
+                                    "marksPerQuestion": data.get("marksPerQuestion", 3),
+                                    "negativeMarks": data.get("negativeMarks", 1)
+                                })
+                        except Exception:
+                            pass
+            return self.send_json(tests)
+
+        # API: Specific Test Details
+        if path.startswith("/api/tests/"):
+            test_id = path.split("/api/tests/")[1].split("?")[0]
+            target_file = None
+            if os.path.exists(TESTS_DIR):
+                for filename in os.listdir(TESTS_DIR):
+                    if filename.endswith(".json"):
+                        if filename == f"{test_id}.json" or filename[:-5] == test_id:
+                            target_file = os.path.join(TESTS_DIR, filename)
+                            break
+                        filepath = os.path.join(TESTS_DIR, filename)
+                        try:
+                            with open(filepath, "r", encoding="utf-8") as f:
+                                d = json.load(f)
+                                if d.get("id") == test_id:
+                                    target_file = filepath
+                                    break
+                        except Exception:
+                            pass
+
+            if target_file and os.path.exists(target_file):
+                with open(target_file, "r", encoding="utf-8") as f:
+                    return self.send_json(json.load(f))
+            return self.send_json({"error": "Test not found"}, status=404)
+
+        # API: User Attempt History (Multi-Tenant)
+        if path == "/api/history":
+            user = self.get_auth_user()
+            user_id = user['id'] if user else "user_admin_anshul"
+            history = db.get_user_history(user_id)
+            return self.send_json(history)
+
+        # API: Personal Study Notes
+        if path == "/api/notes":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            notes = db.get_user_notes(user['id'])
+            return self.send_json(notes)
+
+        # API: Study Materials & Guides
+        if path == "/api/study-materials":
+            ga_plan_path = os.path.join(os.path.dirname(BASE_DIR), "General_Awareness_60_Day_Plan.md")
+            math_tracker_path = os.path.join(os.path.dirname(BASE_DIR), "study_profile.md")
+            ga_content = ""
+            math_content = ""
+            if os.path.exists(ga_plan_path):
+                with open(ga_plan_path, "r", encoding="utf-8") as f:
+                    ga_content = f.read()
+            if os.path.exists(math_tracker_path):
+                with open(math_tracker_path, "r", encoding="utf-8") as f:
+                    math_content = f.read()
+
+            materials = [
+                {
+                    "id": "mat_ga_plan",
+                    "title": "SSC CGL 60-Day General Awareness Master Strategy",
+                    "category": "General Awareness",
+                    "description": "TCS 80/20 High-ROI theme breakdown, subject-wise weightage, daily 3-hour study timetable, and 60-day day-by-day plan.",
+                    "content": ga_content
+                },
+                {
+                    "id": "mat_math_tracker",
+                    "title": "Mathematics Syllabus & Topic Mastery Tracker",
+                    "category": "Quantitative Aptitude",
+                    "description": "11 core mathematical modules, diagnostic weakness log, and progress monitoring.",
+                    "content": math_content
+                },
+                {
+                    "id": "mat_formula_vault",
+                    "title": "SSC CGL Tier-2 High-Yield Formula Vault & Smart Shortcuts",
+                    "category": "Maths Revision",
+                    "description": "Essential formulas for Frustum, Circle Tangents, Inradius/Circumradius, Successive Percentage, and GP TRICKS.",
+                    "content": """# SSC CGL Tier-2 Mathematics Formula Vault
+
+### 1. Algebra & Polynomials
+- **Symmetric Identity**: $a^3 + b^3 + c^3 - 3abc = (a + b + c)(a^2 + b^2 + c^2 - ab - bc - ca) = \\frac{1}{2}(a+b+c)[(a-b)^2 + (b-c)^2 + (c-a)^2]$
+- If $a + b + c = 0$, then $a^3 + b^3 + c^3 = 3abc$.
+- If $x + \\frac{1}{x} = k$, then:
+  - $x^2 + \\frac{1}{x^2} = k^2 - 2$
+  - $x^3 + \\frac{1}{x^3} = k^3 - 3k$
+  - $x^5 + \\frac{1}{x^5} = (x^2 + \\frac{1}{x^2})(x^3 + \\frac{1}{x^3}) - (x + \\frac{1}{x})$
+
+### 2. Geometry & Circles
+- **Direct Common Tangent (DCT)**: $D = \\sqrt{d^2 - (r_1 - r_2)^2}$
+- **Transverse Common Tangent (TCT)**: $T = \\sqrt{d^2 - (r_1 + r_2)^2}$
+- **Inradius of Right-angled Triangle**: $r = \\frac{P + B - H}{2}$
+- **Circumradius of Right-angled Triangle**: $R = \\frac{H}{2}$
+- **Apollonius' Theorem**: In $\\triangle ABC$ with median $AD$, $AB^2 + AC^2 = 2(AD^2 + BD^2)$.
+
+### 3. Mensuration 3D
+- **Frustum of a Right Circular Cone**:
+  - Slant height: $l = \\sqrt{h^2 + (R - r)^2}$
+  - Curved Surface Area (CSA): $\\pi(R + r)l$
+  - Total Surface Area (TSA): $\\pi(R + r)l + \\pi R^2 + \\pi r^2$
+  - Volume: $\\frac{1}{3}\\pi h (R^2 + r^2 + Rr)$
+
+### 4. Commercial Maths
+- **Dishonest Shopkeeper**: Percentage Profit = $\\frac{\\text{True Weight} - \\text{False Weight}}{\\text{False Weight}} \\times 100\\%$
+- **Compound Interest Equal Installments**: $P = \\frac{x}{1 + \\frac{R}{100}} + \\frac{x}{(1 + \\frac{R}{100})^2}$
+- **Difference between CI and SI for 2 Years**: $D_2 = P\\left(\\frac{R}{100}\\right)^2$
+- **Difference between CI and SI for 3 Years**: $D_3 = P\\left(\\frac{R}{100}\\right)^2 \\left(\\frac{300 + R}{100}\\right)$
+"""
+                }
+            ]
+            return self.send_json(materials)
+
+        # API: Admin Overview
+        if path == "/api/admin/overview":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            overview = db.get_admin_overview()
+            return self.send_json(overview)
+
+        # API: Admin DB Status
+        if path == "/api/admin/db-status":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            supa_url = db.get_setting("SUPABASE_URL", "")
+            supa_key = db.get_setting("SUPABASE_KEY", "")
+            connected = False
+            msg = "Not configured"
+            if supa_url and supa_key:
+                connected, msg = db.test_supabase_connection(supa_url, supa_key)
+            return self.send_json({
+                "supabase_configured": bool(supa_url and supa_key),
+                "supabase_url": supa_url[:12] + "..." if supa_url else "",
+                "connection_status": msg,
+                "is_connected": connected
+            })
+
+        # Static File Delivery
+        return super().do_GET()
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        content_length = int(self.headers.get("Content-Length", 0))
+        post_data = self.rfile.read(content_length) if content_length > 0 else b"{}"
+
+        try:
+            payload = json.loads(post_data.decode("utf-8")) if post_data else {}
+        except Exception:
+            payload = {}
+
+        # Auth: Register
+        if path == "/api/auth/register":
+            email = payload.get("email", "")
+            password = payload.get("password", "")
+            full_name = payload.get("full_name", "")
+            target_exam = payload.get("target_exam", "SSC CGL 2026")
+            if not email or not password or not full_name:
+                return self.send_json({"error": "All fields are required"}, status=400)
+            if len(password) < 6:
+                return self.send_json({"error": "Password must be at least 6 characters"}, status=400)
+            data, err = db.register_user(email, password, full_name, target_exam)
+            if err:
+                return self.send_json({"error": err}, status=400)
+            return self.send_json(data)
+
+        # Auth: Login
+        if path == "/api/auth/login":
+            email = payload.get("email", "")
+            password = payload.get("password", "")
+            if not email or not password:
+                return self.send_json({"error": "Email and password are required"}, status=400)
+            data, err = db.authenticate_user(email, password)
+            if err:
+                return self.send_json({"error": err}, status=401)
+            return self.send_json(data)
+
+        # Auth: Logout
+        if path == "/api/auth/logout":
+            token = payload.get("token")
+            if token:
+                db.delete_session(token)
+            return self.send_json({"status": "logged_out"})
+
+        # Submit Test Result
+        if path == "/api/submit":
+            user = self.get_auth_user()
+            user_id = user['id'] if user else "user_admin_anshul"
+            attempt_id = db.save_test_result(user_id, payload)
+            # Trigger background cloud sync if Supabase is active
+            try:
+                db.sync_records_to_supabase()
+            except Exception:
+                pass
+            return self.send_json({"status": "success", "attemptId": attempt_id})
+
+        # Save Personal Note
+        if path == "/api/notes":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            note_id = payload.get("id")
+            title = payload.get("title", "Untitled Note")
+            content = payload.get("content", "")
+            topic = payload.get("topic", "General")
+            saved_id = db.save_user_note(user['id'], note_id, title, content, topic)
+            return self.send_json({"status": "success", "id": saved_id})
+
+        # Admin: Configure Supabase
+        if path == "/api/admin/db-config":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            url = payload.get("supabase_url", "").strip()
+            key = payload.get("supabase_key", "").strip()
+            if url and key:
+                ok, msg = db.test_supabase_connection(url, key)
+                if not ok:
+                    return self.send_json({"error": f"Failed to connect to Supabase: {msg}"}, status=400)
+                db.set_setting("SUPABASE_URL", url)
+                db.set_setting("SUPABASE_KEY", key)
+                return self.send_json({"status": "success", "message": "Supabase configured and connected!"})
+            return self.send_json({"error": "URL and Key are required"}, status=400)
+
+        # Admin: Sync to Supabase
+        if path == "/api/admin/db-sync":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            result = db.sync_records_to_supabase()
+            return self.send_json(result)
+
+        # Admin: Save Custom Test
+        if path == "/api/save-test":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            test_id = payload.get("id") or f"custom_test_{len(os.listdir(TESTS_DIR)) + 1}"
+            payload["id"] = test_id
+            target_file = os.path.join(TESTS_DIR, f"{test_id}.json")
+            with open(target_file, "w", encoding="utf-8") as f:
+                json.dump(payload, f, indent=2, ensure_ascii=False)
+            return self.send_json({"status": "success", "id": test_id})
+
+        return self.send_json({"error": "Endpoint not found"}, status=404)
+
+    def do_DELETE(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        if path.startswith("/api/notes/"):
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            note_id = path.split("/api/notes/")[1]
+            db.delete_user_note(user['id'], note_id)
+            return self.send_json({"status": "success", "deleted": note_id})
+        return self.send_json({"error": "Not found"}, status=404)
+
+class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
+    allow_reuse_address = True
+
+if __name__ == "__main__":
+    print(f"Starting SSC CGL Production Platform on http://0.0.0.0:{PORT}")
+    server = ThreadedHTTPServer(("0.0.0.0", PORT), ProductionAppHandler)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down server.")
+        server.server_close()

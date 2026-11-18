@@ -1,0 +1,4 @@
+# Production Python Dependencies
+# The core platform is built with Python 3 Standard Library for zero-breakage reliability.
+# Optional production WSGI server:
+gunicorn>=21.2.0

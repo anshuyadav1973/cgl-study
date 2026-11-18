@@ -1,0 +1,301 @@
+import json
+import os
+
+tests_dir = "app/data/tests"
+
+# Test 05: Geometry & Mensuration 2D/3D (25 Questions)
+test_5 = {
+    "id": "cgl-mains-mock-05",
+    "title": "SSC CGL Mains 2026 - Geometry & Mensuration 2D/3D (25 Qs)",
+    "subtitle": "High-Yield Geometry Theorems, Circles, Polygons, 2D & 3D Shapes",
+    "category": "Geometry & Mensuration",
+    "durationMinutes": 35,
+    "marksPerQuestion": 3,
+    "negativeMarks": 1,
+    "instructions": [
+        "25 Questions covering Geometry, Polygons, Circles, Tangents, Mensuration 2D & 3D.",
+        "Duration: 35 minutes. Marking: +3 for correct, -1 for incorrect."
+    ],
+    "questions": [
+        {
+            "id": 1,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 19/01/2026",
+            "question_en": "In a triangle PQR, ∠R = 62°. The perpendicular bisector of PQ at S meets QR at T. If ∠TPR = 38°, what is the measure of ∠PQR?",
+            "question_hi": "त्रिभुज PQR में, ∠R = 62° है। PQ का लंब समद्विभाजक बिंदु S पर PQ को काटता है और QR को T पर मिलता है। यदि ∠TPR = 38° है, तो ∠PQR का मान ज्ञात कीजिये?",
+            "options": [{"id":"A","text":"40°"},{"id":"B","text":"60°"},{"id":"C","text":"80°"},{"id":"D","text":"35°"}],
+            "correct": "A",
+            "solution": "ST is the perpendicular bisector of PQ, so PT = QT. Thus, △PTQ is isosceles with ∠TPQ = ∠TQP = θ.\nIn △PQR, ∠P = θ + 38°, ∠Q = θ, ∠R = 62°.\n(θ + 38°) + θ + 62° = 180° ⇒ 2θ + 100° = 180° ⇒ 2θ = 80° ⇒ θ = 40°.\nHence, ∠PQR = 40°.",
+            "trick": "2θ + 38° + 62° = 180° ⇒ θ = 40°."
+        },
+        {
+            "id": 2,
+            "topic": "Geometry",
+            "exam": "SSC CHSL Tier-II, 26/06/2023",
+            "question_en": "△XYZ and △PQR are similar. XY : PQ = 6 : 1. The area of △PQR is 6 cm². What is the area of △XYZ?",
+            "question_hi": "△XYZ और △PQR समरूप हैं। XY : PQ = 6 : 1 है। △PQR का क्षेत्रफल 6 cm² है। △XYZ का क्षेत्रफल क्या है?",
+            "options": [{"id":"A","text":"216 cm²"},{"id":"B","text":"261 cm²"},{"id":"C","text":"36 cm²"},{"id":"D","text":"6 cm²"}],
+            "correct": "A",
+            "solution": "Area(XYZ) / Area(PQR) = (XY / PQ)² = (6/1)² = 36/1.\nArea(XYZ) = 36 × Area(PQR) = 36 × 6 = 216 cm².",
+            "trick": "6² × 6 = 36 × 6 = 216 cm²."
+        },
+        {
+            "id": 3,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 06/03/2023",
+            "question_en": "If △ABC is right-angled at B, AB = 12 cm and ∠CAB = 60°, then find the length of BC.",
+            "question_hi": "यदि △ABC, B पर समकोण है, AB = 12 cm और ∠CAB = 60° है, तो BC की लम्बाई ज्ञात कीजिये?",
+            "options": [{"id":"A","text":"24√3 cm"},{"id":"B","text":"12 cm"},{"id":"C","text":"12√3 cm"},{"id":"D","text":"12√2 cm"}],
+            "correct": "C",
+            "solution": "tan 60° = BC / AB ⇒ √3 = BC / 12 ⇒ BC = 12√3 cm.",
+            "trick": "Side opposite to 60° = Base × √3 = 12√3 cm."
+        },
+        {
+            "id": 4,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 16/11/2020",
+            "question_en": "In △PQR, ∠P = 90°. S and T are the midpoints of sides PR and PQ respectively. What is the value of RQ² / (QS² + RT²)?",
+            "question_hi": "△PQR में, ∠P = 90° है। S और T क्रमशः भुजा PR और PQ के मध्य बिंदु हैं। RQ² / (QS² + RT²) का मान ज्ञात कीजिए?",
+            "options": [{"id":"A","text":"3/4"},{"id":"B","text":"1/2"},{"id":"C","text":"2/3"},{"id":"D","text":"4/5"}],
+            "correct": "D",
+            "solution": "Standard theorem for medians in a right triangle:\n4(QS² + RT²) = 5 RQ².\nTherefore, RQ² / (QS² + RT²) = 4/5.",
+            "trick": "Always 4/5 for sum of median squares to hypotenuse square."
+        },
+        {
+            "id": 5,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 19/01/2026",
+            "question_en": "In a right-angled triangle ABC, ∠B = 90°. If AB = 6 cm and BC = 8 cm, what is the distance between the centroid G and the orthocentre H?",
+            "question_hi": "समकोण त्रिभुज ABC में ∠B = 90° है। यदि AB = 6 सेमी तथा BC = 8 सेमी हैं, तो केन्द्रक G और लम्बकेन्द्र H के बीच की दूरी कितनी होगी?",
+            "options": [{"id":"A","text":"8 cm"},{"id":"B","text":"20/3 cm"},{"id":"C","text":"10/3 cm"},{"id":"D","text":"5 cm"}],
+            "correct": "C",
+            "solution": "In a right triangle, orthocenter H lies at the right angle vertex (B).\nHypotenuse AC = √(6² + 8²) = 10 cm.\nMedian from B to AC has length M = AC / 2 = 5 cm.\nCentroid G lies on this median at 2/3 distance from vertex B: HG = (2/3) × 5 = 10/3 cm.",
+            "trick": "HG = (2/3) × (Hypotenuse / 2) = Hypotenuse / 3 = 10/3 cm."
+        },
+        {
+            "id": 6,
+            "topic": "Geometry",
+            "exam": "SSC CHSL Tier-II, 18/11/2024",
+            "question_en": "A quadrilateral with equal diagonals and equal opposite sides is always a:",
+            "question_hi": "समान विकर्णों और समान विपरीत भुजाओं वाला चतुर्भुज सदैव एक होता है:",
+            "options": [{"id":"A","text":"Kite / पतंग"},{"id":"B","text":"Rectangle / आयत"},{"id":"C","text":"Trapezium / समलंब"},{"id":"D","text":"Rhombus / समचतुर्भुज"}],
+            "correct": "B",
+            "solution": "A quadrilateral with equal opposite sides is a parallelogram. A parallelogram with equal diagonals is always a rectangle.",
+            "trick": "Equal opposite sides + equal diagonals = Rectangle."
+        },
+        {
+            "id": 7,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 20/01/2025",
+            "question_en": "In a circle with centre O, an arc ABC subtends an angle of 134° at the centre. The chord AB is produced to a point P. ∠CBP is equal to:",
+            "question_hi": "O केंद्र वाले वृत्त में, चाप ABC वृत्त के केंद्र पर 134° का कोण अंतरित करती है। जीवा AB को बिंदु P तक बढ़ाया जाता है। ∠CBP के बराबर होगा:",
+            "options": [{"id":"A","text":"67°"},{"id":"B","text":"113°"},{"id":"C","text":"45°"},{"id":"D","text":"89°"}],
+            "correct": "A",
+            "solution": "Angle at circumference subtended by arc ABC is ∠ADC = 134° / 2 = 67°.\nIn cyclic quadrilateral ADCB, exterior angle ∠CBP is equal to interior opposite angle ∠ADC = 67°.",
+            "trick": "Exterior angle of cyclic quadrilateral = Angle at circumference = 134° / 2 = 67°."
+        },
+        {
+            "id": 8,
+            "topic": "Geometry",
+            "exam": "UPSC CDS 2023",
+            "question_en": "What is the area of the region between two concentric circles if a chord of the outer circle of length 14 cm is a tangent to the inner circle?",
+            "question_hi": "यदि बाहरी वृत्त की 14 सेमी लंबाई वाली जीवा आंतरिक वृत्त की स्पर्श रेखा है तो दो संकेंद्रित वृत्तों के बीच के क्षेत्र का क्षेत्रफल क्या है?",
+            "options": [{"id":"A","text":"125 cm²"},{"id":"B","text":"132 cm²"},{"id":"C","text":"144 cm²"},{"id":"D","text":"154 cm²"}],
+            "correct": "D",
+            "solution": "Let outer radius = R, inner radius = r.\nThe chord is bisected at the point of tangency, so each half = 7 cm.\nBy Pythagoras: R² - r² = 7² = 49.\nArea between concentric circles = π(R² - r²) = (22/7) × 49 = 154 cm².",
+            "trick": "Area = π × (chord/2)² = (22/7) × 7² = 154 cm²."
+        },
+        {
+            "id": 9,
+            "topic": "Geometry",
+            "exam": "SSC CHSL MAINS 10/04/2026",
+            "question_en": "In a cyclic quadrilateral ABCD, ∠A = (3x + 10)° and ∠C = (5x – 30)°. Find the value of x.",
+            "question_hi": "एक चक्रीय चतुर्भुज ABCD में, ∠A = (3x + 10)°, ∠C = (5x – 30)° है, x का मान ज्ञात कीजिए:",
+            "options": [{"id":"A","text":"10"},{"id":"B","text":"15"},{"id":"C","text":"20"},{"id":"D","text":"25"}],
+            "correct": "D",
+            "solution": "Opposite angles of a cyclic quadrilateral sum to 180°:\n(3x + 10) + (5x - 30) = 180\n⇒ 8x - 20 = 180 ⇒ 8x = 200 ⇒ x = 25.",
+            "trick": "8x = 200 ⇒ x = 25."
+        },
+        {
+            "id": 10,
+            "topic": "Geometry",
+            "exam": "SSC CHSL MAINS 10/04/2026",
+            "question_en": "In a circle of radius 17 cm, two parallel chords are drawn at distances 8 cm and 15 cm from the center. Find the difference between the lengths of the two chords.",
+            "question_hi": "एक 17 सेमी त्रिज्या के वृत्त में, केंद्र से 8 cm और 15 cm की दूरी पर दो जीवाएं बनाई गई हैं। दोनों जीवाओं की लंबाई में अंतर ज्ञात करें:",
+            "options": [{"id":"A","text":"14 cm"},{"id":"B","text":"16 cm"},{"id":"C","text":"18 cm"},{"id":"D","text":"20 cm"}],
+            "correct": "A",
+            "solution": "For chord 1 at distance 8 cm: half-length = √(17² - 8²) = 15 cm ⇒ Length = 30 cm.\nFor chord 2 at distance 15 cm: half-length = √(17² - 15²) = 8 cm ⇒ Length = 16 cm.\nDifference = 30 - 16 = 14 cm.",
+            "trick": "2 × (15 - 8) = 14 cm."
+        },
+        {
+            "id": 11,
+            "topic": "Geometry",
+            "exam": "SSC CGL Tier-II, 06/03/2023",
+            "question_en": "Find the number of diagonals of a regular polygon whose interior angles sum to 2700°.",
+            "question_hi": "एक सम बहुभुज के विकर्णों की संख्या ज्ञात कीजिये, जिसके अन्तः कोणों का योग 2700° है?",
+            "options": [{"id":"A","text":"127"},{"id":"B","text":"121"},{"id":"C","text":"119"},{"id":"D","text":"117"}],
+            "correct": "C",
+            "solution": "Sum of interior angles = (n - 2) × 180° = 2700°.\nn - 2 = 2700 / 180 = 15 ⇒ n = 17.\nNumber of diagonals = n(n - 3) / 2 = 17 × 14 / 2 = 17 × 7 = 119.",
+            "trick": "n = 17 ⇒ 17 × 7 = 119."
+        },
+        {
+            "id": 12,
+            "topic": "Geometry",
+            "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "Tangents PT and PS are drawn from an external point P to a circle of radius 5 cm. If the distance from P to the center O is 13 cm, find the area of quadrilateral PTOS.",
+            "question_hi": "5 सेंटीमीटर त्रिज्या वाले एक वृत्त के बाहर स्थित बिंदु P से स्पर्श रेखाएँ PT और PS खींची गई हैं। यदि P से केंद्र O की दूरी 13 सेंटीमीटर है, तो चतुर्भुज PTOS का क्षेत्रफल ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"30 cm²"},{"id":"B","text":"45 cm²"},{"id":"C","text":"60 cm²"},{"id":"D","text":"65 cm²"}],
+            "correct": "C",
+            "solution": "In right triangle PTO: PT = √(13² - 5²) = 12 cm.\nArea of △PTO = (1/2) × 5 × 12 = 30 cm².\nArea of quadrilateral PTOS = 2 × Area of △PTO = 2 × 30 = 60 cm².",
+            "trick": "Area = Radius × Tangent = 5 × 12 = 60 cm²."
+        },
+        {
+            "id": 13,
+            "topic": "Geometry",
+            "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "Two circles have a common external tangent of length 17 cm and a common internal tangent of length 9 cm. Find the product of the radii of the circles.",
+            "question_hi": "दो वृत्तों की एक सामान्य बाह्य स्पर्श रेखा की लंबाई 17 cm है तथा एक सामान्य आंतरिक स्पर्श रेखा की लंबाई 9 cm है। वृत्तों की त्रिज्याओं के गुणनफल को ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"48"},{"id":"B","text":"52"},{"id":"C","text":"54"},{"id":"D","text":"64"}],
+            "correct": "B",
+            "solution": "Formula: L_ext² - L_int² = [d² - (r1 - r2)²] - [d² - (r1 + r2)²] = 4 r1 r2.\n17² - 9² = 4 r1 r2\n289 - 81 = 4 r1 r2 ⇒ 208 = 4 r1 r2 ⇒ r1 r2 = 52.",
+            "trick": "(17² - 9²)/4 = (289 - 81)/4 = 208/4 = 52."
+        },
+        {
+            "id": 14,
+            "topic": "Geometry",
+            "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "Two circular gears with radii 3 cm and 6 cm touch externally. Find the length of the direct common tangent between the two gears.",
+            "question_hi": "दो वृत्तीय गियर जिनकी त्रिज्याएँ 3 सेमी और 6 सेमी हैं, समतल सतह पर केवल बाह्य रूप से एक-दूसरे को स्पर्श करते हैं। उनके बीच की सामान्य स्पर्श रेखा की लंबाई ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"8.49 cm"},{"id":"B","text":"7.8 cm"},{"id":"C","text":"6.75 cm"},{"id":"D","text":"5 cm"}],
+            "correct": "A",
+            "solution": "For two circles touching externally, length of direct common tangent = 2√(r1 · r2).\n= 2√(3 × 6) = 2√18 = 2 × 3√2 = 6√2 = 6 × 1.414 = 8.485 ≈ 8.49 cm.",
+            "trick": "2√(18) = 6√2 ≈ 8.49 cm."
+        },
+        {
+            "id": 15,
+            "topic": "Geometry",
+            "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "In a circle with centre O, PA and PB are tangents touching the circle at A and B respectively. Point C lies on the major arc AB. If ∠ACB = 50°, find ∠APB.",
+            "question_hi": "O केंद्र वाले एक वृत्त में, PA और PB स्पर्श रेखाएँ हैं जो वृत्त को क्रमशः A और B पर स्पर्श करती हैं। बिंदु C, बड़े चाप AB पर स्थित है। यदि ∠ACB = 50° तो ∠APB ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"80°"},{"id":"B","text":"100°"},{"id":"C","text":"120°"},{"id":"D","text":"160°"}],
+            "correct": "A",
+            "solution": "Central angle ∠AOB = 2 × ∠ACB = 2 × 50° = 100°.\nIn quadrilateral PAOB, ∠APB + ∠AOB = 180° ⇒ ∠APB = 180° - 100° = 80°.",
+            "trick": "∠APB = 180° - 2(50°) = 80°."
+        },
+        {
+            "id": 16,
+            "topic": "Mensuration 2D",
+            "exam": "SSC CGL Tier-II, 20/01/2025",
+            "question_en": "The ratio between the length and the breadth of a rectangular park is 3 : 2, and the perimeter of the park is 120 m. Find the area (in m²) of the park.",
+            "question_hi": "एक आयताकार पार्क की लंबाई और चौड़ाई के बीच का अनुपात 3 : 2 है और पार्क का परिमाप 120 मीटर है। पार्क का क्षेत्रफल (मीटर² में) ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"864"},{"id":"B","text":"968"},{"id":"C","text":"144"},{"id":"D","text":"454"}],
+            "correct": "A",
+            "solution": "Perimeter = 2(3x + 2x) = 10x = 120 ⇒ x = 12.\nLength = 3(12) = 36 m, Breadth = 2(12) = 24 m.\nArea = 36 × 24 = 864 m².",
+            "trick": "Area = 6 × 12² = 6 × 144 = 864 m²."
+        },
+        {
+            "id": 17,
+            "topic": "Mensuration 2D",
+            "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "The diagonals of a rhombus are in the ratio 11: 60 and its perimeter is 244 cm. What is its area?",
+            "question_hi": "एक समचतुर्भुज के विकर्णों का अनुपात 11 : 60 है और इसका परिमाप 244 cm है। इसका क्षेत्रफल क्या है?",
+            "options": [{"id":"A","text":"1200 cm²"},{"id":"B","text":"1320 cm²"},{"id":"C","text":"1440 cm²"},{"id":"D","text":"1560 cm²"}],
+            "correct": "B",
+            "solution": "Side of rhombus a = 244 / 4 = 61 cm.\nLet diagonals be d1 = 22x, d2 = 120x.\nHalf diagonals: 11x and 60x. (11, 60, 61) is a Pythagorean triplet!\nSo x = 1.\nd1 = 22 cm, d2 = 120 cm.\nArea = (1/2) × 22 × 120 = 1320 cm².",
+            "trick": "Area must be multiple of 11. 1320 is multiple of 11 (1+2 = 3). Only option B!"
+        },
+        {
+            "id": 18,
+            "topic": "Mensuration 2D",
+            "exam": "SSC SELECTION PHASE MATRIC LEVEL 2026",
+            "question_en": "The area of a square S1 is 256 sq. units. A second square S2 is formed by joining the midpoints of the sides of S1. A third square S3 is formed by joining the midpoints of S2, and so on. Find the perimeter of the fifth square (S5) in the sequence.",
+            "question_hi": "वर्ग S1 का क्षेत्रफल 256 वर्ग इकाई है। एक दूसरा वर्ग S2, वर्ग S1 की भुजाओं के मध्यबिंदुओं को मिलाकर बनाया जाता है। इसी प्रकार वर्ग S3, S4, S5 बनाए जाते हैं। पाँचवें वर्ग (S5) का परिमाप ज्ञात कीजिए:",
+            "options": [{"id":"A","text":"12 units"},{"id":"B","text":"14 units"},{"id":"C","text":"16 units"},{"id":"D","text":"18 units"}],
+            "correct": "C",
+            "solution": "Area of S1 = 256.\nArea of S2 = 256 / 2 = 128.\nArea of S3 = 128 / 2 = 64.\nArea of S4 = 64 / 2 = 32.\nArea of S5 = 32 / 2 = 16.\nSide of S5 = √16 = 4 units.\nPerimeter of S5 = 4 × 4 = 16 units.",
+            "trick": "Area S5 = 256 / 2⁴ = 16 ⇒ Side = 4 ⇒ Perimeter = 16 units."
+        },
+        {
+            "id": 19,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CHSL Tier-II, 18/11/2024",
+            "question_en": "The radius of a cylinder is 8/π cm and its volume is 448 cubic cm. What is the height of the cylinder?",
+            "question_hi": "एक बेलन की त्रिज्या 8/π सेमी है और इसका आयतन 448 घन सेमी है। बेलन की ऊँचाई कितनी है?",
+            "options": [{"id":"A","text":"23 cm"},{"id":"B","text":"21 cm"},{"id":"C","text":"24 cm"},{"id":"D","text":"22 cm"}],
+            "correct": "D",
+            "solution": "Volume = π r² h = 448\nπ × (8/π)² × h = 448 ⇒ (64/π) × h = 448\nh = (448 × π) / 64 = 7 × π = 7 × (22/7) = 22 cm.",
+            "trick": "h = 448 / (64 / π) = 7π = 7 × (22/7) = 22 cm."
+        },
+        {
+            "id": 20,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CGL Tier-II, 20/01/2025",
+            "question_en": "If the diameter of the base of a cone is 56 cm and its curved surface area is 3080 cm², then what will be its volume (in cm³)? (Use π = 22/7)",
+            "question_hi": "यदि किसी शंकु का आधार-व्यास 56 सेमी है और इसका वक्र पृष्ठीय क्षेत्रफल 3080 सेमी² है, तो इसका आयतन (सेमी³ में) कितना होगा?",
+            "options": [{"id":"A","text":"17248 cm³"},{"id":"B","text":"15391 cm³"},{"id":"C","text":"14670 cm³"},{"id":"D","text":"12250 cm³"}],
+            "correct": "A",
+            "solution": "Radius r = 56 / 2 = 28 cm.\nCSA = π r l = (22/7) × 28 × l = 3080 ⇒ 88 l = 3080 ⇒ l = 35 cm.\nHeight h = √(l² - r²) = √(35² - 28²) = √(7² × (5² - 4²)) = 7 × 3 = 21 cm.\nVolume = (1/3) π r² h = (1/3) × (22/7) × 28 × 28 × 21 = 22 × 28 × 28 = 17248 cm³.",
+            "trick": "Volume = 22 × 28 × 28 = 17248 cm³ (Multiple of 11: 1-7+2-4+8 = 0)."
+        },
+        {
+            "id": 21,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CHSL Tier-II, 02/11/2023",
+            "question_en": "The diameter of a hemispherical bowl is 21 cm. The volume of the bowl is equal to: (use π = 22/7)",
+            "question_hi": "एक अर्धगोलाकार कटोरे का व्यास 21 सेमी है। कटोरे का आयतन ज्ञात कीजिए। (π = 22/7)",
+            "options": [{"id":"A","text":"2,624.5 cm³"},{"id":"B","text":"2,425.5 cm³"},{"id":"C","text":"2,725.5 cm³"},{"id":"D","text":"2,524.5 cm³"}],
+            "correct": "B",
+            "solution": "Radius r = 21 / 2 = 10.5 cm.\nVolume = (2/3) π r³ = (2/3) × (22/7) × (21/2)³ = (2/3) × (22/7) × (9261 / 8) = 2425.5 cm³.",
+            "trick": "V = 11 × 21 × 21 / 2 = 4851 / 2 = 2425.5 cm³."
+        },
+        {
+            "id": 22,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CGL Tier-II, 02/03/2023",
+            "question_en": "What is the volume of the largest sphere that can be cut out of a wooden cube of side 21 cm?",
+            "question_hi": "लकड़ी के 21 सेमी की भुजा वाले घन से काटे जा सकने वाले सबसे बड़े गोले का आयतन कितना है?",
+            "options": [{"id":"A","text":"3851 cm³"},{"id":"B","text":"4851 cm³"},{"id":"C","text":"6858 cm³"},{"id":"D","text":"5821 cm³"}],
+            "correct": "B",
+            "solution": "Diameter of sphere = side of cube = 21 cm ⇒ Radius r = 21/2 = 10.5 cm.\nVolume = (4/3) π r³ = (4/3) × (22/7) × (21/2)³ = 4851 cm³.",
+            "trick": "V = 22 × 21 × 21 / 2 = 11 × 441 = 4851 cm³."
+        },
+        {
+            "id": 23,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CGL Tier-II, 03/02/2022",
+            "question_en": "The base of a right prism is a triangle whose sides are 8 cm, 15 cm and 17 cm, and its lateral surface area is 480 cm². What is the volume (in cm³) of the prism?",
+            "question_hi": "एक समकोण प्रिज्म का आधार एक त्रिभुज है जिसकी भुजाएँ 8 सेमी, 15 सेमी और 17 सेमी हैं, और इसका पार्श्व सतह क्षेत्रफल 480 सेमी² है। प्रिज्म का आयतन (सेमी³ में) क्या है?",
+            "options": [{"id":"A","text":"540 cm³"},{"id":"B","text":"600 cm³"},{"id":"C","text":"720 cm³"},{"id":"D","text":"640 cm³"}],
+            "correct": "C",
+            "solution": "Base perimeter = 8 + 15 + 17 = 40 cm.\nLSA = Perimeter × Height ⇒ 480 = 40 × h ⇒ h = 12 cm.\nBase Area = (1/2) × 8 × 15 = 60 cm² (Right-angled triangle 8, 15, 17).\nVolume = Base Area × Height = 60 × 12 = 720 cm³.",
+            "trick": "V = 60 × (480 / 40) = 60 × 12 = 720 cm³."
+        },
+        {
+            "id": 24,
+            "topic": "Mensuration 3D",
+            "exam": "SSC CGL Tier-II, 19/01/2026",
+            "question_en": "The base of a right pyramid is an equilateral triangle with a side of 10 cm, and its vertical height is 24 cm. Find the volume of the pyramid in cm³.",
+            "question_hi": "एक समकोण पिरामिड का आधार एक समबाहु त्रिभुज है जिसकी भुजा 10 सेमी है, और उसकी ऊर्ध्वाधर ऊँचाई 24 सेमी है। पिरामिड का आयतन (सेमी³ में) ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"200√3 cm³"},{"id":"B","text":"100√3 cm³"},{"id":"C","text":"150√3 cm³"},{"id":"D","text":"400√3 cm³"}],
+            "correct": "A",
+            "solution": "Base Area = (√3 / 4) × a² = (√3 / 4) × 10² = 25√3 cm².\nVolume = (1/3) × Base Area × Height = (1/3) × 25√3 × 24 = 200√3 cm³.",
+            "trick": "(1/3) × 25√3 × 24 = 200√3 cm³."
+        },
+        {
+            "id": 25,
+            "topic": "Mensuration 3D",
+            "exam": "SSC SELECTION PHASE GRADUATE LEVEL 2026",
+            "question_en": "If the radius of a hemisphere is 7 cm, what is the difference between its total surface area and its curved surface area?",
+            "question_hi": "यदि एक अर्धगोले की त्रिज्या 7 cm है, तो इसके कुल पृष्ठीय क्षेत्रफल और इसके वक्र पृष्ठीय क्षेत्रफल के बीच का अंतर क्या है?",
+            "options": [{"id":"A","text":"154 cm²"},{"id":"B","text":"77 cm²"},{"id":"C","text":"169 cm²"},{"id":"D","text":"88 cm²"}],
+            "correct": "A",
+            "solution": "TSA of hemisphere = 3πr², CSA of hemisphere = 2πr².\nDifference = 3πr² - 2πr² = πr² (Area of base circular face).\n= (22/7) × 7² = 154 cm².",
+            "trick": "Difference = πr² = 154 cm²."
+        }
+    ]
+}
+
+with open(os.path.join(tests_dir, "cgl-mains-mock-05.json"), "w", encoding="utf-8") as f:
+    json.dump(test_5, f, indent=2, ensure_ascii=False)
+
+print("Generated test-05 successfully!")

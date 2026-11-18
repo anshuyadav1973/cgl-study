@@ -1,0 +1,716 @@
+{
+  "id": "cgl-mains-mock-04",
+  "title": "SSC CGL Mains 2026 - Algebra, Number System & Modern Math #04",
+  "subtitle": "25 Questions covering Number System, Algebra, LCM/HCF, Statistics & Probability",
+  "category": "Algebra & Number System",
+  "durationMinutes": 30,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "25 Questions covering Number System, Algebra, Surds & Indices, Simplification, Statistics & Probability.",
+    "Duration: 30 minutes. Marking: +3 for correct, -1 for incorrect.",
+    "Directly from SSC CGL Tier-II & CHSL Tier-II 2025-2026."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Number System",
+      "exam": "SSC CHSL Tier-II, 26/06/2023",
+      "question_en": "How many whole numbers are there between 11² and 12²?",
+      "question_hi": "11² और 12² के बीच कितनी पूर्ण संख्या हैं?",
+      "options": [
+        {
+          "id": "A",
+          "text": "23"
+        },
+        {
+          "id": "B",
+          "text": "21"
+        },
+        {
+          "id": "C",
+          "text": "22"
+        },
+        {
+          "id": "D",
+          "text": "24"
+        }
+      ],
+      "correct": "C",
+      "solution": "11² = 121 and 12² = 144.\nWhole numbers strictly between them = 144 - 121 - 1 = 22.\nFormula: Between n² and (n + 1)², there are 2n non-perfect square numbers.\nHere 2 × 11 = 22.",
+      "trick": "2n = 2 × 11 = 22."
+    },
+    {
+      "id": 2,
+      "topic": "Number System",
+      "exam": "CDS Maths Paper-II, 23/10/2016",
+      "question_en": "Which of the following is correct in respect of the number 1729?",
+      "question_hi": "संख्या 1729 के संबंध में निम्नलिखित में से कौन-सा सही है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "It cannot be written as the sum of the cubes of two positive integers."
+        },
+        {
+          "id": "B",
+          "text": "It can be written as the sum of the cubes of two positive integers in only one way."
+        },
+        {
+          "id": "C",
+          "text": "It can be written as the sum of the cubes of two positive integers in only two ways."
+        },
+        {
+          "id": "D",
+          "text": "It can be written as the sum of the cubes of two positive integers in three ways."
+        }
+      ],
+      "correct": "C",
+      "solution": "1729 is the Hardy-Ramanujan number, the smallest number expressible as the sum of two cubes in two different ways:\n1729 = 1³ + 12³ = 1 + 1728 = 1729\n1729 = 9³ + 10³ = 729 + 1000 = 1729.",
+      "trick": "1729 = 1³ + 12³ = 9³ + 10³ (exactly 2 ways)."
+    },
+    {
+      "id": 3,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "The number 2918245 is divisible by which of the following numbers?",
+      "question_hi": "संख्या 2918245 निम्नलिखित में से किस संख्या से विभाज्य है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3"
+        },
+        {
+          "id": "B",
+          "text": "11"
+        },
+        {
+          "id": "C",
+          "text": "9"
+        },
+        {
+          "id": "D",
+          "text": "12"
+        }
+      ],
+      "correct": "B",
+      "solution": "Divisibility by 11: Sum of digits at odd places - Sum of digits at even places.\nOdd places (from right): 5 + 2 + 1 + 2 = 10.\nEven places (from right): 4 + 8 + 9 = 21.\nDifference = 21 - 10 = 11, which is divisible by 11.\nHence, 2918245 is divisible by 11.",
+      "trick": "(2 + 1 + 2 + 5) - (9 + 8 + 4) = 10 - 21 = -11 (divisible by 11)."
+    },
+    {
+      "id": 4,
+      "topic": "Number System",
+      "exam": "CDS Maths Paper-II, 07/02/2021",
+      "question_en": "What is the unit digit in the expansion of 67³²?",
+      "question_hi": "67³² के विस्तार में इकाई का अंक क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1"
+        },
+        {
+          "id": "B",
+          "text": "3"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "9"
+        }
+      ],
+      "correct": "A",
+      "solution": "Last digit of base = 7. Power = 32.\nCyclicity of 7 is 4: 7¹=7, 7²=9, 7³=3, 7⁴=1.\n32 is divisible by 4 with remainder 0.\nTherefore, unit digit = 7⁴ = 1.",
+      "trick": "32 mod 4 = 0 ⇒ 7⁴ = 2401 ⇒ unit digit is 1."
+    },
+    {
+      "id": 5,
+      "topic": "Number System",
+      "exam": "UPSC CDS-I, 2025",
+      "question_en": "What is the remainder when 2¹⁰¹ is divided by 101?",
+      "question_hi": "2¹⁰¹ को 101 से भाग देने पर शेषफल क्या होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1"
+        },
+        {
+          "id": "B",
+          "text": "2"
+        },
+        {
+          "id": "C",
+          "text": "5"
+        },
+        {
+          "id": "D",
+          "text": "7"
+        }
+      ],
+      "correct": "B",
+      "solution": "101 is a prime number.\nBy Fermat's Little Theorem: a^(p - 1) ≡ 1 (mod p) for gcd(a, p) = 1.\n2¹⁰⁰ ≡ 1 (mod 101).\nTherefore, 2¹⁰¹ = 2¹⁰⁰ × 2¹ ≡ 1 × 2 ≡ 2 (mod 101).\nRemainder = 2.",
+      "trick": "Fermat theorem: 2¹⁰⁰ ≡ 1 mod 101 ⇒ 2¹⁰¹ ≡ 2 mod 101."
+    },
+    {
+      "id": 6,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 16/11/2020",
+      "question_en": "Let ab (a ≠ b) be a two-digit prime number such that ba is also a prime number. Find the sum of all such numbers.",
+      "question_hi": "मान लीजिए ab (a ≠ b) दो अंकों की एक अभाज्य संख्या है, इस प्रकार है कि ba भी एक अभाज्य संख्या है। ऐसी सभी संख्याओं का योग ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "374"
+        },
+        {
+          "id": "B",
+          "text": "407"
+        },
+        {
+          "id": "C",
+          "text": "418"
+        },
+        {
+          "id": "D",
+          "text": "396"
+        }
+      ],
+      "correct": "C",
+      "solution": "Two-digit primes whose reversals are also distinct primes:\nPairs: (13, 31), (17, 71), (37, 73), (79, 97).\nSum = 13 + 31 + 17 + 71 + 37 + 73 + 79 + 97 = 418.",
+      "trick": "44 + 88 + 110 + 176 = 418."
+    },
+    {
+      "id": 7,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 19/01/2026",
+      "question_en": "How many integers in the set {1, 2, 3, ..., 100} have exactly 3 divisors?",
+      "question_hi": "समूह {1, 2, 3..., 100} में ऐसे कितने पूर्णांक हैं जिनके ठीक 3 भाजक हैं?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "4"
+        },
+        {
+          "id": "C",
+          "text": "6"
+        },
+        {
+          "id": "D",
+          "text": "8"
+        }
+      ],
+      "correct": "B",
+      "solution": "A number has exactly 3 divisors if and only if it is the square of a prime number (p² has divisors 1, p, p²).\nPrimes whose squares are ≤ 100:\n2² = 4\n3² = 9\n5² = 25\n7² = 49\n(Next prime is 11, and 11² = 121 > 100).\nThere are exactly 4 such numbers: 4, 9, 25, 49.",
+      "trick": "Squares of primes ≤ 100: 4, 9, 25, 49 ⇒ 4 numbers."
+    },
+    {
+      "id": 8,
+      "topic": "Number System",
+      "exam": "SSC CGL Tier-II, 09/03/2018",
+      "question_en": "If N = 3¹⁴ + 3¹³ – 12, then what is the largest prime factor of N?",
+      "question_hi": "यदि N = 3¹⁴ + 3¹³ – 12 , तो N का अधिकतम अभाज्य गुणनखण्ड ज्ञात करें?",
+      "options": [
+        {
+          "id": "A",
+          "text": "11"
+        },
+        {
+          "id": "B",
+          "text": "79"
+        },
+        {
+          "id": "C",
+          "text": "13"
+        },
+        {
+          "id": "D",
+          "text": "73"
+        }
+      ],
+      "correct": "D",
+      "solution": "N = 3¹³(3 + 1) - 12 = 4 × 3¹³ - 12 = 12(3¹² - 1).\n3¹² - 1 = (3⁶ + 1)(3⁶ - 1) = (729 + 1)(729 - 1) = 730 × 728.\n730 = 73 × 10.\n73 is a prime number. Checking other factors of 728: 728 = 2³ × 7 × 13.\nHence, the largest prime factor is 73.",
+      "trick": "3⁶ + 1 = 730 = 10 × 73 ⇒ Largest prime factor is 73."
+    },
+    {
+      "id": 9,
+      "topic": "Number System",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "A number is written as 3.272727… (repeating). Express it as a fraction.",
+      "question_hi": "एक संख्या को 3.272727… (दोहरावयुक्त) के रूप में लिखा गया है। इसे भिन्न के रूप में प्रकट करें।",
+      "options": [
+        {
+          "id": "A",
+          "text": "327/99"
+        },
+        {
+          "id": "B",
+          "text": "324/99"
+        },
+        {
+          "id": "C",
+          "text": "298/91"
+        },
+        {
+          "id": "D",
+          "text": "333/99"
+        }
+      ],
+      "correct": "B",
+      "solution": "Let x = 3.272727...\n100x = 327.272727...\n100x - x = 327 - 3 = 324\n99x = 324 ⇒ x = 324 / 99.",
+      "trick": "(327 - 3) / 99 = 324 / 99."
+    },
+    {
+      "id": 10,
+      "topic": "Simplification",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "Find the value of the given expression: 30 – [40 – {56 – (25 – 13 – 12)}]",
+      "question_hi": "दिए गए व्यंजक का मान ज्ञात कीजिये? 30 – [40 – {56 – (25 – 13 – 12)}]",
+      "options": [
+        {
+          "id": "A",
+          "text": "46"
+        },
+        {
+          "id": "B",
+          "text": "38"
+        },
+        {
+          "id": "C",
+          "text": "22"
+        },
+        {
+          "id": "D",
+          "text": "14"
+        }
+      ],
+      "correct": "A",
+      "solution": "Innermost bracket: 25 - 13 - 12 = 0.\nNext: 56 - 0 = 56.\nNext: 40 - 56 = -16.\nExpression: 30 - (-16) = 30 + 16 = 46.",
+      "trick": "30 - [40 - 56] = 30 - (-16) = 46."
+    },
+    {
+      "id": 11,
+      "topic": "Simplification",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "The value of (0.7 × 0.7 × 0.7 + 0.3 × 0.3 × 0.3) / (0.7 × 0.7 – 0.7 × 0.3 + 0.3 × 0.3) is:",
+      "question_hi": "(0.7 × 0.7 × 0.7 + 0.3 × 0.3 × 0.3) / (0.7 × 0.7 – 0.7 × 0.3 + 0.3 × 0.3) का मान है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "3"
+        },
+        {
+          "id": "D",
+          "text": "–1"
+        }
+      ],
+      "correct": "B",
+      "solution": "Formula: (a³ + b³) / (a² - ab + b²) = a + b.\nHere a = 0.7, b = 0.3.\nValue = 0.7 + 0.3 = 1.",
+      "trick": "a + b = 0.7 + 0.3 = 1."
+    },
+    {
+      "id": 12,
+      "topic": "Simplification",
+      "exam": "CDS Maths Previous Paper-3, 05/02/2017",
+      "question_en": "What is the value of [(443 + 547)² + (443 – 547)²] / [443 × 443 + 547 × 547]?",
+      "question_hi": "[(443 + 547)² + (443 – 547)²] / [443 × 443 + 547 × 547] का मान क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "0"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "3"
+        }
+      ],
+      "correct": "C",
+      "solution": "Formula: [(a + b)² + (a - b)²] / (a² + b²) = 2(a² + b²) / (a² + b²) = 2.",
+      "trick": "Algebraic identity = 2."
+    },
+    {
+      "id": 13,
+      "topic": "Surds & Indices",
+      "exam": "SSC CHSL MAINS 10/04/2026",
+      "question_en": "Find the value of (√5 + √3)(√5 – √3).",
+      "question_hi": "(√5 + √3)(√5 – √3) का मान ज्ञात करे।",
+      "options": [
+        {
+          "id": "A",
+          "text": "2"
+        },
+        {
+          "id": "B",
+          "text": "8"
+        },
+        {
+          "id": "C",
+          "text": "4"
+        },
+        {
+          "id": "D",
+          "text": "6"
+        }
+      ],
+      "correct": "A",
+      "solution": "(a + b)(a - b) = a² - b² = (√5)² - (√3)² = 5 - 3 = 2.",
+      "trick": "5 - 3 = 2."
+    },
+    {
+      "id": 14,
+      "topic": "Surds & Indices",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "If x = √64 + √121 – √169, then find the value of x².",
+      "question_hi": "यदि x = √64 + √121 – √169 तो x² का मान ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "16"
+        },
+        {
+          "id": "B",
+          "text": "25"
+        },
+        {
+          "id": "C",
+          "text": "36"
+        },
+        {
+          "id": "D",
+          "text": "49"
+        }
+      ],
+      "correct": "C",
+      "solution": "x = 8 + 11 - 13 = 19 - 13 = 6.\nx² = 6² = 36.",
+      "trick": "x = 8 + 11 - 13 = 6 ⇒ x² = 36."
+    },
+    {
+      "id": 15,
+      "topic": "Surds & Indices",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "Find the value of the given expression: √(20 - √(20 - √(20 - ... ∞)))",
+      "question_hi": "दिए गए व्यंजक का मान ज्ञात कीजिये? √(20 - √(20 - √(20 - ... ∞)))",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "6"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "4"
+        }
+      ],
+      "correct": "D",
+      "solution": "Let y = √(20 - y) ⇒ y² + y - 20 = 0 ⇒ (y + 5)(y - 4) = 0.\nSince y > 0, y = 4.\nShort Trick: Factor 20 into two consecutive numbers: 20 = 5 × 4. Since there is a minus (-) sign, the smaller factor is the answer: 4.",
+      "trick": "20 = 5 × 4. Minus sign → smaller factor = 4."
+    },
+    {
+      "id": 16,
+      "topic": "LCM & HCF",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "The ratio of three numbers is 5:7:9 and their least common multiple is 1260. What is the difference between the largest and smallest numbers?",
+      "question_hi": "तीन संख्याओ का अनुपात 5:7:9 है और उनका लघुत्तम समापवर्त्य 1260 है। सबसे बड़ी और सबसे छोटी संख्या के बीच का अंतर कितना है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "16"
+        },
+        {
+          "id": "B",
+          "text": "24"
+        },
+        {
+          "id": "C",
+          "text": "20"
+        },
+        {
+          "id": "D",
+          "text": "32"
+        }
+      ],
+      "correct": "A",
+      "solution": "Let the numbers be 5H, 7H, 9H, where H is their HCF.\nLCM = 5 × 7 × 9 × H = 315H.\n315H = 1260 ⇒ H = 4.\nDifference between largest and smallest = 9H - 5H = 4H = 4 × 4 = 16.",
+      "trick": "Difference = (9 - 5) × H = 4 × 4 = 16."
+    },
+    {
+      "id": 17,
+      "topic": "LCM & HCF",
+      "exam": "SSC CHSL Tier-2, 26/06/2023",
+      "question_en": "The greatest common factor (HCF) of two numbers is 11 and their least common multiple (LCM) is 693. If one of them is 77, find the other number.",
+      "question_hi": "दो संख्याओं का महत्तम समापवर्तक 11 और उनका लघुत्तम समापवर्त्य 693 है। यदि उनमें से एक संख्या 77 है, तो दूसरी संख्या ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "44"
+        },
+        {
+          "id": "B",
+          "text": "99"
+        },
+        {
+          "id": "C",
+          "text": "55"
+        },
+        {
+          "id": "D",
+          "text": "66"
+        }
+      ],
+      "correct": "B",
+      "solution": "Product of two numbers = HCF × LCM\n77 × Number2 = 11 × 693\n⇒ Number2 = (11 × 693) / 77 = 693 / 7 = 99.",
+      "trick": "693 / 7 = 99."
+    },
+    {
+      "id": 18,
+      "topic": "Algebra",
+      "exam": "SSC CGL Tier-II, 18/01/2025",
+      "question_en": "Simplify (5z – 12y)² + (12z + 5y)² – 144z².",
+      "question_hi": "(5z – 12y)² + (12z + 5y)² – 144z² को सरल कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "25z² + 169y²"
+        },
+        {
+          "id": "B",
+          "text": "23z² + 174y²"
+        },
+        {
+          "id": "C",
+          "text": "30z² + 170y²"
+        },
+        {
+          "id": "D",
+          "text": "23z² + 177y²"
+        }
+      ],
+      "correct": "A",
+      "solution": "(5z - 12y)² = 25z² + 144y² - 120zy.\n(12z + 5y)² = 144z² + 25y² + 120zy.\nSum = 25z² + 144z² + 144y² + 25y² = 169z² + 169y².\nSubtracting 144z² = (169z² - 144z²) + 169y² = 25z² + 169y².",
+      "trick": "Notice (5z)² + (12z)² - 144z² = 25z² + 144z² - 144z² = 25z². y terms: 144y² + 25y² = 169y²."
+    },
+    {
+      "id": 19,
+      "topic": "Algebra",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "If x + 1/x = 4, then find the value of x² + 1/x².",
+      "question_hi": "यदि x + 1/x = 4 है, तो x² + 1/x² का मान ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "15"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "14"
+        }
+      ],
+      "correct": "D",
+      "solution": "x² + 1/x² = (x + 1/x)² - 2 = 4² - 2 = 16 - 2 = 14.",
+      "trick": "4² - 2 = 14."
+    },
+    {
+      "id": 20,
+      "topic": "Algebra",
+      "exam": "SSC CGL Tier-II, 19/01/2026",
+      "question_en": "If x + 1/x = 2√3, what is the value of x³ + 1/x³?",
+      "question_hi": "यदि x + 1/x = 2√3 तो x³ + 1/x³ का मान क्या होगा।",
+      "options": [
+        {
+          "id": "A",
+          "text": "10√3"
+        },
+        {
+          "id": "B",
+          "text": "6√3"
+        },
+        {
+          "id": "C",
+          "text": "24√3"
+        },
+        {
+          "id": "D",
+          "text": "18√3"
+        }
+      ],
+      "correct": "D",
+      "solution": "x³ + 1/x³ = (x + 1/x)³ - 3(x + 1/x)\n= (2√3)³ - 3(2√3) = 24√3 - 6√3 = 18√3.",
+      "trick": "(2√3)³ - 3(2√3) = 24√3 - 6√3 = 18√3."
+    },
+    {
+      "id": 21,
+      "topic": "Algebra",
+      "exam": "SSC SELECTION PHASE GL 2026",
+      "question_en": "If a + 1/a = 2, then find a²⁰²¹ + 1/a²⁰²⁷.",
+      "question_hi": "यदि a + 1/a = 2, तो a²⁰²¹ + 1/a²⁰²⁷ ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "0"
+        },
+        {
+          "id": "B",
+          "text": "1"
+        },
+        {
+          "id": "C",
+          "text": "2"
+        },
+        {
+          "id": "D",
+          "text": "–1"
+        }
+      ],
+      "correct": "C",
+      "solution": "a + 1/a = 2 ⇒ a² - 2a + 1 = 0 ⇒ (a - 1)² = 0 ⇒ a = 1.\na²⁰²¹ + 1/a²⁰²⁷ = (1)²⁰²¹ + 1/(1)²⁰²⁷ = 1 + 1 = 2.",
+      "trick": "a = 1 ⇒ 1 + 1 = 2."
+    },
+    {
+      "id": 22,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 19/01/2026",
+      "question_en": "The standard deviation of a set of n values x1, x2, ..., xn is 5. What is the standard deviation of the set x1 – 7, x2 – 7, ... , xn – 7?",
+      "question_hi": "n मानों का एक समूह x1, x2, ..., xn का मानक विचलन 5 है। n मानों x1 – 7, x2 – 7, ... , xn–7 का मानक विचलन होगा:",
+      "options": [
+        {
+          "id": "A",
+          "text": "5"
+        },
+        {
+          "id": "B",
+          "text": "10"
+        },
+        {
+          "id": "C",
+          "text": "7"
+        },
+        {
+          "id": "D",
+          "text": "0"
+        }
+      ],
+      "correct": "A",
+      "solution": "Standard deviation is independent of the change of origin. Adding or subtracting a constant to every observation does not change the standard deviation.\nTherefore, the new standard deviation remains 5.",
+      "trick": "SD is invariant under addition or subtraction of a constant ⇒ 5."
+    },
+    {
+      "id": 23,
+      "topic": "Statistics",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "The mean of a sample data is 60 and the median is 48. Find the mode of this distribution.",
+      "question_hi": "एक नमूना आंकड़ों का माध्य 60 और मध्यिका 48 है। इस बंटन का बहुलक ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "36"
+        },
+        {
+          "id": "B",
+          "text": "18"
+        },
+        {
+          "id": "C",
+          "text": "24"
+        },
+        {
+          "id": "D",
+          "text": "48"
+        }
+      ],
+      "correct": "C",
+      "solution": "By Karl Pearson's empirical relation:\nMode = 3 × Median - 2 × Mean\n= 3 × 48 - 2 × 60 = 144 - 120 = 24.",
+      "trick": "Mode = 3(48) - 2(60) = 144 - 120 = 24."
+    },
+    {
+      "id": 24,
+      "topic": "Probability",
+      "exam": "SSC CGL Tier-II, 18/01/2025",
+      "question_en": "Let A and B be two players who are playing the game to hit the target. The probabilities of hitting the target by A and B is 2/3 and 3/4, respectively. What is the probability that exactly one of them hits the target?",
+      "question_hi": "मान लीजिए A और B दो खिलाड़ी हैं जो टारगेट को हिट करने के लिए खेल रहे हैं। A और B द्वारा टारगेट को हिट किये जाने की प्रायिकताएं क्रमशः 2/3 और 3/4 हैं। उनमें से किसी भी एक द्वारा टारगेट को सटीकता से हिट किये जाने की क्या प्रायिकता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "7/12"
+        },
+        {
+          "id": "B",
+          "text": "1/4"
+        },
+        {
+          "id": "C",
+          "text": "1/12"
+        },
+        {
+          "id": "D",
+          "text": "5/12"
+        }
+      ],
+      "correct": "D",
+      "solution": "P(A) = 2/3 ⇒ P(A') = 1/3.\nP(B) = 3/4 ⇒ P(B') = 1/4.\nP(Exactly one hits) = P(A)P(B') + P(A')P(B)\n= (2/3 × 1/4) + (1/3 × 3/4) = 2/12 + 3/12 = 5/12.",
+      "trick": "2/12 + 3/12 = 5/12."
+    },
+    {
+      "id": 25,
+      "topic": "Probability",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "A speaks the truth 5 times out of 7 and B speaks the truth 8 times out of 9. What is the probability that they will contradict each other in stating the same fact?",
+      "question_hi": "A, 7 में से 5 बार सच बोलता है और B, 9 में से 8 बार सच बोलता है। इसकी क्या प्रायिकता होगी की वे एक ही तथ्य को कहने में एक दूसरे का खंडन करेंगे?",
+      "options": [
+        {
+          "id": "A",
+          "text": "1/4"
+        },
+        {
+          "id": "B",
+          "text": "1/9"
+        },
+        {
+          "id": "C",
+          "text": "1/3"
+        },
+        {
+          "id": "D",
+          "text": "1/7"
+        }
+      ],
+      "correct": "C",
+      "solution": "P(A speaks truth) = 5/7, P(A lies) = 2/7.\nP(B speaks truth) = 8/9, P(B lies) = 1/9.\nThey contradict each other when one tells truth and the other lies:\nP(Contradict) = P(A)P(B') + P(A')P(B)\n= (5/7 × 1/9) + (2/7 × 8/9) = (5 + 16) / 63 = 21 / 63 = 1/3.",
+      "trick": "(5 × 1 + 2 × 8) / (7 × 9) = 21 / 63 = 1/3."
+    }
+  ]
+}

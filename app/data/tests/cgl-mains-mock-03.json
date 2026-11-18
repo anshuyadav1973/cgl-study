@@ -1,0 +1,716 @@
+{
+  "id": "cgl-mains-mock-03",
+  "title": "SSC CGL Mains 2026 - Advanced Maths Super Mock #03",
+  "subtitle": "25 High-Yield Geometry, Mensuration, Trigonometry & Coordinate PYQs",
+  "category": "Advanced Maths",
+  "durationMinutes": 35,
+  "marksPerQuestion": 3,
+  "negativeMarks": 1,
+  "instructions": [
+    "25 Advanced Maths Questions covering Geometry, Mensuration 2D/3D, Trigonometry & Coordinate Geometry.",
+    "Duration: 35 minutes. Marking: +3 for correct, -1 for incorrect.",
+    "Curated from SSC CGL Tier-II 2025-2026 exam papers."
+  ],
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Geometry",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "The ratio of the areas of two similar triangles is 196 : 625, then what will be the ratio of the corresponding sides?",
+      "question_hi": "दो समरूप त्रिभुजों के क्षेत्रफलों का अनुपात 196 : 625 है, तो संगत भुजाओ का अनुपात क्या होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "13 : 25"
+        },
+        {
+          "id": "B",
+          "text": "13 : 20"
+        },
+        {
+          "id": "C",
+          "text": "14 : 20"
+        },
+        {
+          "id": "D",
+          "text": "14 : 25"
+        }
+      ],
+      "correct": "D",
+      "solution": "For similar triangles, Area1 / Area2 = (Side1 / Side2)².\nSide1 / Side2 = √(196 / 625) = 14 / 25.\nRatio = 14 : 25.",
+      "trick": "√196 : √625 = 14 : 25."
+    },
+    {
+      "id": 2,
+      "topic": "Geometry",
+      "exam": "CDS ELEMENTARY 03/09/2023",
+      "question_en": "ABC is a triangle with sides AB = 41 cm, BC = 28 cm and CA = 15 cm. If D, E and F are the midpoints of AB, BC and CA respectively, then what is the area of the triangle DEF?",
+      "question_hi": "ABC एक त्रिभुज है जिसकी भुजाएँ AB = 41 सेमी, BC = 28 सेमी और CA = 15 सेमी हैं। यदि D, E और F क्रमशः AB, BC और CA के मध्यबिंदु हैं, तो त्रिभुज DEF का क्षेत्रफल क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "63 cm²"
+        },
+        {
+          "id": "B",
+          "text": "45 cm²"
+        },
+        {
+          "id": "C",
+          "text": "31.5 cm²"
+        },
+        {
+          "id": "D",
+          "text": "22.5 cm²"
+        }
+      ],
+      "correct": "C",
+      "solution": "Semi-perimeter s = (41 + 28 + 15)/2 = 84 / 2 = 42 cm.\nArea of △ABC = √[42 × (42 - 41) × (42 - 28) × (42 - 15)] = √[42 × 1 × 14 × 27] = 126 cm².\nArea of medial triangle DEF = (1/4) × Area of △ABC = 126 / 4 = 31.5 cm².",
+      "trick": "Area(DEF) = Area(ABC) / 4 = 126 / 4 = 31.5 cm²."
+    },
+    {
+      "id": 3,
+      "topic": "Geometry",
+      "exam": "SSC CGL Tier-II, 29/01/2022",
+      "question_en": "The sides of a triangle are 36 cm, 105 cm and 111 cm. What is the inradius of the triangle?",
+      "question_hi": "एक त्रिभुज की भुजाएँ 36 सेमी, 105 सेमी और 111 सेमी हैं। त्रिभुज की अंतः त्रिज्या क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "15 cm"
+        },
+        {
+          "id": "B",
+          "text": "16 cm"
+        },
+        {
+          "id": "C",
+          "text": "12 cm"
+        },
+        {
+          "id": "D",
+          "text": "26.25 cm"
+        }
+      ],
+      "correct": "A",
+      "solution": "Check triplet: 36/3 = 12, 105/3 = 35, 111/3 = 37. (12, 35, 37) is a Pythagorean triplet!\nSo the triangle is right-angled with hypotenuse 111 cm.\nInradius r = (Perpendicular + Base - Hypotenuse) / 2 = (36 + 105 - 111) / 2 = 30 / 2 = 15 cm.",
+      "trick": "r = (P + B - H)/2 = (36 + 105 - 111)/2 = 15 cm."
+    },
+    {
+      "id": 4,
+      "topic": "Geometry",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "In a triangle PQR, incentre is A and ∠QAR = 116°. Find the measure of ∠QPR.",
+      "question_hi": "एक त्रिभुज PQR में, अन्तः केंद्र A है और ∠QAR = 116° है। ∠QPR की माप ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "26°"
+        },
+        {
+          "id": "B",
+          "text": "54°"
+        },
+        {
+          "id": "C",
+          "text": "52°"
+        },
+        {
+          "id": "D",
+          "text": "27°"
+        }
+      ],
+      "correct": "C",
+      "solution": "Formula for angle at incenter: ∠QAR = 90° + (∠QPR / 2).\n116° = 90° + (∠QPR / 2)\n⇒ ∠QPR / 2 = 26° ⇒ ∠QPR = 52°.",
+      "trick": "∠QPR = 2 × (116° - 90°) = 2 × 26° = 52°."
+    },
+    {
+      "id": 5,
+      "topic": "Geometry",
+      "exam": "SSC CGL Tier-II, 03/02/2022",
+      "question_en": "In triangle △ABC, AB = 48 cm, BC = 55 cm and AC = 73 cm. If O is the centroid of the triangle, then the length (in cm) of BO (correct to one decimal place) is:",
+      "question_hi": "△ABC में, AB = 48 सेमी, BC = 55 सेमी और AC = 73 सेमी। यदि O त्रिभुज का केन्द्रक है, तो BO की लंबाई (सेमी में) (एक दशमलव स्थान तक सही) है:",
+      "options": [
+        {
+          "id": "A",
+          "text": "25.6 cm"
+        },
+        {
+          "id": "B",
+          "text": "24.3 cm"
+        },
+        {
+          "id": "C",
+          "text": "20.4 cm"
+        },
+        {
+          "id": "D",
+          "text": "18.3 cm"
+        }
+      ],
+      "correct": "B",
+      "solution": "48² + 55² = 2304 + 3025 = 5329 = 73². △ABC is a right-angled triangle at B.\nLength of median from right angle to hypotenuse BM = AC / 2 = 73 / 2 = 36.5 cm.\nCentroid divides median in 2:1 ratio: BO = (2/3) × BM = (2/3) × 36.5 = 73 / 3 ≈ 24.33 cm ≈ 24.3 cm.",
+      "trick": "BO = (2/3) × (H/2) = H/3 = 73/3 ≈ 24.3 cm."
+    },
+    {
+      "id": 6,
+      "topic": "Geometry",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "ABCD is a trapezium in which AB is parallel to CD, and E and F are the midpoints of the sides AD and BC, which are not parallel sides. If EF is parallel to AB, AB = 28 cm and CD = 18 cm, then find EF (in cm).",
+      "question_hi": "ABCD एक समलम्ब चतुर्भुज है जिसमें AB, CD के समानांतर है, तथा E और F उन भुजाओ AD और BC के मध्य बिंदु है, जो सामानांतर भुजाएँ नहीं है। यदि EF, AB के समानांतर है, AB = 28 सेमी और CD = 18 सेमी है, तो EF (सेमी में) ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5 cm"
+        },
+        {
+          "id": "B",
+          "text": "23 cm"
+        },
+        {
+          "id": "C",
+          "text": "10 cm"
+        },
+        {
+          "id": "D",
+          "text": "46 cm"
+        }
+      ],
+      "correct": "B",
+      "solution": "Length of median joining midpoints of non-parallel sides in trapezium:\nEF = (AB + CD) / 2 = (28 + 18) / 2 = 46 / 2 = 23 cm.",
+      "trick": "(28 + 18) / 2 = 23 cm."
+    },
+    {
+      "id": 7,
+      "topic": "Geometry",
+      "exam": "SSC CHSL Tier-II, 26/06/2023",
+      "question_en": "AD is a tangent to a circle and ABC is a secant. If AB = 8 cm and BC = 10 cm, then find the length of AD.",
+      "question_hi": "AD एक वृत्त की स्पर्श रेखा है और ABC एक छेदक रेखा है। यदि AB = 8cm और BC = 10cm है, तो AD की लंबाई ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "144 cm"
+        },
+        {
+          "id": "B",
+          "text": "13.45 cm"
+        },
+        {
+          "id": "C",
+          "text": "12.5 cm"
+        },
+        {
+          "id": "D",
+          "text": "12 cm"
+        }
+      ],
+      "correct": "D",
+      "solution": "By Tangent-Secant Theorem: AD² = AB × AC.\nAC = AB + BC = 8 + 10 = 18 cm.\nAD² = 8 × 18 = 144 ⇒ AD = √144 = 12 cm.",
+      "trick": "AD = √(8 × 18) = √144 = 12 cm."
+    },
+    {
+      "id": 8,
+      "topic": "Geometry",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "A circle touches all the four sides of a quadrilateral. If AB = 18 cm, BC = 21 cm and AD = 15 cm, then what is the length of CD?",
+      "question_hi": "एक वृत्त, चतुर्भुज की चारो भुजाओ को स्पर्श करता है। यदि AB = 18 सेमी BC = 21 सेमी और AD = 15 सेमी है, तो CD की लम्बाई क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "18 cm"
+        },
+        {
+          "id": "B",
+          "text": "14 cm"
+        },
+        {
+          "id": "C",
+          "text": "16 cm"
+        },
+        {
+          "id": "D",
+          "text": "12 cm"
+        }
+      ],
+      "correct": "A",
+      "solution": "For a tangential quadrilateral: AB + CD = AD + BC.\n18 + CD = 15 + 21\n18 + CD = 36 ⇒ CD = 36 - 18 = 18 cm.",
+      "trick": "CD = (15 + 21) - 18 = 18 cm."
+    },
+    {
+      "id": 9,
+      "topic": "Geometry",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "If the exterior angle of a regular polygon is 18°, then what will be the number of diagonals in this polygon?",
+      "question_hi": "यदि एक सम बहुभुज का बहिष्कोण 18° है, तो इस बहुभुज में विकर्णों की संख्या क्या होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "180"
+        },
+        {
+          "id": "B",
+          "text": "170"
+        },
+        {
+          "id": "C",
+          "text": "140"
+        },
+        {
+          "id": "D",
+          "text": "150"
+        }
+      ],
+      "correct": "B",
+      "solution": "Number of sides n = 360° / (Exterior angle) = 360° / 18° = 20.\nNumber of diagonals = n(n - 3) / 2 = 20 × 17 / 2 = 170.",
+      "trick": "n = 20 ⇒ 20 × 17 / 2 = 170."
+    },
+    {
+      "id": 10,
+      "topic": "Mensuration 2D",
+      "exam": "CDS-II 14/09/2025",
+      "question_en": "The sides of a triangle are 11 cm, 60 cm and 61 cm. What is the area of the triangle formed by joining the mid-points of the sides of the triangle?",
+      "question_hi": "एक त्रिभुज की भुजाएँ 11 सेमी, 60 सेमी और 61 सेमी हैं। त्रिभुज की भुजाओं के मध्यबिंदुओं को जोड़कर बने त्रिभुज का क्षेत्रफल क्या होगा?",
+      "options": [
+        {
+          "id": "A",
+          "text": "165 cm²"
+        },
+        {
+          "id": "B",
+          "text": "110 cm²"
+        },
+        {
+          "id": "C",
+          "text": "82.5 cm²"
+        },
+        {
+          "id": "D",
+          "text": "72.5 cm²"
+        }
+      ],
+      "correct": "C",
+      "solution": "11² + 60² = 121 + 3600 = 3721 = 61² (Right-angled triangle).\nArea of original triangle = (1/2) × 11 × 60 = 330 cm².\nArea of triangle formed by midpoints = (1/4) × 330 = 82.5 cm².",
+      "trick": "(11 × 60) / 8 = 660 / 8 = 82.5 cm²."
+    },
+    {
+      "id": 11,
+      "topic": "Mensuration 2D",
+      "exam": "SSC CHSL Tier-II, 26/06/2023",
+      "question_en": "The length of a rectangular plot is three times its breadth. If the area of the rectangular plot is 2700 m², then what is the breadth of the rectangular plot?",
+      "question_hi": "एक आयताकार भूखंड की लम्बाई उसकी चौड़ाई की तीन गुनी है। यदि आयताकार भूखंड का क्षेत्रफल 2700 m² है, तो आयताकार भूखंड की चौड़ाई कितनी है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "12 m"
+        },
+        {
+          "id": "B",
+          "text": "28 m"
+        },
+        {
+          "id": "C",
+          "text": "30 m"
+        },
+        {
+          "id": "D",
+          "text": "20 m"
+        }
+      ],
+      "correct": "C",
+      "solution": "Let breadth = b, length = 3b.\nArea = l × b = 3b² = 2700 ⇒ b² = 900 ⇒ b = 30 m.",
+      "trick": "b = √(2700 / 3) = √900 = 30 m."
+    },
+    {
+      "id": 12,
+      "topic": "Mensuration 2D",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "What is the perimeter of the square inscribed in a circle of radius 5 cm?",
+      "question_hi": "5 सेमी त्रिज्या वाले एक वृत्त के अंदर बने वर्ग का परिमाप क्या है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "20√2 cm"
+        },
+        {
+          "id": "B",
+          "text": "10√2 cm"
+        },
+        {
+          "id": "C",
+          "text": "30√2 cm"
+        },
+        {
+          "id": "D",
+          "text": "40√2 cm"
+        }
+      ],
+      "correct": "A",
+      "solution": "Diameter of circle = 2 × 5 = 10 cm = Diagonal of inscribed square.\nSide of square a = Diagonal / √2 = 10 / √2 = 5√2 cm.\nPerimeter = 4a = 4 × 5√2 = 20√2 cm.",
+      "trick": "Perimeter = 4 × (10/√2) = 20√2 cm."
+    },
+    {
+      "id": 13,
+      "topic": "Mensuration 2D",
+      "exam": "SSC CGL Tier-II, 06/03/2023",
+      "question_en": "The difference between the lengths of two parallel sides of a trapezium is 12 cm. The perpendicular distance between these two parallel sides is 60 cm. If the area of the trapezium is 1380 cm², then find the length (in cm) of each parallel side?",
+      "question_hi": "एक समलम्ब की दो समान्तर भुजाओं की लम्बाई के बीच का अंतर 12 सेमी है। इन दोनों समान्तर भुजाओं के बीच की लंबवत दूरी 60 सेमी है। यदि समलम्ब का क्षेत्रफल 1380 सेमी² है, तो प्रत्येक समान्तर भुजा की लम्बाई (सेमी में) ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "31, 19"
+        },
+        {
+          "id": "B",
+          "text": "24, 12"
+        },
+        {
+          "id": "C",
+          "text": "27, 15"
+        },
+        {
+          "id": "D",
+          "text": "29, 17"
+        }
+      ],
+      "correct": "D",
+      "solution": "Area = (1/2) × (a + b) × h\n1380 = (1/2) × (a + b) × 60 ⇒ a + b = 1380 / 30 = 46.\nGiven a - b = 12.\nAdding both: 2a = 58 ⇒ a = 29 cm.\nb = 46 - 29 = 17 cm.",
+      "trick": "a + b = 46, a - b = 12 ⇒ a = (46+12)/2 = 29, b = (46-12)/2 = 17."
+    },
+    {
+      "id": 14,
+      "topic": "Mensuration 3D",
+      "exam": "SSC CHSL Tier-II, 18/11/2024",
+      "question_en": "The surface area of a cube is 1728 square cm. Find its volume?",
+      "question_hi": "एक घन का पृष्ठीय क्षेत्रफल 1728 वर्ग सेमी है। इसका आयतन ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "3456√2 cm³"
+        },
+        {
+          "id": "B",
+          "text": "4356√2 cm³"
+        },
+        {
+          "id": "C",
+          "text": "5436√2 cm³"
+        },
+        {
+          "id": "D",
+          "text": "6453√2 cm³"
+        }
+      ],
+      "correct": "A",
+      "solution": "Surface Area = 6a² = 1728 ⇒ a² = 288 ⇒ a = √(288) = 12√2 cm.\nVolume = a³ = (12√2)³ = 1728 × 2√2 = 3456√2 cm³.",
+      "trick": "a = 12√2 ⇒ a³ = 12³ × (√2)³ = 1728 × 2√2 = 3456√2 cm³."
+    },
+    {
+      "id": 15,
+      "topic": "Mensuration 3D",
+      "exam": "SSC CGL Tier-II, 26/10/2023",
+      "question_en": "The ratio of the length, width and height of a closed cuboid is given as 6 : 3: 2. The total surface area of this cuboid is given as 1800 cm². Find the volume (in cm³) of this cuboid.",
+      "question_hi": "एक संवृत घनाभ की लंबाई, चौड़ाई और ऊँचाई का अनुपात 6 : 3 : 2 दिया गया है। इस घनाभ का संपूर्ण पृष्ठीय क्षेत्रफल 1800 सेमी² दिया गया है। इस घनाभ का आयतन (सेमी³ में) ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "4650"
+        },
+        {
+          "id": "B",
+          "text": "4500"
+        },
+        {
+          "id": "C",
+          "text": "4200"
+        },
+        {
+          "id": "D",
+          "text": "4800"
+        }
+      ],
+      "correct": "B",
+      "solution": "Let dimensions be 6x, 3x, 2x.\nTSA = 2(lb + bh + hl) = 2(18x² + 6x² + 12x²) = 2(36x²) = 72x².\n72x² = 1800 ⇒ x² = 25 ⇒ x = 5.\nDimensions: l = 30, b = 15, h = 10.\nVolume = 30 × 15 × 10 = 4500 cm³.",
+      "trick": "72x² = 1800 ⇒ x = 5. Volume = (6×3×2) × 5³ = 36 × 125 = 4500."
+    },
+    {
+      "id": 16,
+      "topic": "Mensuration 3D",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "What is the volume of a cylinder if the radius of the cylinder is 10 cm and height is 20 cm? (use π = 3.14)",
+      "question_hi": "एक बेलन का आयतन क्या है यदि बेलन की त्रिज्या 10 सेमी और ऊँचाई 20 सेमी है? (π = 3.14)",
+      "options": [
+        {
+          "id": "A",
+          "text": "6280 cm³"
+        },
+        {
+          "id": "B",
+          "text": "5306 cm³"
+        },
+        {
+          "id": "C",
+          "text": "6260 cm³"
+        },
+        {
+          "id": "D",
+          "text": "5280 cm³"
+        }
+      ],
+      "correct": "A",
+      "solution": "Volume = π r² h = 3.14 × (10)² × 20 = 3.14 × 100 × 20 = 6280 cm³.",
+      "trick": "3.14 × 2000 = 6280 cm³."
+    },
+    {
+      "id": 17,
+      "topic": "Mensuration 3D",
+      "exam": "SSC CGL Tier-II, 03/03/2023",
+      "question_en": "A hemispherical bowl of inner radius 18 cm is filled with liquid. This liquid is to be filled in cylindrical bottles of radius 3 cm and height 6 cm. How many bottles would be required to empty the bowl?",
+      "question_hi": "18 सेमी की आंतरिक त्रिज्या का एक अर्धगोलीय कटोरा द्रव से भरा हुआ है। इस द्रव को 3 सेमी त्रिज्या और 6 सेमी ऊँचाई वाली बेलनाकार बोतलों में भरा जाना है। प्याला खाली करने के लिए कितनी बोतलों की आवश्यकता होगी?",
+      "options": [
+        {
+          "id": "A",
+          "text": "70"
+        },
+        {
+          "id": "B",
+          "text": "68"
+        },
+        {
+          "id": "C",
+          "text": "72"
+        },
+        {
+          "id": "D",
+          "text": "66"
+        }
+      ],
+      "correct": "C",
+      "solution": "Volume of hemisphere = (2/3) π R³ = (2/3) π (18)³.\nVolume of 1 bottle = π r² h = π (3)² (6) = 54 π.\nNumber of bottles n = [(2/3) π × 18 × 18 × 18] / [π × 9 × 6] = 3888 / 54 = 72.",
+      "trick": "n = (2 × 18 × 18 × 18) / (3 × 3 × 3 × 6) = 2 × 6 × 6 = 72."
+    },
+    {
+      "id": 18,
+      "topic": "Mensuration 3D",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "A prism and a pyramid have the same base and the same height. Find the ratio of the volume of the prism and the pyramid.",
+      "question_hi": "एक प्रिज्म और एक पिरामिड का आधार और ऊँचाई समान है। प्रिज्म और पिरामिड के आयतन का अनुपात ज्ञात कीजिये?",
+      "options": [
+        {
+          "id": "A",
+          "text": "2 : 3"
+        },
+        {
+          "id": "B",
+          "text": "3 : 1"
+        },
+        {
+          "id": "C",
+          "text": "1 : 3"
+        },
+        {
+          "id": "D",
+          "text": "3 : 2"
+        }
+      ],
+      "correct": "B",
+      "solution": "Volume of Prism = Base Area × Height.\nVolume of Pyramid = (1/3) × Base Area × Height.\nRatio = (Base Area × Height) / [(1/3) × Base Area × Height] = 3 : 1.",
+      "trick": "Prism : Pyramid = 1 : (1/3) = 3 : 1."
+    },
+    {
+      "id": 19,
+      "topic": "Trigonometry",
+      "exam": "SSC CGL Tier-II, 20/01/2025",
+      "question_en": "If sin A = 5/13, then find the value of (cos A – 2 tan A) / (sin A + 3 tan A).",
+      "question_hi": "यदि sin A = 5/13 है, तो (cos A – 2 tan A) / (sin A + 3 tan A) का मान ज्ञात कीजिए।",
+      "options": [
+        {
+          "id": "A",
+          "text": "11/255"
+        },
+        {
+          "id": "B",
+          "text": "12/255"
+        },
+        {
+          "id": "C",
+          "text": "14/255"
+        },
+        {
+          "id": "D",
+          "text": "13/255"
+        }
+      ],
+      "correct": "C",
+      "solution": "For (5, 12, 13) triplet: Perpendicular = 5, Base = 12, Hypotenuse = 13.\ncos A = 12/13, tan A = 5/12.\nNumerator = 12/13 - 2(5/12) = 12/13 - 5/6 = (72 - 65)/78 = 7/78.\nDenominator = 5/13 + 3(5/12) = 5/13 + 5/4 = (20 + 65)/52 = 85/52.\nResult = (7/78) / (85/52) = (7 × 52) / (78 × 85) = (7 × 2) / (3 × 85) = 14 / 255.",
+      "trick": "(7/78) × (52/85) = 14 / 255."
+    },
+    {
+      "id": 20,
+      "topic": "Trigonometry",
+      "exam": "SSC CGL Tier-II, 02/03/2023",
+      "question_en": "If tan(A + B) = √3 and tan(A – B) = 1/√3, where 0° < (A + B) < 90° and A > B, then the values of A and B are respectively:",
+      "question_hi": "यदि tan(A + B) = √3 और tan(A – B) = 1/√3, 0° < (A + B) < 90°, A > B, तो A और B के मान क्रमशः हैं:",
+      "options": [
+        {
+          "id": "A",
+          "text": "30° & 30°"
+        },
+        {
+          "id": "B",
+          "text": "60° & 30°"
+        },
+        {
+          "id": "C",
+          "text": "15° & 45°"
+        },
+        {
+          "id": "D",
+          "text": "45° & 15°"
+        }
+      ],
+      "correct": "D",
+      "solution": "tan(A + B) = √3 ⇒ A + B = 60°.\ntan(A - B) = 1/√3 ⇒ A - B = 30°.\nA = (60° + 30°)/2 = 45°.\nB = (60° - 30°)/2 = 15°.",
+      "trick": "A = (60 + 30)/2 = 45°, B = (60 - 30)/2 = 15°."
+    },
+    {
+      "id": 21,
+      "topic": "Trigonometry",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "(sin θ + cosec θ)² + (cos θ + sec θ)² is equal to:",
+      "question_hi": "(sin θ + cosec θ)² + (cos θ + sec θ)² किसके बराबर है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "5 + tan²θ + cot²θ"
+        },
+        {
+          "id": "B",
+          "text": "7 + tan²θ – cot²θ"
+        },
+        {
+          "id": "C",
+          "text": "7 + tan²θ + cot²θ"
+        },
+        {
+          "id": "D",
+          "text": "5 + tan²θ – cot²θ"
+        }
+      ],
+      "correct": "C",
+      "solution": "= sin²θ + cosec²θ + 2 + cos²θ + sec²θ + 2\n= (sin²θ + cos²θ) + 4 + cosec²θ + sec²θ\n= 1 + 4 + (1 + cot²θ) + (1 + tan²θ)\n= 7 + tan²θ + cot²θ.",
+      "trick": "Put θ = 45°: (1/√2 + √2)² + (1/√2 + √2)² = (3/√2)² + (3/√2)² = 9/2 + 9/2 = 9. Option (c): 7 + 1 + 1 = 9."
+    },
+    {
+      "id": 22,
+      "topic": "Trigonometry",
+      "exam": "SSC CGL Tier-II, 18/01/2025",
+      "question_en": "If tan(x + y) tan(x – y) = 1, then find the value of tan x.",
+      "question_hi": "यदि tan(x + y) tan(x – y) = 1 है, तो tan x का मान बताइये।",
+      "options": [
+        {
+          "id": "A",
+          "text": "√3"
+        },
+        {
+          "id": "B",
+          "text": "1/√3"
+        },
+        {
+          "id": "C",
+          "text": "1"
+        },
+        {
+          "id": "D",
+          "text": "1/(2√3)"
+        }
+      ],
+      "correct": "C",
+      "solution": "If tan A · tan B = 1, then A + B = 90°.\n(x + y) + (x - y) = 90°\n⇒ 2x = 90° ⇒ x = 45°.\ntan x = tan 45° = 1.",
+      "trick": "2x = 90° ⇒ x = 45° ⇒ tan 45° = 1."
+    },
+    {
+      "id": 23,
+      "topic": "Height & Distance",
+      "exam": "SSC CHSL Tier-II, 02/11/2023",
+      "question_en": "A pole stands vertically on the ground with the help of a 12-metre steel wire tied to its top and affixed on the ground. If the steel wire makes an angle of 30° with the horizontal ground, then the height of the pole is equal to:",
+      "question_hi": "एक खंभा जमीन पर लम्बवत खड़ा है। जिसके शीर्ष पर 12 मीटर लंबा स्टील का तार बंधा हुआ है और जमीन पर टिका हुआ है। यदि स्टील का तार क्षैतिज जमीन से 30° का कोण बनाता है, तो खंभे की ऊँचाई बराबर है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "8 m"
+        },
+        {
+          "id": "B",
+          "text": "6√3 m"
+        },
+        {
+          "id": "C",
+          "text": "8√3 m"
+        },
+        {
+          "id": "D",
+          "text": "6 m"
+        }
+      ],
+      "correct": "D",
+      "solution": "sin 30° = Height / Wire Length\n1/2 = h / 12 ⇒ h = 6 m.",
+      "trick": "In 30-60-90 triangle, side opposite to 30° is half the hypotenuse = 12 / 2 = 6 m."
+    },
+    {
+      "id": 24,
+      "topic": "Co-ordinate Geometry",
+      "exam": "SSC CHSL MAINS 10/04/2026",
+      "question_en": "Which of the following points lies on the same straight line as the points (2, 3) and (4, 7)?",
+      "question_hi": "निम्नलिखित में से कौन-सा बिंदु, (2, 3) और (4, 7) बिंदुओं के समान ही एक सीधी रेखा पर स्थित है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "(6, 11)"
+        },
+        {
+          "id": "B",
+          "text": "(5, 8)"
+        },
+        {
+          "id": "C",
+          "text": "(3, 3)"
+        },
+        {
+          "id": "D",
+          "text": "(7, 11)"
+        }
+      ],
+      "correct": "A",
+      "solution": "Slope m = (7 - 3) / (4 - 2) = 4 / 2 = 2.\nEquation of line: y - 3 = 2(x - 2) ⇒ y = 2x - 1.\nTesting point (6, 11): 2(6) - 1 = 12 - 1 = 11 (Satisfied).\nHence (6, 11) lies on the line.",
+      "trick": "Slope = 2. Slope from (4, 7) to (6, 11) = (11 - 7)/(6 - 4) = 4/2 = 2. Matches!"
+    },
+    {
+      "id": 25,
+      "topic": "Co-ordinate Geometry",
+      "exam": "SSC CGL Tier-II, 07/03/2023",
+      "question_en": "Find the coordinates of the points where the graph 57x – 19y = 399 cuts the coordinate axes.",
+      "question_hi": "उन बिंदुओं के निर्देशांक ज्ञात कीजिए जहां आलेख 57x – 19y = 399 निर्देशांक अक्षों को काटता है?",
+      "options": [
+        {
+          "id": "A",
+          "text": "x-axis at (-7, 0) and y-axis at (0, -21)"
+        },
+        {
+          "id": "B",
+          "text": "x-axis at (-7, 0) and y-axis at (0, 21)"
+        },
+        {
+          "id": "C",
+          "text": "x-axis at (7, 0) and y-axis at (0, -21)"
+        },
+        {
+          "id": "D",
+          "text": "x-axis at (7, 0) and y-axis at (0, 2)"
+        }
+      ],
+      "correct": "C",
+      "solution": "When y = 0: 57x = 399 ⇒ x = 399 / 57 = 7 ⇒ (7, 0).\nWhen x = 0: -19y = 399 ⇒ y = 399 / (-19) = -21 ⇒ (0, -21).\nCoordinates are (7, 0) and (0, -21).",
+      "trick": "Intercept form: x/7 + y/(-21) = 1 ⇒ (7, 0) and (0, -21)."
+    }
+  ]
+}

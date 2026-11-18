@@ -1,0 +1,248 @@
+import json
+import os
+
+tests_dir = "app/data/tests"
+
+# Test 06: Trigonometry & Height & Distance (25 Questions)
+test_6 = {
+    "id": "cgl-mains-mock-06",
+    "title": "SSC CGL Mains 2026 - Trigonometry & Height-Distance (25 Qs)",
+    "subtitle": "Identities, Minima/Maxima, Inverse properties & Angle Elevations",
+    "category": "Trigonometry",
+    "durationMinutes": 35,
+    "marksPerQuestion": 3,
+    "negativeMarks": 1,
+    "instructions": ["25 Questions on Trigonometric Identities, Heights & Distances, and Radians.", "Duration: 35 minutes."],
+    "questions": [
+        {
+            "id": 1, "topic": "Trigonometry", "exam": "SSC CGL Tier-II, 20/01/2025",
+            "question_en": "Let PQR be a right angled triangle, right-angled at R. Let PQ = 29cm, QR = 21cm and ∠Q = θ. Find the value of cos²θ – sin²θ.",
+            "question_hi": "ज्ञात है कि PQR एक समकोण त्रिभुज है, जो R पर समकोण है। मान लीजिए PQ = 29 सेमी, QR = 21 सेमी और ∠Q = θ है। cos²θ – sin²θ का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"40/840"},{"id":"B","text":"840/40"},{"id":"C","text":"41/841"},{"id":"D","text":"841/41"}],
+            "correct": "C",
+            "solution": "In △PQR: Base QR = 21, Hypotenuse PQ = 29.\nPerpendicular PR = √(29² - 21²) = √(841 - 441) = √400 = 20 cm. (20, 21, 29 is a triplet)\ncos θ = 21/29, sin θ = 20/29.\ncos²θ - sin²θ = (21/29)² - (20/29)² = (441 - 400)/841 = 41/841.",
+            "trick": "(21² - 20²)/29² = (441 - 400)/841 = 41/841."
+        },
+        {
+            "id": 2, "topic": "Trigonometry", "exam": "SSC CGL Tier-II, 06/03/2023",
+            "question_en": "Find the exact value of cos 120°.",
+            "question_hi": "cos 120° का सटीक मान ज्ञात कीजिये?",
+            "options": [{"id":"A","text":"– 0.5"},{"id":"B","text":"0"},{"id":"C","text":"1"},{"id":"D","text":"0.5"}],
+            "correct": "A",
+            "solution": "cos 120° = cos(180° - 60°) = -cos 60° = -1/2 = -0.5.",
+            "trick": "cos 120° = -sin 30° = -0.5."
+        },
+        {
+            "id": 3, "topic": "Trigonometry", "exam": "SSC CGL Tier-II, 20/01/2025",
+            "question_en": "If cos 27° = p/q, then find the value of cosec 27° – cos 63°.",
+            "question_hi": "यदि cos 27° = p/q है, तो cosec 27° – cos 63° का मान ज्ञात कीजिए:",
+            "options": [{"id":"A","text":"q² / (p√(q² - p²))"},{"id":"B","text":"p² / (q√(q² - p²))"},{"id":"C","text":"q / (p√(q² - p²))"},{"id":"D","text":"p / (p√(q² - p²))"}],
+            "correct": "B",
+            "solution": "cos 27° = p/q ⇒ sin 27° = √(q² - p²)/q.\ncos 63° = sin 27°.\ncosec 27° - cos 63° = (1/sin 27°) - sin 27° = (1 - sin² 27°) / sin 27° = cos² 27° / sin 27°\n= (p/q)² / [√(q² - p²)/q] = p² / [q √(q² - p²)].",
+            "trick": "cos² 27° / sin 27° = (p/q)² / (√(q²-p²)/q) = p² / (q√(q²-p²))."
+        },
+        {
+            "id": 4, "topic": "Trigonometry", "exam": "SSC CHSL Tier-II, 26/06/2023",
+            "question_en": "If sin A = 8/17, then what is the value of cot A + sec A?",
+            "question_hi": "यदि sin A = 8/17 है, तो cot A + sec A का मान क्या है?",
+            "options": [{"id":"A","text":"4 1/120"},{"id":"B","text":"2 1/120"},{"id":"C","text":"5 1/120"},{"id":"D","text":"3 1/120"}],
+            "correct": "D",
+            "solution": "(8, 15, 17) is a triplet: Perpendicular = 8, Base = 15, Hypotenuse = 17.\ncot A = 15/8, sec A = 17/15.\ncot A + sec A = 15/8 + 17/15 = (225 + 136) / 120 = 361 / 120 = 3 1/120.",
+            "trick": "361 / 120 = 3 1/120."
+        },
+        {
+            "id": 5, "topic": "Trigonometry", "exam": "SSC CGL Tier-II, 16/11/2020",
+            "question_en": "In △ABC, right angled at B, if tan A = 1/2, then the value of [sin A(cos C + cos A)] / [cos C(sin C – sin A)] is:",
+            "question_hi": "△ABC में, जो B पर समकोण है, यदि tan A = 1/2 है, तो [sin A(cos C + cos A)] / [cos C(sin C – sin A)] का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"2√5"},{"id":"B","text":"3"},{"id":"C","text":"2"},{"id":"D","text":"1"}],
+            "correct": "B",
+            "solution": "Since ∠B = 90°, A + C = 90° ⇒ cos C = sin A and sin C = cos A.\nNumerator = sin A(sin A + cos A).\nDenominator = sin A(cos A - sin A).\nExpression = (sin A + cos A) / (cos A - sin A) = (tan A + 1) / (1 - tan A)\n= (1/2 + 1) / (1 - 1/2) = (3/2) / (1/2) = 3.",
+            "trick": "(1 + tan A) / (1 - tan A) = (1 + 0.5) / (1 - 0.5) = 1.5 / 0.5 = 3."
+        },
+        {
+            "id": 6, "topic": "Trigonometry", "exam": "SSC CGL Tier-II, 07/03/2023",
+            "question_en": "If a cot θ + b cosec θ = p and b cot θ + a cosec θ = q, then p² – q² is equal to:",
+            "question_hi": "यदि a cot θ + b cosec θ = p और b cot θ + a cosec θ = q है, तो p² – q² किसके बराबर है?",
+            "options": [{"id":"A","text":"b² – a²"},{"id":"B","text":"a² – b²"},{"id":"C","text":"b – a"},{"id":"D","text":"a² + b²"}],
+            "correct": "A",
+            "solution": "p² - q² = (a cot θ + b cosec θ)² - (b cot θ + a cosec θ)²\n= a² cot²θ + b² cosec²θ + 2ab cot θ cosec θ - [b² cot²θ + a² cosec²θ + 2ab cot θ cosec θ]\n= b²(cosec²θ - cot²θ) - a²(cosec²θ - cot²θ)\n= b²(1) - a²(1) = b² - a².",
+            "trick": "p² - q² = b² - a² (since cosec²θ - cot²θ = 1)."
+        },
+        {
+            "id": 7, "topic": "Trigonometry", "exam": "CDS Paper-9 02/02/2020",
+            "question_en": "What is the value of (1 – 2 sin²θ cos²θ) / (sin⁴θ + cos⁴θ) + 4 equal to?",
+            "question_hi": "(1 – 2 sin²θ cos²θ) / (sin⁴θ + cos⁴θ) + 4 का मान किसके बराबर है?",
+            "options": [{"id":"A","text":"0"},{"id":"B","text":"1"},{"id":"C","text":"2"},{"id":"D","text":"5"}],
+            "correct": "D",
+            "solution": "sin⁴θ + cos⁴θ = (sin²θ + cos²θ)² - 2 sin²θ cos²θ = 1 - 2 sin²θ cos²θ.\nTherefore, (1 - 2 sin²θ cos²θ) / (sin⁴θ + cos⁴θ) = 1.\nExpression = 1 + 4 = 5.",
+            "trick": "Identity: sin⁴θ + cos⁴θ = 1 - 2sin²θcos²θ. Fraction = 1. 1 + 4 = 5."
+        },
+        {
+            "id": 8, "topic": "Trigonometry", "exam": "SSC CHSL Tier-II, 02/11/2023",
+            "question_en": "If cot⁴A + cot²A = 1, then find the value of cos⁴A – 3 cos²A.",
+            "question_hi": "यदि cot⁴A + cot²A = 1, तो cos⁴A – 3cos²A का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"–1"},{"id":"B","text":"–2"},{"id":"C","text":"2"},{"id":"D","text":"1"}],
+            "correct": "A",
+            "solution": "cot²A(cot²A + 1) = 1 ⇒ cot²A · cosec²A = 1 ⇒ cos²A / sin⁴A = 1 ⇒ cos²A = sin⁴A = (1 - cos²A)².\ncos²A = 1 - 2 cos²A + cos⁴A ⇒ cos⁴A - 3 cos²A = -1.",
+            "trick": "cos⁴A - 3cos²A = -1."
+        },
+        {
+            "id": 9, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "If 3 sin θ + 5 cos θ = 5, find the value of 5 sin θ – 3 cos θ.",
+            "question_hi": "यदि 3sinθ + 5cosθ = 5, तो 5sinθ – 3cosθ का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"0"},{"id":"B","text":"±1"},{"id":"C","text":"±3"},{"id":"D","text":"±5"}],
+            "correct": "C",
+            "solution": "If a sin θ + b cos θ = c and b sin θ - a cos θ = x, then a² + b² = c² + x².\n3² + 5² = 5² + x² ⇒ 9 + 25 = 25 + x² ⇒ x² = 9 ⇒ x = ±3.",
+            "trick": "x = ±√(3² + 5² - 5²) = ±√9 = ±3."
+        },
+        {
+            "id": 10, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "If cosec θ + cot θ = p, then find the value of (p² – 1) / (p² + 1).",
+            "question_hi": "यदि cosecθ + cotθ = p है, तो (p² – 1) / (p² + 1) का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"sin θ"},{"id":"B","text":"tan θ"},{"id":"C","text":"cos θ"},{"id":"D","text":"cot θ"}],
+            "correct": "C",
+            "solution": "cosec θ + cot θ = p ⇒ cosec θ - cot θ = 1/p.\nSubtracting: 2 cot θ = p - 1/p = (p² - 1)/p.\nAdding: 2 cosec θ = p + 1/p = (p² + 1)/p.\nDividing: (2 cot θ) / (2 cosec θ) = (p² - 1) / (p² + 1) ⇒ (cos θ / sin θ) / (1 / sin θ) = cos θ.",
+            "trick": "Standard identity: (p² - 1)/(p² + 1) = cos θ."
+        },
+        {
+            "id": 11, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "If sin A + cos A = √2, determine the value of tan A + cot A.",
+            "question_hi": "यदि sin A + cos A = √2 है, तो tan A + cot A का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"1/√2"},{"id":"B","text":"2"},{"id":"C","text":"1/2"},{"id":"D","text":"√2"}],
+            "correct": "B",
+            "solution": "Squaring both sides: (sin A + cos A)² = 2 ⇒ 1 + 2 sin A cos A = 2 ⇒ 2 sin A cos A = 1 ⇒ sin A cos A = 1/2.\ntan A + cot A = (sin²A + cos²A) / (sin A cos A) = 1 / (1/2) = 2.",
+            "trick": "A = 45°: sin 45° + cos 45° = 2/√2 = √2. tan 45° + cot 45° = 1 + 1 = 2."
+        },
+        {
+            "id": 12, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "Simplify the expression: (cos³θ + sin³θ)/(cos θ + sin θ) + (cos³θ – sin³θ)/(cos θ – sin θ).",
+            "question_hi": "व्यंजक को सरल कीजिए: (cos³θ + sin³θ)/(cos θ + sin θ) + (cos³θ – sin³θ)/(cos θ – sin θ)",
+            "options": [{"id":"A","text":"1"},{"id":"B","text":"0"},{"id":"C","text":"2"},{"id":"D","text":"–2"}],
+            "correct": "C",
+            "solution": "(cos³θ + sin³θ)/(cos θ + sin θ) = cos²θ - cos θ sin θ + sin²θ = 1 - sin θ cos θ.\n(cos³θ - sin³θ)/(cos θ - sin θ) = cos²θ + cos θ sin θ + sin²θ = 1 + sin θ cos θ.\nSum = (1 - sin θ cos θ) + (1 + sin θ cos θ) = 2.",
+            "trick": "Put θ = 0: (1 + 0)/1 + (1 - 0)/1 = 1 + 1 = 2."
+        },
+        {
+            "id": 13, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE GL 2026",
+            "question_en": "If sec²θ + tan²θ = 7/12, find the value of sec⁴θ – tan⁴θ.",
+            "question_hi": "यदि sec²θ + tan²θ = 7/12, तो sec⁴θ – tan⁴θ का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"7/12"},{"id":"B","text":"13/12"},{"id":"C","text":"1"},{"id":"D","text":"5/12"}],
+            "correct": "A",
+            "solution": "sec⁴θ - tan⁴θ = (sec²θ - tan²θ)(sec²θ + tan²θ) = 1 × (7/12) = 7/12.",
+            "trick": "sec²θ - tan²θ = 1 ⇒ answer is 7/12."
+        },
+        {
+            "id": 14, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If θ is acute and 2 sin θ + 3 cos θ = √13, then find tan θ.",
+            "question_hi": "यदि θ न्यूनकोण है और 2sinθ + 3cosθ = √13, तो tanθ ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"2/3"},{"id":"B","text":"3/2"},{"id":"C","text":"√13/3"},{"id":"D","text":"3/√13"}],
+            "correct": "A",
+            "solution": "In a sin θ + b cos θ = √(a² + b²): here a = 2, b = 3 and √(2² + 3²) = √13.\nThis occurs when sin θ = a/√(a²+b²) = 2/√13 and cos θ = b/√(a²+b²) = 3/√13.\ntan θ = sin θ / cos θ = 2/3.",
+            "trick": "tan θ = coefficient of sin θ / coefficient of cos θ = 2/3."
+        },
+        {
+            "id": 15, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If sec(7θ – 11°) = cosec(4θ + 2°), where both angles are acute, then θ is equal to:",
+            "question_hi": "यदि sec(7θ – 11°) = cosec(4θ + 2°), जहाँ दोनों कोण न्यूनकोण हैं, तो θ बराबर है:",
+            "options": [{"id":"A","text":"7°"},{"id":"B","text":"8°"},{"id":"C","text":"9°"},{"id":"D","text":"10°"}],
+            "correct": "C",
+            "solution": "sec A = cosec B ⇒ A + B = 90°.\n(7θ - 11°) + (4θ + 2°) = 90°\n⇒ 11θ - 9° = 90° ⇒ 11θ = 99° ⇒ θ = 9°.",
+            "trick": "11θ = 99° ⇒ θ = 9°."
+        },
+        {
+            "id": 16, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If tan θ = 3/4, what is (sin θ + cos θ) / (sin θ – cos θ)?",
+            "question_hi": "यदि tanθ = 3/4 हो, तो (sinθ + cosθ) / (sinθ – cosθ) का मान क्या होगा?",
+            "options": [{"id":"A","text":"–5"},{"id":"B","text":"–7"},{"id":"C","text":"0"},{"id":"D","text":"–8"}],
+            "correct": "B",
+            "solution": "Divide numerator and denominator by cos θ:\n= (tan θ + 1) / (tan θ - 1) = (3/4 + 1) / (3/4 - 1) = (7/4) / (-1/4) = -7.",
+            "trick": "(3 + 4) / (3 - 4) = 7 / -1 = -7."
+        },
+        {
+            "id": 17, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If X°48′ is equal to (719/900)π radians, find the value of X.",
+            "question_hi": "यदि X°48′, (719/900)π रेडियन के बराबर है, तो X का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"142"},{"id":"B","text":"143"},{"id":"C","text":"144"},{"id":"D","text":"145"}],
+            "correct": "B",
+            "solution": "π radians = 180°.\n(719/900) × 180° = 719 / 5 = 143.8°.\n0.8° = 0.8 × 60′ = 48′.\nSo the angle is 143° 48′ ⇒ X = 143.",
+            "trick": "719 / 5 = 143.8° = 143° 48′ ⇒ X = 143."
+        },
+        {
+            "id": 18, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If θ is acute and cosec θ + cot θ = 4, then find cos θ.",
+            "question_hi": "यदि θ न्यूनकोण है और cosecθ + cotθ = 4, तो cosθ ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"8/17"},{"id":"B","text":"15/17"},{"id":"C","text":"17/15"},{"id":"D","text":"7/15"}],
+            "correct": "B",
+            "solution": "cosec θ + cot θ = 4 ⇒ cosec θ - cot θ = 1/4.\n2 cosec θ = 4 + 1/4 = 17/4 ⇒ cosec θ = 17/8 ⇒ sin θ = 8/17.\ncos θ = √(1 - (8/17)²) = 15/17.",
+            "trick": "cos θ = (4² - 1) / (4² + 1) = 15 / 17."
+        },
+        {
+            "id": 19, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If sin θ cos θ = 1/3, then find the value of sin⁴θ + cos⁴θ.",
+            "question_hi": "यदि sinθcosθ = 1/3, तो sin⁴θ + cos⁴θ का मान ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"5/9"},{"id":"B","text":"7/9"},{"id":"C","text":"8/9"},{"id":"D","text":"1/9"}],
+            "correct": "B",
+            "solution": "sin⁴θ + cos⁴θ = (sin²θ + cos²θ)² - 2 sin²θ cos²θ = 1² - 2(sin θ cos θ)² = 1 - 2(1/3)² = 1 - 2/9 = 7/9.",
+            "trick": "1 - 2(1/9) = 7/9."
+        },
+        {
+            "id": 20, "topic": "Trigonometry", "exam": "SSC SELECTION PHASE HIGHER SECONDARY LEVEL 2026",
+            "question_en": "If sin⁴θ + cos⁴θ = 7/9, then find tan²θ + cot²θ.",
+            "question_hi": "यदि sin⁴θ + cos⁴θ = 7/9, तो tan²θ + cot²θ ज्ञात कीजिए।",
+            "options": [{"id":"A","text":"5"},{"id":"B","text":"6"},{"id":"C","text":"7"},{"id":"D","text":"8"}],
+            "correct": "C",
+            "solution": "sin⁴θ + cos⁴θ = 1 - 2 sin²θ cos²θ = 7/9 ⇒ 2 sin²θ cos²θ = 2/9 ⇒ sin²θ cos²θ = 1/9 ⇒ sin θ cos θ = 1/3.\ntan θ + cot θ = 1 / (sin θ cos θ) = 3.\ntan²θ + cot²θ = (tan θ + cot θ)² - 2 = 3² - 2 = 7.",
+            "trick": "(1 / (1/3))² - 2 = 9 - 2 = 7."
+        },
+        {
+            "id": 21, "topic": "Height & Distance", "exam": "SSC CGL Tier-II, 06/03/2023",
+            "question_en": "The angle of elevation of the top of an upright tower from the top of a straight pole 24√3 feet high is 60°. If the base of the pillar was at a distance of 60 feet from the base of the tower, then what was the height (in feet) of the tower?",
+            "question_hi": "24√3 फ़ीट ऊँचे एक सीधे खड़े खम्भे के शिखर से एक सीधी खड़ी मीनार के शिखर का उन्नयन कोण 60° था। यदि खम्बे का आधार मीनार के आधार से 60 फ़ीट की दूरी पर था, तो मीनार की ऊँचाई क्या थी?",
+            "options": [{"id":"A","text":"44√3"},{"id":"B","text":"36√3"},{"id":"C","text":"60√3"},{"id":"D","text":"84√3"}],
+            "correct": "D",
+            "solution": "Height above pole = d × tan 60° = 60 × √3 = 60√3 feet.\nTotal height of tower = 60√3 + 24√3 = 84√3 feet.",
+            "trick": "60√3 + 24√3 = 84√3 feet."
+        },
+        {
+            "id": 22, "topic": "Height & Distance", "exam": "SSC CGL Tier-II, 26/10/2023",
+            "question_en": "From the top of a tower, the angle of depression of the top of a 10 m high building is 60°. If the distance between the tower and the building is 50√3 m, find the height of the tower.",
+            "question_hi": "किसी टावर के शीर्ष से, 10मी. ऊँची बिल्डिंग के शीर्ष का अवनमन कोण 60° है। यदि टावर और बिल्डिंग के बीच की दूरी 50√3 मी. है, तो उस टावर की ऊँचाई ज्ञात कीजिए:",
+            "options": [{"id":"A","text":"140 m"},{"id":"B","text":"100 m"},{"id":"C","text":"150 m"},{"id":"D","text":"160 m"}],
+            "correct": "D",
+            "solution": "Height above building h' = d × tan 60° = 50√3 × √3 = 150 m.\nTotal height = h' + 10 = 150 + 10 = 160 m.",
+            "trick": "50√3 × √3 + 10 = 150 + 10 = 160 m."
+        },
+        {
+            "id": 23, "topic": "Height & Distance", "exam": "SSC CGL Tier-2, 11/09/2019",
+            "question_en": "From the top of a tower, the angles of depression of two objects on the ground on the same side of it, are observed to be 60° and 30° respectively and the distance between the objects is 400√3 m. The height (in m) of the tower is:",
+            "question_hi": "एक मीनार के ऊपर से, एक ही तरफ जमीन पर दो वस्तुओं के अवनमन कोण क्रमशः 60° और 30° हैं और वस्तुओं के बीच की दूरी 400√3 मीटर है। मीनार की ऊँचाई है:",
+            "options": [{"id":"A","text":"800√3 m"},{"id":"B","text":"600 m"},{"id":"C","text":"600√3 m"},{"id":"D","text":"800 m"}],
+            "correct": "B",
+            "solution": "Distance between points d = h(cot 30° - cot 60°) = h(√3 - 1/√3) = h(2/√3).\n400√3 = 2h / √3 ⇒ 2h = 400 × 3 = 1200 ⇒ h = 600 m.",
+            "trick": "h = 400√3 × √3 / 2 = 600 m."
+        },
+        {
+            "id": 24, "topic": "Height & Distance", "exam": "SSC CGL Tier-2, 12/09/2019",
+            "question_en": "From a point exactly midway between the foot of two towers P and Q, the angles of elevation their tops are 30° and 60°, respectively. The ratio of the height of P to that of Q is:",
+            "question_hi": "दो टावरों P और Q के पैर के बीचो बीच बिल्कुल एक बिंदु से, उनके शीर्ष की ऊँचाई के उन्नयन कोण क्रमशः 30° और 60° हैं। P की Q की ऊँचाई का अनुपात है:",
+            "options": [{"id":"A","text":"2:3√3"},{"id":"B","text":"1:2√3"},{"id":"C","text":"1:3"},{"id":"D","text":"1:2"}],
+            "correct": "C",
+            "solution": "Since the point is midway, distances d are equal.\nh_P = d tan 30° = d / √3.\nh_Q = d tan 60° = d √3.\nh_P / h_Q = (d / √3) / (d √3) = 1 / 3.\nRatio = 1 : 3.",
+            "trick": "tan 30° / tan 60° = (1/√3) / √3 = 1/3."
+        },
+        {
+            "id": 25, "topic": "Height & Distance", "exam": "CDS Maths Previous Paper 9, 02/02/2020",
+            "question_en": "The angles of elevation of the top of a tower from two points situated at distances p and q from the base of the tower on the same straight line are 27° and 63°, respectively. What is the height of the tower?",
+            "question_hi": "एक टावर के आधार से एक ही सीधी रेखा पर p और q दूरी पर स्थित दो बिंदुओं से टावर के शिखर के उन्नयन कोण क्रमशः 27° और 63° हैं। टावर की ऊँचाई क्या है?",
+            "options": [{"id":"A","text":"pq"},{"id":"B","text":"√(pq)"},{"id":"C","text":"pq/2"},{"id":"D","text":"√(pq)/2"}],
+            "correct": "B",
+            "solution": "Since 27° + 63° = 90° (complementary angles):\nh = p tan 27° and h = q tan 63° = q cot 27°.\nh² = (p tan 27°)(q cot 27°) = pq ⇒ h = √(pq).",
+            "trick": "Standard complementary elevation theorem: h = √(pq)."
+        }
+    ]
+}
+
+with open(os.path.join(tests_dir, "cgl-mains-mock-06.json"), "w", encoding="utf-8") as f:
+    json.dump(test_6, f, indent=2, ensure_ascii=False)
+
+print("Generated test-06 successfully!")
