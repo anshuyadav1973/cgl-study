@@ -120,11 +120,12 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                     return self.send_json(json.load(f))
             return self.send_json({"error": "Test not found"}, status=404)
 
-        # API: User Attempt History (Multi-Tenant)
+        # API: User Attempt History (Multi-Tenant, strict privacy: only authenticated user's history!)
         if path == "/api/history":
             user = self.get_auth_user()
-            user_id = user['id'] if user else "user_admin_anshul"
-            history = db.get_user_history(user_id)
+            if not user:
+                return self.send_json([])  # Guest/unauthenticated users have NO history displayed!
+            history = db.get_user_history(user['id'])
             return self.send_json(history)
 
         # API: Personal Study Notes
@@ -335,6 +336,22 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                 json.dump(payload, f, indent=2, ensure_ascii=False)
             return self.send_json({"status": "success", "id": test_id})
 
+        # Clear User Test History
+        if path == "/api/history/clear":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized. Please sign in."}, status=401)
+            count = db.clear_user_history(user['id'], is_admin=False)
+            return self.send_json({"status": "success", "cleared": count})
+
+        # Admin: Clear All Test History Across Platform
+        if path == "/api/admin/clear-all-data":
+            user = self.get_auth_user()
+            if not user or user.get('role') != 'admin':
+                return self.send_json({"error": "Admin access required"}, status=403)
+            count = db.clear_user_history(user['id'], is_admin=True)
+            return self.send_json({"status": "success", "cleared_all": count})
+
         return self.send_json({"error": "Endpoint not found"}, status=404)
 
     def do_DELETE(self):
@@ -347,6 +364,19 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             note_id = path.split("/api/notes/")[1]
             db.delete_user_note(user['id'], note_id)
             return self.send_json({"status": "success", "deleted": note_id})
+
+        # Delete Single Test Attempt
+        if path.startswith("/api/history/"):
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            attempt_id = path.split("/api/history/")[1]
+            is_admin = user.get('role') == 'admin'
+            deleted = db.delete_test_result(user['id'], attempt_id, is_admin=is_admin)
+            if deleted:
+                return self.send_json({"status": "success", "deleted": attempt_id})
+            return self.send_json({"error": "Attempt not found or access denied"}, status=404)
+
         return self.send_json({"error": "Not found"}, status=404)
 
 class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):

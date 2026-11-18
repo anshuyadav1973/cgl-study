@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blackhole Test Portal - SSC CGL Mains 2026</title>
-  <link rel="stylesheet" href="styles.css?v=2.4">
+  <link rel="stylesheet" href="styles.css?v=2.5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -67,17 +67,18 @@
       </div>
 
       <!-- Auth Controls (Logged Out State) -->
-      <div class="auth-guest-controls" id="authGuestControls" style="display:none;">
+      <!-- Guest Access / Login Actions -->
+      <div class="auth-guest-controls" id="authGuestControls" style="display:flex;">
         <button class="btn-login-header" onclick="app.openAuthModal('login')">Sign In</button>
         <button class="btn-register-header" onclick="app.openAuthModal('register')">Register Free</button>
       </div>
 
       <!-- Candidate Profile (Logged In State) -->
-      <div class="candidate-profile-wrap" id="candidateProfileWrap">
+      <div class="candidate-profile-wrap" id="candidateProfileWrap" style="display:none;">
         <div class="candidate-profile" onclick="app.toggleProfileDropdown()" title="Click to view profile options">
-          <div class="avatar" id="candidateAvatar">AY</div>
+          <div class="avatar" id="candidateAvatar">ST</div>
           <div class="candidate-meta">
-            <span class="c-name" id="candidateName">Anshul Yadav</span>
+            <span class="c-name" id="candidateName">Student</span>
             <span class="c-id" id="candidateExam">SSC CGL 2026</span>
           </div>
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px; opacity:0.8;">
@@ -88,9 +89,9 @@
         <!-- Profile Dropdown Menu -->
         <div class="profile-dropdown-menu" id="profileDropdown" style="display:none;">
           <div class="dropdown-header">
-            <div class="drop-user-name" id="dropUserName">Anshul Yadav</div>
-            <div class="drop-user-email" id="dropUserEmail">anshul@cglstudy.com</div>
-            <span class="drop-user-role" id="dropUserRole">ADMIN</span>
+            <div class="drop-user-name" id="dropUserName">Student</div>
+            <div class="drop-user-email" id="dropUserEmail">student@cglstudy.com</div>
+            <span class="drop-user-role" id="dropUserRole">STUDENT</span>
           </div>
           <div class="dropdown-items">
             <button class="dropdown-item" onclick="app.showHistoryView(); app.toggleProfileDropdown(false);">
@@ -414,7 +415,10 @@
             <h1>Your Test Attempt History</h1>
             <p>Every test you attempt is permanently saved in the database under your account. Review questions, answers, and complete step-by-step solutions anytime.</p>
           </div>
-          <button class="btn btn-primary" onclick="app.showDashboard()">← Back to Mock Tests</button>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button class="btn btn-outline text-danger" id="btnClearHistory" onclick="app.clearAllHistory()" style="display:none;">🗑️ Clear All My History</button>
+            <button class="btn btn-primary" onclick="app.showDashboard()">← Back to Mock Tests</button>
+          </div>
         </div>
 
         <div class="history-list-wrap">
@@ -583,6 +587,17 @@
             </table>
           </div>
         </div>
+
+        <!-- Danger Zone: Purge Test Data -->
+        <div class="admin-card" style="border-color:#fecaca; background:#fff5f5;">
+          <div class="admin-card-header">
+            <div>
+              <h3 style="color:#dc2626;">Danger Zone: Purge Test Records</h3>
+              <p style="color:#991b1b;">Permanently delete all mock test attempts and score records across both local storage and the Supabase cloud database.</p>
+            </div>
+            <button class="btn btn-secondary" onclick="app.adminPurgeAllData()" style="background:#dc2626; border-color:#dc2626; color:#fff;">⚠️ Purge All Test Records</button>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -608,7 +623,7 @@
         <form id="loginForm" onsubmit="app.handleLogin(event)">
           <div class="form-group">
             <label>Email Address</label>
-            <input type="email" id="loginEmail" required placeholder="e.g. anshul@cglstudy.com">
+            <input type="email" id="loginEmail" required placeholder="e.g. student@gmail.com">
           </div>
           <div class="form-group">
             <label>Password</label>
@@ -621,7 +636,7 @@
         <form id="registerForm" onsubmit="app.handleRegister(event)" style="display:none;">
           <div class="form-group">
             <label>Full Name</label>
-            <input type="text" id="regFullName" required placeholder="e.g. Anshul Yadav">
+            <input type="text" id="regFullName" required placeholder="e.g. Candidate Name">
           </div>
           <div class="form-group">
             <label>Email Address</label>
@@ -802,6 +817,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=2.4"></script>
+  <script src="app.js?v=2.5"></script>
 </body>
 </html>

@@ -357,6 +357,121 @@ def get_user_history(user_id):
         })
     return res
 
+def delete_test_result(user_id, attempt_id, is_admin=False):
+    conn = get_db()
+    c = conn.cursor()
+    if is_admin:
+        c.execute('DELETE FROM test_results WHERE id = ?', (attempt_id,))
+    else:
+        c.execute('DELETE FROM test_results WHERE id = ? AND user_id = ?', (attempt_id, user_id))
+    deleted = c.rowcount > 0
+    conn.commit()
+
+    # Update legacy history file
+    try:
+        c.execute('SELECT * FROM test_results ORDER BY created_at ASC')
+        rows = c.fetchall()
+        export_list = []
+        for r in rows:
+            export_list.append({
+                "testId": r['test_id'],
+                "testTitle": r['test_title'],
+                "timestamp": r['created_at'],
+                "score": r['score'],
+                "maxMarks": r['max_marks'],
+                "accuracy": r['accuracy'],
+                "attempted": r['attempted'],
+                "correct": r['correct'],
+                "incorrect": r['incorrect'],
+                "unattempted": r['unattempted'],
+                "timeSpentSeconds": r['time_spent_seconds'],
+                "attemptId": r['id'],
+                "userId": r['user_id'],
+                "userName": r['user_name'],
+                "questions": json.loads(r['questions_evaluated_json']) if r['questions_evaluated_json'] else []
+            })
+        with open(LEGACY_HISTORY, 'w', encoding='utf-8') as f:
+            json.dump(export_list, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    conn.close()
+
+    # Delete from Supabase if configured
+    supa_url = get_setting('SUPABASE_URL')
+    supa_key = get_setting('SUPABASE_KEY')
+    if supa_url and supa_key:
+        try:
+            req = urllib.request.Request(
+                f"{supa_url.rstrip('/')}/rest/v1/test_results?id=eq.{attempt_id}",
+                headers={"apikey": supa_key, "Authorization": f"Bearer {supa_key}"},
+                method="DELETE"
+            )
+            with urllib.request.urlopen(req, timeout=5):
+                pass
+        except Exception:
+            pass
+
+    return deleted
+
+def clear_user_history(user_id, is_admin=False):
+    conn = get_db()
+    c = conn.cursor()
+    if is_admin:
+        c.execute('DELETE FROM test_results')
+    else:
+        c.execute('DELETE FROM test_results WHERE user_id = ?', (user_id,))
+    count = c.rowcount
+    conn.commit()
+
+    # Update legacy history
+    try:
+        c.execute('SELECT * FROM test_results ORDER BY created_at ASC')
+        rows = c.fetchall()
+        export_list = []
+        for r in rows:
+            export_list.append({
+                "testId": r['test_id'],
+                "testTitle": r['test_title'],
+                "timestamp": r['created_at'],
+                "score": r['score'],
+                "maxMarks": r['max_marks'],
+                "accuracy": r['accuracy'],
+                "attempted": r['attempted'],
+                "correct": r['correct'],
+                "incorrect": r['incorrect'],
+                "unattempted": r['unattempted'],
+                "timeSpentSeconds": r['time_spent_seconds'],
+                "attemptId": r['id'],
+                "userId": r['user_id'],
+                "userName": r['user_name'],
+                "questions": json.loads(r['questions_evaluated_json']) if r['questions_evaluated_json'] else []
+            })
+        with open(LEGACY_HISTORY, 'w', encoding='utf-8') as f:
+            json.dump(export_list, f, indent=2, ensure_ascii=False)
+    except Exception:
+        pass
+
+    conn.close()
+
+    # Clear from Supabase
+    supa_url = get_setting('SUPABASE_URL')
+    supa_key = get_setting('SUPABASE_KEY')
+    if supa_url and supa_key:
+        try:
+            param = "" if is_admin else f"?user_id=eq.{user_id}"
+            req = urllib.request.Request(
+                f"{supa_url.rstrip('/')}/rest/v1/test_results{param}",
+                headers={"apikey": supa_key, "Authorization": f"Bearer {supa_key}"},
+                method="DELETE"
+            )
+            with urllib.request.urlopen(req, timeout=5):
+                pass
+        except Exception:
+            pass
+
+    return count
+
 # Personal Notes Helpers
 def get_user_notes(user_id):
     conn = get_db()

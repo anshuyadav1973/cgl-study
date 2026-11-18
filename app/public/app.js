@@ -67,26 +67,12 @@ class TestbookApp {
         }
       } catch (e) {
         console.error('Auth verification error:', e);
+        this.currentUser = null;
+        this.token = null;
+        localStorage.removeItem('cgl_auth_token');
       }
-    }
-
-    if (!authed) {
-      // Auto-authenticate as Anshul Yadav (Administrator)
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: 'anshul@cglstudy.com', password: 'Anshul@2026' })
-        });
-        const data = await res.json();
-        if (data.token && data.user) {
-          this.token = data.token;
-          localStorage.setItem('cgl_auth_token', this.token);
-          this.currentUser = data.user;
-        }
-      } catch (e) {
-        console.log('No default login');
-      }
+    } else {
+      this.currentUser = null;
     }
     this.updateUserInterface();
   }
@@ -96,6 +82,7 @@ class TestbookApp {
     const profileWrap = document.getElementById('candidateProfileWrap');
     const navAdmin = document.getElementById('navLinkAdmin');
     const dropAdmin = document.getElementById('dropAdminItem');
+    const clearHistoryBtn = document.getElementById('btnClearHistory');
 
     if (this.currentUser) {
       if (guestControls) guestControls.style.display = 'none';
@@ -109,21 +96,30 @@ class TestbookApp {
         .join('')
         .toUpperCase();
 
-      document.getElementById('candidateAvatar').innerText = initials || 'ST';
-      document.getElementById('candidateName').innerText = this.currentUser.full_name;
-      document.getElementById('candidateExam').innerText = this.currentUser.target_exam || 'SSC CGL 2026';
+      const elAvatar = document.getElementById('candidateAvatar');
+      if (elAvatar) elAvatar.innerText = initials || 'ST';
+      const elName = document.getElementById('candidateName');
+      if (elName) elName.innerText = this.currentUser.full_name;
+      const elExam = document.getElementById('candidateExam');
+      if (elExam) elExam.innerText = this.currentUser.target_exam || 'SSC CGL 2026';
 
-      document.getElementById('dropUserName').innerText = this.currentUser.full_name;
-      document.getElementById('dropUserEmail').innerText = this.currentUser.email;
-      document.getElementById('dropUserRole').innerText = (this.currentUser.role || 'STUDENT').toUpperCase();
+      const elDropName = document.getElementById('dropUserName');
+      if (elDropName) elDropName.innerText = this.currentUser.full_name;
+      const elDropEmail = document.getElementById('dropUserEmail');
+      if (elDropEmail) elDropEmail.innerText = this.currentUser.email;
+      const elDropRole = document.getElementById('dropUserRole');
+      if (elDropRole) elDropRole.innerText = (this.currentUser.role || 'STUDENT').toUpperCase();
 
       const isAdmin = this.currentUser.role === 'admin';
       if (navAdmin) navAdmin.style.display = isAdmin ? 'inline-block' : 'none';
       if (dropAdmin) dropAdmin.style.display = isAdmin ? 'flex' : 'none';
+      if (clearHistoryBtn) clearHistoryBtn.style.display = (this.historyData && this.historyData.length > 0) ? 'inline-block' : 'none';
     } else {
       if (guestControls) guestControls.style.display = 'flex';
       if (profileWrap) profileWrap.style.display = 'none';
       if (navAdmin) navAdmin.style.display = 'none';
+      if (dropAdmin) dropAdmin.style.display = 'none';
+      if (clearHistoryBtn) clearHistoryBtn.style.display = 'none';
     }
   }
 
@@ -379,6 +375,25 @@ class TestbookApp {
   }
 
   async loadHistory() {
+    if (!this.currentUser) {
+      this.historyData = [];
+      const countEl = document.getElementById('navHistoryCount');
+      if (countEl) countEl.innerText = 0;
+      const dropCountEl = document.getElementById('dropAttemptCount');
+      if (dropCountEl) dropCountEl.innerText = 0;
+      const statTestsAttempted = document.getElementById('statTestsAttempted');
+      if (statTestsAttempted) statTestsAttempted.innerText = 0;
+      const statAccuracy = document.getElementById('statAccuracy');
+      if (statAccuracy) statAccuracy.innerText = '0%';
+      const statAvgScore = document.getElementById('statAvgScore');
+      if (statAvgScore) statAvgScore.innerText = '0%';
+      const banner = document.getElementById('recentAttemptBanner');
+      if (banner) banner.style.display = 'none';
+      const clearBtn = document.getElementById('btnClearHistory');
+      if (clearBtn) clearBtn.style.display = 'none';
+      return;
+    }
+
     try {
       const res = await fetch('/api/history', { headers: this.getAuthHeaders() });
       const history = await res.json();
@@ -388,6 +403,8 @@ class TestbookApp {
       if (countEl) countEl.innerText = this.historyData.length;
       const dropCountEl = document.getElementById('dropAttemptCount');
       if (dropCountEl) dropCountEl.innerText = this.historyData.length;
+      const clearBtn = document.getElementById('btnClearHistory');
+      if (clearBtn) clearBtn.style.display = this.historyData.length > 0 ? 'inline-block' : 'none';
 
       if (this.historyData.length > 0) {
         document.getElementById('statTestsAttempted').innerText = this.historyData.length;
@@ -436,12 +453,35 @@ class TestbookApp {
   async renderHistory() {
     const listContainer = document.getElementById('historyListContainer');
     if (!listContainer) return;
+
+    if (!this.currentUser) {
+      listContainer.innerHTML = `
+        <div class="history-empty-card" style="border: 2px dashed #cbd5e1; padding: 48px 24px; text-align: center; background: #f8fafc; border-radius: 16px;">
+          <div style="font-size: 48px; margin-bottom: 12px;">🔒</div>
+          <h3 class="history-empty-title" style="font-size: 20px; font-weight: 700; color: #1e293b; margin-bottom: 8px;">Your Test History is Private</h3>
+          <p class="history-empty-text" style="color: #64748b; max-width: 500px; margin: 0 auto 24px; line-height: 1.6;">
+            Sign in to your candidate account or register for free to track all your mock test attempts, scores, solutions, and analytics securely.
+          </p>
+          <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="app.openAuthModal('login')">Sign In to Blackhole</button>
+            <button class="btn btn-outline" onclick="app.openAuthModal('register')">Create Free Account</button>
+          </div>
+        </div>
+      `;
+      const clearBtn = document.getElementById('btnClearHistory');
+      if (clearBtn) clearBtn.style.display = 'none';
+      return;
+    }
+
     listContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: #64748b;">Loading your attempt history...</div>';
 
     try {
       const res = await fetch('/api/history', { headers: this.getAuthHeaders() });
       const history = await res.json();
       this.historyData = history || [];
+
+      const clearBtn = document.getElementById('btnClearHistory');
+      if (clearBtn) clearBtn.style.display = this.historyData.length > 0 ? 'inline-block' : 'none';
 
       if (!history || history.length === 0) {
         listContainer.innerHTML = `
@@ -510,15 +550,102 @@ class TestbookApp {
             </div>
           </div>
 
-          <div class="history-card-actions">
-            <button class="btn btn-outline" onclick="app.selectTest('${att.testId || 'cgl-mains-mock-01'}')">Re-attempt Test</button>
-            <button class="btn btn-primary" onclick="app.reviewPastAttempt(${actualIndex})">Review Questions & Solutions ↗</button>
+          <div class="history-card-actions" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; gap:10px;">
+              <button class="btn btn-outline" onclick="app.selectTest('${att.testId || 'cgl-mains-mock-01'}')">Re-attempt Test</button>
+              <button class="btn btn-primary" onclick="app.reviewPastAttempt(${actualIndex})">Review Questions & Solutions ↗</button>
+            </div>
+            <button class="btn btn-outline" style="color:#ef4444; border-color:#fca5a5;" onclick="app.deleteAttempt('${att.attemptId}')" title="Permanently delete this attempt">
+              🗑️ Delete Attempt
+            </button>
           </div>
         `;
         listContainer.appendChild(card);
       });
     } catch (err) {
       listContainer.innerHTML = '<div style="color:red; padding: 20px;">Failed to load test history.</div>';
+    }
+  }
+
+  async deleteAttempt(attemptId) {
+    if (!attemptId) {
+      alert('Attempt ID missing.');
+      return;
+    }
+    if (!confirm('Are you sure you want to permanently delete this test attempt? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/history/${encodeURIComponent(attemptId)}`, {
+        method: 'DELETE',
+        headers: this.getAuthHeaders()
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Test attempt successfully deleted.');
+        await this.loadHistory();
+        await this.renderHistory();
+      } else {
+        alert(data.error || 'Failed to delete test attempt.');
+      }
+    } catch (e) {
+      console.error('Delete attempt error:', e);
+      alert('Network error while deleting attempt.');
+    }
+  }
+
+  async clearAllHistory() {
+    if (!confirm('Are you sure you want to permanently delete ALL your test attempts? This will reset your score and accuracy statistics. This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/history/clear', {
+        method: 'POST',
+        headers: this.getAuthHeaders()
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('All test attempts cleared successfully.');
+        await this.loadHistory();
+        await this.renderHistory();
+      } else {
+        alert(data.error || 'Failed to clear history.');
+      }
+    } catch (e) {
+      console.error('Clear history error:', e);
+      alert('Network error while clearing history.');
+    }
+  }
+
+  async adminPurgeAllData() {
+    if (!this.currentUser || this.currentUser.role !== 'admin') {
+      alert('Only administrators can perform data purge operations.');
+      return;
+    }
+    const confirmed = prompt('DANGER: This will permanently delete ALL student test attempt records from both local SQLite and the Supabase cloud database.\\n\\nType "PURGE" to confirm:');
+    if (confirmed !== 'PURGE') {
+      alert('Purge operation cancelled.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/admin/clear-all-data', {
+        method: 'POST',
+        headers: this.getAuthHeaders()
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(`Data purge completed successfully! ${data.records_deleted || 0} records were deleted.`);
+        await this.loadHistory();
+        await this.loadAdminData();
+      } else {
+        alert(data.error || 'Failed to purge data.');
+      }
+    } catch (e) {
+      console.error('Admin purge error:', e);
+      alert('Network error while purging data.');
     }
   }
 
