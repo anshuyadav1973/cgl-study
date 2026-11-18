@@ -52,29 +52,14 @@ class TestbookApp {
 
   // --- Authentication & User Management ---
   async checkAuth() {
-    if (!this.token) {
-      // Auto-authenticate as default admin if available, or guest
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: 'anshul@cglstudy.com', password: 'Anshul@2026' })
-        });
-        const data = await res.json();
-        if (data.token) {
-          this.token = data.token;
-          localStorage.setItem('cgl_auth_token', this.token);
-          this.currentUser = data.user;
-        }
-      } catch (e) {
-        console.log('No default login');
-      }
-    } else {
+    let authed = false;
+    if (this.token) {
       try {
         const res = await fetch('/api/auth/me', { headers: this.getAuthHeaders() });
         const data = await res.json();
-        if (data.authenticated) {
+        if (data.authenticated && data.user) {
           this.currentUser = data.user;
+          authed = true;
         } else {
           this.currentUser = null;
           this.token = null;
@@ -82,6 +67,25 @@ class TestbookApp {
         }
       } catch (e) {
         console.error('Auth verification error:', e);
+      }
+    }
+
+    if (!authed) {
+      // Auto-authenticate as Anshul Yadav (Administrator)
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: 'anshul@cglstudy.com', password: 'Anshul@2026' })
+        });
+        const data = await res.json();
+        if (data.token && data.user) {
+          this.token = data.token;
+          localStorage.setItem('cgl_auth_token', this.token);
+          this.currentUser = data.user;
+        }
+      } catch (e) {
+        console.log('No default login');
       }
     }
     this.updateUserInterface();
@@ -310,7 +314,8 @@ class TestbookApp {
 
   async showAdminView() {
     if (!this.currentUser || this.currentUser.role !== 'admin') {
-      alert('Administrator access required.');
+      alert('Administrator access required. Please sign in with your admin credentials.');
+      this.openAuthModal('login');
       return;
     }
     this.stopTimer();

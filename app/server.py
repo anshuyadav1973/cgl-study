@@ -34,6 +34,12 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             return db.get_user_from_token(token)
         return None
 
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("Expires", "0")
+        super().end_headers()
+
     def send_json(self, data, status=200):
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
