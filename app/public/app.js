@@ -1,4 +1,4 @@
-// Testbook Examination Application Engine & Student Educational Portal
+// Blackhole Examination Application Engine & Student Educational Portal
 
 class TestbookApp {
   constructor() {

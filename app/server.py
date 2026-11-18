@@ -62,7 +62,7 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
 
         # Health Check
         if path == "/healthz" or path == "/api/health":
-            return self.send_json({"status": "healthy", "service": "SSC CGL Testbook Platform"})
+            return self.send_json({"status": "healthy", "service": "SSC CGL Blackhole Platform"})
 
         # API: Current Authenticated User
         if path == "/api/auth/me":

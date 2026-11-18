@@ -64,16 +64,17 @@ body.testbook-theme {
 }
 
 .tb-logo-icon {
-  font-size: 24px;
-  background: linear-gradient(135deg, #00d2aa, #00a884);
+  font-size: 20px;
+  background: radial-gradient(circle at center, #000000 40%, #1e1b4b 70%, #00d2aa 100%);
   color: #fff;
-  border-radius: 8px;
-  width: 34px;
-  height: 34px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 0 10px rgba(0, 210, 170, 0.4);
+  border: 1.5px solid rgba(0, 210, 170, 0.5);
 }
 
 .brand-text {
