@@ -279,7 +279,7 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
         # Submit Test Result
         if path == "/api/submit":
             user = self.get_auth_user()
-            user_id = user['id'] if user else "user_admin_anshul"
+            user_id = user['id'] if user else "user_guest"
             attempt_id = db.save_test_result(user_id, payload)
             # Trigger background cloud sync if Supabase is active
             try:

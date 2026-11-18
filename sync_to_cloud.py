@@ -82,8 +82,8 @@ def main():
     profiles_payload = [
         {
             "id": "a0000000-0000-0000-0000-000000000001",
-            "email": "anshul@cglstudy.com",
-            "full_name": "Anshul Yadav",
+            "email": "admin@cglstudy.com",
+            "full_name": "Candidate",
             "role": "admin",
             "target_exam": "SSC CGL 2026"
         },

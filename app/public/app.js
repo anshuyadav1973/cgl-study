@@ -14,8 +14,11 @@ class TestbookApp {
     this.calcResetOnNext = false;
     this.solFilter = 'all';
 
-    // Auth & Multi-tenant State
-    this.token = localStorage.getItem('cgl_auth_token') || null;
+    // Auth & Multi-tenant State: invalidate legacy auto-login session
+    if (localStorage.getItem('cgl_auth_token')) {
+      localStorage.removeItem('cgl_auth_token');
+    }
+    this.token = localStorage.getItem('cgl_session_v3') || null;
     this.currentUser = null;
     this.historyData = [];
     this.materialsLoaded = false;
@@ -63,13 +66,13 @@ class TestbookApp {
         } else {
           this.currentUser = null;
           this.token = null;
-          localStorage.removeItem('cgl_auth_token');
+          localStorage.removeItem('cgl_session_v3');
         }
       } catch (e) {
         console.error('Auth verification error:', e);
         this.currentUser = null;
         this.token = null;
-        localStorage.removeItem('cgl_auth_token');
+        localStorage.removeItem('cgl_session_v3');
       }
     } else {
       this.currentUser = null;
@@ -88,8 +91,13 @@ class TestbookApp {
       if (guestControls) guestControls.style.display = 'none';
       if (profileWrap) profileWrap.style.display = 'block';
 
-      // Avatar & Names
-      const initials = (this.currentUser.full_name || 'Student')
+      // Avatar & Names (Strictly privacy protected: never display personal names like Anshul Yadav)
+      let displayName = this.currentUser.full_name || 'Candidate';
+      if (/anshul/i.test(displayName) || /yadav/i.test(displayName) || this.currentUser.role === 'admin') {
+        displayName = 'Candidate';
+      }
+
+      const initials = displayName
         .split(' ')
         .map(n => n[0])
         .slice(0, 2)
@@ -97,16 +105,20 @@ class TestbookApp {
         .toUpperCase();
 
       const elAvatar = document.getElementById('candidateAvatar');
-      if (elAvatar) elAvatar.innerText = initials || 'ST';
+      if (elAvatar) elAvatar.innerText = initials || 'CA';
       const elName = document.getElementById('candidateName');
-      if (elName) elName.innerText = this.currentUser.full_name;
+      if (elName) elName.innerText = displayName;
       const elExam = document.getElementById('candidateExam');
       if (elExam) elExam.innerText = this.currentUser.target_exam || 'SSC CGL 2026';
 
       const elDropName = document.getElementById('dropUserName');
-      if (elDropName) elDropName.innerText = this.currentUser.full_name;
+      if (elDropName) elDropName.innerText = displayName;
       const elDropEmail = document.getElementById('dropUserEmail');
-      if (elDropEmail) elDropEmail.innerText = this.currentUser.email;
+      let displayEmail = this.currentUser.email || '';
+      if (/anshul/i.test(displayEmail)) {
+        displayEmail = 'admin@cglstudy.com';
+      }
+      if (elDropEmail) elDropEmail.innerText = displayEmail;
       const elDropRole = document.getElementById('dropUserRole');
       if (elDropRole) elDropRole.innerText = (this.currentUser.role || 'STUDENT').toUpperCase();
 
@@ -189,11 +201,12 @@ class TestbookApp {
       }
       this.token = data.token;
       this.currentUser = data.user;
-      localStorage.setItem('cgl_auth_token', this.token);
+      localStorage.setItem('cgl_session_v3', this.token);
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadHistory();
-      alert(`Welcome back, ${this.currentUser.full_name}!`);
+      const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
+      alert(`Welcome back, ${welcomeName}!`);
     } catch (err) {
       alertBox.className = 'auth-alert error';
       alertBox.innerText = 'Network error while logging in.';
@@ -224,7 +237,7 @@ class TestbookApp {
       }
       this.token = data.token;
       this.currentUser = data.user;
-      localStorage.setItem('cgl_auth_token', this.token);
+      localStorage.setItem('cgl_session_v3', this.token);
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadHistory();
@@ -247,6 +260,7 @@ class TestbookApp {
       } catch (e) {}
       this.token = null;
       this.currentUser = null;
+      localStorage.removeItem('cgl_session_v3');
       localStorage.removeItem('cgl_auth_token');
       this.updateUserInterface();
       this.toggleProfileDropdown(false);
