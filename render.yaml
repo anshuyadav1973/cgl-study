@@ -1,15 +1,11 @@
 services:
   - type: web
-    name: blackhole-cgl-portal
-    runtime: python
+    name: blackhole-cgl
+    env: python
     buildCommand: ""
-    startCommand: "python3 app/server.py"
-    plan: free
-    region: singapore
+    startCommand: python3 app/server.py
     envVars:
-      - key: PORT
-        value: 10000
       - key: SUPABASE_URL
-        sync: false
+        value: https://xopsrudvlctqitmcsnci.supabase.co
       - key: SUPABASE_KEY
-        sync: false
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvcHNydWR2bGN0cWl0bWNzbmNpIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc5NTAwNjM2OSwiZXhwIjoyMTEwNTgyMzY5fQ.rM5gxYZXdSqHCcuK0yeMoK-80OsetsaTGq6DD5vUoDc

@@ -123,6 +123,21 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                     return self.send_json(json.load(f))
             return self.send_json({"error": "Test not found"}, status=404)
 
+        # API: In-Progress Test Resume Support
+        if path == "/api/progress":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({})
+            return self.send_json(db.get_all_user_progress(user['id']))
+
+        if path.startswith("/api/progress/"):
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            t_id = path.split("/api/progress/")[1].split("?")[0]
+            prog = db.get_test_progress(user['id'], t_id)
+            return self.send_json(prog or {})
+
         # API: User Attempt History (Multi-Tenant, strict privacy: only authenticated user's history!)
         if path == "/api/history":
             user = self.get_auth_user()
@@ -303,6 +318,17 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             saved_id = db.save_user_note(user['id'], note_id, title, content, topic)
             return self.send_json({"status": "success", "id": saved_id})
 
+        # Save In-Progress Test Progress
+        if path == "/api/progress":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            test_id = payload.get("testId")
+            if not test_id:
+                return self.send_json({"error": "testId is required"}, status=400)
+            db.save_test_progress(user['id'], test_id, payload)
+            return self.send_json({"status": "saved", "testId": test_id})
+
         # Admin: Configure Supabase
         if path == "/api/admin/db-config":
             user = self.get_auth_user()
@@ -367,6 +393,15 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             note_id = path.split("/api/notes/")[1]
             db.delete_user_note(user['id'], note_id)
             return self.send_json({"status": "success", "deleted": note_id})
+
+        # Delete In-Progress Test Progress
+        if path.startswith("/api/progress/"):
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized"}, status=401)
+            test_id = path.split("/api/progress/")[1]
+            db.delete_test_progress(user['id'], test_id)
+            return self.send_json({"status": "success", "deleted_progress": test_id})
 
         # Delete Single Test Attempt
         if path.startswith("/api/history/"):

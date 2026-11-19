@@ -21,6 +21,8 @@ class TestbookApp {
     this.token = localStorage.getItem('cgl_session_v3') || null;
     this.currentUser = null;
     this.pendingTestId = null;
+    this.pendingResumeTestId = null;
+    this.activeProgressMap = {};
     this.historyData = [];
     this.materialsLoaded = false;
     this.currentStudyTab = 'ga';
@@ -31,6 +33,7 @@ class TestbookApp {
 
   async init() {
     await this.checkAuth();
+    await this.loadAllProgress();
     await this.loadTestsList();
     await this.loadHistory();
     this.setupGlobalEvents();
@@ -210,7 +213,9 @@ class TestbookApp {
       localStorage.setItem('cgl_session_v3', this.token);
       this.updateUserInterface();
       this.closeAuthModal();
+      await this.loadAllProgress();
       await this.loadHistory();
+      this.renderTestCards();
       if (this.pendingTestId) {
         const testToStart = this.pendingTestId;
         this.pendingTestId = null;
@@ -252,7 +257,9 @@ class TestbookApp {
       localStorage.setItem('cgl_session_v3', this.token);
       this.updateUserInterface();
       this.closeAuthModal();
+      await this.loadAllProgress();
       await this.loadHistory();
+      this.renderTestCards();
       if (this.pendingTestId) {
         const testToStart = this.pendingTestId;
         this.pendingTestId = null;
@@ -278,10 +285,12 @@ class TestbookApp {
       } catch (e) {}
       this.token = null;
       this.currentUser = null;
+      this.activeProgressMap = {};
       localStorage.removeItem('cgl_session_v3');
       localStorage.removeItem('cgl_auth_token');
       this.updateUserInterface();
       this.toggleProfileDropdown(false);
+      this.renderTestCards();
       this.showDashboard();
       this.loadHistory();
     }
@@ -317,6 +326,7 @@ class TestbookApp {
     this.hideAllViews();
     document.getElementById('dashboardView').style.display = 'block';
     this.setActiveNav('navLinkTests');
+    this.loadAllProgress();
     this.loadHistory();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -369,9 +379,32 @@ class TestbookApp {
     this.tests.forEach((t) => {
       const card = document.createElement('div');
       card.className = 'test-card';
+      const hasProgress = !!this.getActiveTestProgress(t.id);
+
+      let actionHtml = '';
+      if (!this.currentUser) {
+        actionHtml = `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')" style="background:#2563eb; display:inline-flex; align-items:center; gap:6px;"><span>🔒</span> Sign In to Start</button>`;
+      } else if (hasProgress) {
+        actionHtml = `
+          <div style="display:flex; gap:8px; width:100%; justify-content:flex-end; align-items:center;">
+            <button class="btn btn-outline" onclick="app.promptRestartTest('${t.id}')" style="color:#dc2626; border-color:#fca5a5; font-size:12px; padding:6px 10px; display:inline-flex; align-items:center; gap:4px;" title="Reset progress and start over from 25:00">
+              <span>🔄</span> Restart
+            </button>
+            <button class="btn btn-primary" onclick="app.resumeTest('${t.id}')" style="background:#059669; border-color:#059669; font-size:12px; padding:6px 14px; display:inline-flex; align-items:center; gap:5px;">
+              <span>▶️</span> Resume
+            </button>
+          </div>
+        `;
+      } else {
+        actionHtml = `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')">Start Test</button>`;
+      }
+
       card.innerHTML = `
         <div class="test-card-top">
-          <span class="test-card-category">${t.category || 'SSC CGL Tier-2'}</span>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span class="test-card-category">${t.category || 'SSC CGL Tier-2'}</span>
+            ${hasProgress ? `<span style="background:#fef3c7; color:#b45309; font-weight:700; font-size:11px; padding:2px 8px; border-radius:12px; border:1px solid #fde68a; display:inline-flex; align-items:center; gap:3px;">⏱️ IN PROGRESS</span>` : ''}
+          </div>
           <h3 class="test-card-title">${t.title}</h3>
           <p class="test-card-desc">${t.subtitle || '25 Questions with Real-time Exam Timer & TCS Marking'}</p>
         </div>
@@ -391,10 +424,7 @@ class TestbookApp {
         </div>
         <div class="test-card-actions">
           <span class="test-past-score">+3.0 Correct / -1.0 Wrong</span>
-          ${this.currentUser 
-            ? `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')">Start Test</button>`
-            : `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')" style="background:#2563eb; display:inline-flex; align-items:center; gap:6px;"><span>🔒</span> Sign In to Start</button>`
-          }
+          ${actionHtml}
         </div>
       `;
       grid.appendChild(card);
@@ -740,14 +770,250 @@ class TestbookApp {
     }
   }
 
-  // --- Active Test Execution & Timer ---
-  async selectTest(testId) {
+  // --- In-Progress Test Resume & Restart Engine ---
+  async loadAllProgress() {
+    this.activeProgressMap = {};
+    if (!this.currentUser) {
+      this.renderTestCards();
+      return;
+    }
+    try {
+      const res = await fetch('/api/progress', { headers: this.getAuthHeaders() });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data === 'object') {
+          this.activeProgressMap = data;
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to load progress from server:', e);
+    }
+
+    // Also check localStorage for client-side cached progress
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(`cgl_progress_${this.currentUser.id}_`)) {
+          const tId = k.replace(`cgl_progress_${this.currentUser.id}_`, '');
+          if (!this.activeProgressMap[tId]) {
+            const raw = localStorage.getItem(k);
+            if (raw) this.activeProgressMap[tId] = JSON.parse(raw);
+          }
+        }
+      }
+    } catch (e) {}
+
+    this.renderTestCards();
+  }
+
+  getActiveTestProgress(testId) {
+    if (!testId) return null;
+    if (this.activeProgressMap && this.activeProgressMap[testId]) {
+      return this.activeProgressMap[testId];
+    }
+    if (this.currentUser) {
+      try {
+        const local = localStorage.getItem(`cgl_progress_${this.currentUser.id}_${testId}`);
+        if (local) return JSON.parse(local);
+      } catch (e) {}
+    }
+    return null;
+  }
+
+  async saveActiveTestProgress() {
+    if (!this.currentUser || !this.currentTest) return;
+    const progressData = {
+      testId: this.currentTest.id,
+      testTitle: this.currentTest.title,
+      currentQIndex: this.currentQIndex,
+      userAnswers: this.userAnswers,
+      timeRemaining: this.timeRemaining,
+      totalDurationSeconds: this.totalDurationSeconds,
+      timestamp: new Date().toISOString()
+    };
+    this.activeProgressMap[this.currentTest.id] = progressData;
+    try {
+      localStorage.setItem(`cgl_progress_${this.currentUser.id}_${this.currentTest.id}`, JSON.stringify(progressData));
+    } catch (e) {}
+
+    try {
+      await fetch('/api/progress', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify(progressData)
+      });
+    } catch (e) {
+      console.warn('Progress save warning:', e);
+    }
+  }
+
+  async clearActiveTestProgress(testId) {
+    if (!testId) return;
+    if (this.activeProgressMap) {
+      delete this.activeProgressMap[testId];
+    }
+    if (this.currentUser) {
+      try {
+        localStorage.removeItem(`cgl_progress_${this.currentUser.id}_${testId}`);
+      } catch (e) {}
+      try {
+        await fetch(`/api/progress/${testId}`, {
+          method: 'DELETE',
+          headers: this.getAuthHeaders()
+        });
+      } catch (e) {}
+    }
+    this.renderTestCards();
+  }
+
+  openResumeModal(testId) {
+    const prog = this.getActiveTestProgress(testId);
+    if (!prog) {
+      this.selectTestDirect(testId);
+      return;
+    }
+    this.pendingResumeTestId = testId;
+    const t = this.tests.find(x => x.id === testId) || { title: prog.testTitle || 'SSC CGL Mock Test', numQuestions: 25 };
+
+    let answered = 0;
+    if (prog.userAnswers) {
+      Object.values(prog.userAnswers).forEach(ans => {
+        if (ans && ans.selected) answered++;
+      });
+    }
+    const totalQ = (prog.userAnswers ? Object.keys(prog.userAnswers).length : t.numQuestions) || 25;
+    const remaining = prog.timeRemaining !== undefined ? prog.timeRemaining : (25 * 60);
+    const remMins = Math.floor(remaining / 60);
+    const remSecs = remaining % 60;
+    const timeStr = `${remMins.toString().padStart(2, '0')}:${remSecs.toString().padStart(2, '0')}`;
+
+    const titleEl = document.getElementById('resumeTestTitle');
+    if (titleEl) titleEl.innerText = t.title;
+    const subEl = document.getElementById('resumeTestSubtitle');
+    if (subEl) subEl.innerText = `Paused at ${timeStr} remaining`;
+    const ansEl = document.getElementById('resumeAnsweredStat');
+    if (ansEl) ansEl.innerText = `${answered} / ${totalQ}`;
+    const timeEl = document.getElementById('resumeTimeStat');
+    if (timeEl) timeEl.innerText = `${remMins}m ${remSecs}s`;
+
+    const modal = document.getElementById('resumeModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  closeResumeModal() {
+    const modal = document.getElementById('resumeModal');
+    if (modal) modal.style.display = 'none';
+    this.pendingResumeTestId = null;
+  }
+
+  async confirmResumeTest() {
+    const testId = this.pendingResumeTestId;
+    this.closeResumeModal();
+    if (testId) {
+      await this.resumeTest(testId);
+    }
+  }
+
+  async confirmRestartTest() {
+    const testId = this.pendingResumeTestId;
+    this.closeResumeModal();
+    if (testId) {
+      await this.restartTest(testId);
+    }
+  }
+
+  async resumeTest(testId) {
     if (!this.currentUser) {
       this.pendingTestId = testId;
-      this.openAuthModal('login', 'Please sign in or create a free candidate account before starting this mock test.');
+      this.openAuthModal('login', 'Please sign in to resume your test.');
       return;
     }
 
+    try {
+      if (!this.currentTest || this.currentTest.id !== testId) {
+        const res = await fetch(`/api/tests/${testId}`, { headers: this.getAuthHeaders() });
+        if (res.status === 401) {
+          this.pendingTestId = testId;
+          this.openAuthModal('login', 'Sign in required to resume test.');
+          return;
+        }
+        this.currentTest = await res.json();
+      }
+
+      const prog = this.getActiveTestProgress(testId);
+      if (!prog) {
+        this.startTest();
+        return;
+      }
+
+      // Restore user answers
+      this.userAnswers = prog.userAnswers || {};
+      for (let i = 0; i < this.currentTest.questions.length; i++) {
+        if (!this.userAnswers[i]) {
+          this.userAnswers[i] = {
+            selected: null,
+            status: i === 0 ? 'not-answered' : 'not-visited',
+            marked: false,
+            timeSpent: 0
+          };
+        }
+      }
+
+      this.currentQIndex = prog.currentQIndex || 0;
+      this.totalDurationSeconds = prog.totalDurationSeconds || ((this.currentTest.durationMinutes || 25) * 60);
+      this.timeRemaining = prog.timeRemaining !== undefined ? prog.timeRemaining : this.totalDurationSeconds;
+
+      this.hideAllViews();
+      document.getElementById('testInterfaceView').style.display = 'flex';
+
+      const hInfo = document.getElementById('headerTestInfo');
+      if (hInfo) hInfo.style.display = 'flex';
+      const hTitle = document.getElementById('headerTestTitle');
+      if (hTitle) hTitle.innerText = this.currentTest.title;
+      const hTimer = document.getElementById('headerTimerSection');
+      if (hTimer) hTimer.style.display = 'flex';
+      const cBtn = document.getElementById('calcBtn');
+      if (cBtn) cBtn.style.display = 'flex';
+      const lWrap = document.getElementById('langSelectorWrap');
+      if (lWrap) lWrap.style.display = 'flex';
+      const sQ = document.getElementById('secQCount');
+      if (sQ) sQ.innerText = `${this.currentTest.questions.length} Qs`;
+
+      const navLinks = document.getElementById('tbNavLinks');
+      if (navLinks) navLinks.style.display = 'none';
+
+      this.startTimer();
+      this.renderPalette();
+      this.loadQuestion(this.currentQIndex);
+    } catch (err) {
+      console.error('Error resuming test:', err);
+      alert('Failed to resume test details.');
+    }
+  }
+
+  promptRestartTest(testId) {
+    if (confirm('Are you sure you want to restart this test from the beginning? All your current answers and timer progress will be cleared.')) {
+      this.restartTest(testId);
+    }
+  }
+
+  async restartTest(testId) {
+    await this.clearActiveTestProgress(testId);
+    await this.selectTestDirect(testId);
+  }
+
+  promptRestartCurrentTest() {
+    if (!this.currentTest) return;
+    if (confirm('Restart this test from the beginning? Your answers will be reset and timer will start back at 25:00.')) {
+      this.stopTimer();
+      const testId = this.currentTest.id;
+      this.clearActiveTestProgress(testId).then(() => {
+        this.startTest();
+      });
+    }
+  }
+
+  async selectTestDirect(testId) {
     try {
       const res = await fetch(`/api/tests/${testId}`, { headers: this.getAuthHeaders() });
       if (res.status === 401) {
@@ -760,6 +1026,23 @@ class TestbookApp {
     } catch (err) {
       alert('Failed to load test details.');
     }
+  }
+
+  // --- Active Test Execution & Timer ---
+  async selectTest(testId) {
+    if (!this.currentUser) {
+      this.pendingTestId = testId;
+      this.openAuthModal('login', 'Please sign in or create a free candidate account before starting this mock test.');
+      return;
+    }
+
+    const prog = this.getActiveTestProgress(testId);
+    if (prog) {
+      this.openResumeModal(testId);
+      return;
+    }
+
+    await this.selectTestDirect(testId);
   }
 
   showInstructions() {
@@ -823,6 +1106,7 @@ class TestbookApp {
 
     this.renderPalette();
     this.loadQuestion(0);
+    this.saveActiveTestProgress();
   }
 
   startTimer() {
@@ -833,6 +1117,9 @@ class TestbookApp {
         this.timeRemaining--;
         if (this.userAnswers[this.currentQIndex]) {
           this.userAnswers[this.currentQIndex].timeSpent++;
+        }
+        if (this.timeRemaining % 5 === 0) {
+          this.saveActiveTestProgress();
         }
         this.updateTimerDisplay();
       } else {
@@ -929,6 +1216,7 @@ class TestbookApp {
   selectOption(optId) {
     const qState = this.userAnswers[this.currentQIndex];
     qState.selected = optId;
+    this.saveActiveTestProgress();
     this.loadQuestion(this.currentQIndex);
   }
 
@@ -936,6 +1224,7 @@ class TestbookApp {
     const qState = this.userAnswers[this.currentQIndex];
     qState.selected = null;
     qState.status = qState.marked ? 'marked' : 'not-answered';
+    this.saveActiveTestProgress();
     this.loadQuestion(this.currentQIndex);
   }
 
@@ -946,7 +1235,7 @@ class TestbookApp {
     } else {
       qState.status = qState.marked ? 'marked' : 'not-answered';
     }
-
+    this.saveActiveTestProgress();
     if (this.currentQIndex < this.currentTest.questions.length - 1) {
       this.loadQuestion(this.currentQIndex + 1);
     } else {
@@ -962,7 +1251,7 @@ class TestbookApp {
     } else {
       qState.status = 'marked';
     }
-
+    this.saveActiveTestProgress();
     if (this.currentQIndex < this.currentTest.questions.length - 1) {
       this.loadQuestion(this.currentQIndex + 1);
     } else {
@@ -978,6 +1267,7 @@ class TestbookApp {
     } else {
       qState.status = qState.selected ? 'answered' : 'not-answered';
     }
+    this.saveActiveTestProgress();
     this.loadQuestion(this.currentQIndex);
   }
 
@@ -1044,6 +1334,9 @@ class TestbookApp {
   finalSubmitTest() {
     this.closeSubmitModal();
     this.stopTimer();
+    if (this.currentTest && this.currentTest.id) {
+      this.clearActiveTestProgress(this.currentTest.id);
+    }
 
     let score = 0, correctCount = 0, incorrectCount = 0, attemptedCount = 0, unattemptedCount = 0;
     const marksPerQ = this.currentTest.marksPerQuestion || 3;

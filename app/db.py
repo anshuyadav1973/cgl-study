@@ -118,6 +118,17 @@ def init_db():
     )
     ''')
 
+    # Active In-Progress Test State (Resume/Restart Support)
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS test_progress (
+        user_id TEXT NOT NULL,
+        test_id TEXT NOT NULL,
+        progress_json TEXT NOT NULL,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (user_id, test_id)
+    )
+    ''')
+
     conn.commit()
 
     # Create default admin account if none exists
@@ -566,8 +577,59 @@ def get_admin_overview():
         "recent_submissions": recent_submissions
     }
 
+# In-Progress Test Resume/Restart Persistence
+def save_test_progress(user_id, test_id, progress_data):
+    conn = get_db()
+    c = conn.cursor()
+    progress_json = json.dumps(progress_data, ensure_ascii=False)
+    now = datetime.utcnow().isoformat()
+    c.execute('''
+    INSERT OR REPLACE INTO test_progress (user_id, test_id, progress_json, updated_at)
+    VALUES (?, ?, ?, ?)
+    ''', (user_id, test_id, progress_json, now))
+    conn.commit()
+    conn.close()
+
+def get_test_progress(user_id, test_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT progress_json FROM test_progress WHERE user_id = ? AND test_id = ?', (user_id, test_id))
+    row = c.fetchone()
+    conn.close()
+    if row and row['progress_json']:
+        try:
+            return json.loads(row['progress_json'])
+        except Exception:
+            return None
+    return None
+
+def delete_test_progress(user_id, test_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('DELETE FROM test_progress WHERE user_id = ? AND test_id = ?', (user_id, test_id))
+    conn.commit()
+    conn.close()
+
+def get_all_user_progress(user_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT test_id, progress_json, updated_at FROM test_progress WHERE user_id = ?', (user_id,))
+    rows = c.fetchall()
+    conn.close()
+    result = {}
+    for r in rows:
+        try:
+            result[r['test_id']] = json.loads(r['progress_json'])
+        except Exception:
+            pass
+    return result
+
 # Supabase Sync / Configuration
 def get_setting(key, default=None):
+    # Check environment variable first (for Render/cloud deployments)
+    env_val = os.environ.get(key)
+    if env_val:
+        return env_val
     conn = get_db()
     c = conn.cursor()
     c.execute('SELECT value FROM settings WHERE key = ?', (key,))
@@ -575,8 +637,7 @@ def get_setting(key, default=None):
     conn.close()
     if row:
         return row['value']
-    # Check environment variable
-    return os.environ.get(key, default)
+    return default
 
 def set_setting(key, value):
     conn = get_db()

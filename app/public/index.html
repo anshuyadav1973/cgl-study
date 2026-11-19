@@ -307,8 +307,11 @@
             <div class="palette-grid" id="paletteGrid"></div>
           </div>
 
-          <div class="sidebar-submit-wrap">
+          <div class="sidebar-submit-wrap" style="display:flex; flex-direction:column; gap:8px;">
             <button class="btn btn-submit-test" onclick="app.promptSubmitTest()">Submit Test</button>
+            <button class="btn btn-outline" onclick="app.promptRestartCurrentTest()" style="border-color:#fca5a5; color:#dc2626; font-size:13px; padding:8px 12px; display:flex; align-items:center; justify-content:center; gap:6px;">
+              <span>🔄</span> Restart Test
+            </button>
           </div>
         </aside>
       </div>
@@ -680,6 +683,49 @@
     </div>
   </div>
 
-  <script src="app.js?v=7.0"></script>
+  <!-- MODAL 6: Resume or Restart Test Modal -->
+  <div class="modal-overlay" id="resumeModal" style="display:none;">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3 id="resumeModalTitle">In-Progress Mock Test</h3>
+        <button class="modal-close-btn" onclick="app.closeResumeModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+          <div style="font-size:36px; background:#eff6ff; padding:10px 14px; border-radius:12px; border:1px solid #bfdbfe;">⏱️</div>
+          <div>
+            <h4 id="resumeTestTitle" style="font-size:16px; font-weight:700; color:#0f172a; margin-bottom:4px;">SSC CGL Mock Test</h4>
+            <p id="resumeTestSubtitle" style="font-size:13px; color:#64748b; margin:0;">Saved progress found</p>
+          </div>
+        </div>
+
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; margin-bottom:20px; display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px;">
+          <div>
+            <span style="color:#64748b; display:block; margin-bottom:2px;">Questions Answered</span>
+            <strong id="resumeAnsweredStat" style="font-size:15px; color:#0f172a;">0 / 25</strong>
+          </div>
+          <div>
+            <span style="color:#64748b; display:block; margin-bottom:2px;">Time Remaining</span>
+            <strong id="resumeTimeStat" style="font-size:15px; color:#2563eb;">25m 00s</strong>
+          </div>
+        </div>
+
+        <p style="color:#475569; font-size:13px; line-height:1.5; margin-bottom:20px;">
+          You can resume this test right where you left off with all your answers preserved, or restart from the beginning with a fresh 25-minute timer.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button class="btn btn-primary btn-block btn-large" id="btnResumeConfirm" onclick="app.confirmResumeTest()" style="display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span>▶️</span> Resume Test Where I Left Off
+          </button>
+          <button class="btn btn-outline btn-block" id="btnRestartConfirm" onclick="app.confirmRestartTest()" style="color:#dc2626; border-color:#fca5a5; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <span>🔄</span> Restart from Beginning (Reset Answers)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=8.1"></script>
 </body>
 </html>
