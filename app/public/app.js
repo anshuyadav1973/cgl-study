@@ -361,6 +361,7 @@ class BlackholeApp {
 
   // --- Views Navigation Helpers ---
   hideAllViews() {
+    document.body.classList.remove('in-exam');
     const views = ['dashboardView', 'instructionsView', 'testInterfaceView', 'resultView', 'historyView', 'studyMaterialsView'];
     views.forEach(id => {
       const el = document.getElementById(id);
@@ -382,6 +383,26 @@ class BlackholeApp {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
+  }
+
+  toggleExamGuide() {
+    const el = document.getElementById('examGuideBody');
+    const btn = document.getElementById('btnGuideToggle');
+    if (el) {
+      const isHidden = (el.style.display === 'none');
+      el.style.display = isHidden ? 'block' : 'none';
+      if (btn) btn.innerText = isHidden ? '▲ Collapse Guide' : '▼ Expand Syllabus Guide';
+    }
+  }
+
+  toggleMobilePalette() {
+    const sidebar = document.querySelector('.palette-sidebar');
+    if (sidebar) {
+      sidebar.classList.toggle('mobile-open');
+      if (sidebar.classList.contains('mobile-open')) {
+        sidebar.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   }
 
   setActiveNav(linkId) {
@@ -455,6 +476,22 @@ class BlackholeApp {
   handleTestSearch(query) {
     this.testSearchQuery = query;
     this.renderTestCards();
+  }
+
+  getComprehensiveTestDesc(t) {
+    const descMap = {
+      'cgl-mains-mock-01': 'Comprehensive Tier-2 Full Length Mock • Arithmetic, Algebra, Geometry, Trigonometry, Mensuration 3D & DI • 25 High-Frequency TCS Questions',
+      'cgl-mains-mock-02': 'Arithmetic Super Mock • Percentage, Profit & Loss, SI/CI, Ratio & Proportion, Time & Work, Speed Time Distance & Mixtures',
+      'cgl-mains-mock-03': 'Advance Mathematics Mock • High-Yield Algebraic Identities, Quadratic Equations, Trigonometric Equations & Heights & Distances',
+      'cgl-mains-mock-04': 'Geometry & Mensuration 2D/3D Mock • Circles, Triangles, Tangents, Cylinders, Cones, Spheres & Prism-Pyramids',
+      'cgl-mains-mock-05': 'Algebra & Number System Super Mock • Polynomials, Remainder Theorem, Surds & Indices, Linear Equations & Sequences',
+      'cgl-mains-mock-06': 'Trigonometry & Coordinate Geometry Mock • Minima-Maxima, Trigonometric Values, Straight Lines & Distance Formulas',
+      'cgl-mains-mock-07': 'Modern Maths, Statistics & DI Mock • Mean, Median, Mode, Standard Deviation, Variance, Probability & Data Interpretation',
+      'cgl-mains-mock-08': 'Speed & Calculation Booster Mock • Rapid-fire Tier-2 Questions to train 30-Second Calculation Instincts & Options Elimination',
+      'cgl-mains-mock-09': 'Hard Shifts Simulator Mock • Multi-Concept Complex Problems modeled on the Most Challenging 2023-2024 Tier-2 Shifts',
+      'cgl-mains-mock-10': 'Ultimate All-India Benchmark Mock • Full-Syllabus Standard Benchmark Mock Test to evaluate Final AIR and Percentile'
+    };
+    return descMap[t.id] || t.subtitle || '25 Standard Tier-2 Questions with TCS Marking (+3/-1) & Step-by-Step Bilingual Solutions';
   }
 
   renderTestCards() {
@@ -577,7 +614,7 @@ class BlackholeApp {
             ${hasProgress ? `<span class="tb-badge-in-progress">⏱️ IN PROGRESS</span>` : ''}
           </div>
           <h3 class="test-card-title">${t.title}</h3>
-          <p class="test-card-desc">${t.subtitle || '25 Questions with Real-time Exam Timer & TCS Marking'}</p>
+          <p class="test-card-desc">${this.getComprehensiveTestDesc(t)}</p>
         </div>
 
         <div class="tb-card-specs-row">
@@ -600,8 +637,9 @@ class BlackholeApp {
         ${attemptSummaryHtml}
 
         <div class="tb-card-features">
-          <div class="tb-feat-bullet">✓ Latest 2025-26 TCS Pattern</div>
-          <div class="tb-feat-bullet">✓ Detailed Solutions & Speed Tricks</div>
+          <div class="tb-feat-bullet">✓ Latest 2025-26 TCS Tier-2 Pattern</div>
+          <div class="tb-feat-bullet">✓ Step-by-Step Bilingual Solution & 15s Speed Trick</div>
+          <div class="tb-feat-bullet">✓ Live All India Rank & Topic-wise Percentile</div>
         </div>
 
         <div class="test-card-actions tb-card-footer">
@@ -1189,6 +1227,7 @@ class BlackholeApp {
       this.timeRemaining = prog.timeRemaining !== undefined ? prog.timeRemaining : this.totalDurationSeconds;
 
       this.hideAllViews();
+      document.body.classList.add('in-exam');
       document.getElementById('testInterfaceView').style.display = 'flex';
 
       const hInfo = document.getElementById('headerTestInfo');
@@ -1313,6 +1352,7 @@ class BlackholeApp {
     }
 
     this.hideAllViews();
+    document.body.classList.add('in-exam');
     document.getElementById('testInterfaceView').style.display = 'flex';
 
     const hInfo = document.getElementById('headerTestInfo');
@@ -1398,6 +1438,11 @@ class BlackholeApp {
     this.currentQIndex = index;
     const q = this.currentTest.questions[index];
     if (!q) return;
+
+    const sidebar = document.querySelector('.palette-sidebar');
+    if (sidebar && sidebar.classList.contains('mobile-open')) {
+      sidebar.classList.remove('mobile-open');
+    }
 
     if (this.userAnswers[index].status === 'not-visited') {
       this.userAnswers[index].status = 'not-answered';
@@ -1544,6 +1589,9 @@ class BlackholeApp {
     document.getElementById('countNotVisited').innerText = notVisited;
     document.getElementById('countMarked').innerText = marked;
     document.getElementById('countMarkedAnswered').innerText = markedAnswered;
+
+    const mobileCount = document.getElementById('paletteAnsweredMobileCount');
+    if (mobileCount) mobileCount.innerText = answered + markedAnswered;
   }
 
   promptSubmitTest() {
