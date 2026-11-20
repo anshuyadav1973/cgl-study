@@ -1,6 +1,6 @@
 // Blackhole Examination Application Engine & Student Educational Portal
 
-class TestbookApp {
+class BlackholeApp {
   constructor() {
     this.tests = [];
     this.currentTest = null;
@@ -1650,7 +1650,7 @@ class TestbookApp {
         <div class="sol-explanation-box">
           <div class="sol-exp-title">Detailed Solution / विस्तृत व्याख्या:</div>
           <div class="sol-exp-text">${q.solution || 'Solution not available.'}</div>
-          ${q.trick ? `<div class="trick-box" style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px 14px; border-radius:6px; margin-top:10px; font-size:13px; color:#1e3a8a;"><strong>💡 Testbook Smart Trick / Speed Method:</strong> ${q.trick}</div>` : ''}
+          ${q.trick ? `<div class="trick-box" style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px 14px; border-radius:6px; margin-top:10px; font-size:13px; color:#1e3a8a;"><strong>💡 Smart Trick / Speed Method:</strong> ${q.trick}</div>` : ''}
         </div>
       `;
       container.appendChild(card);
@@ -2321,4 +2321,4 @@ class TestbookApp {
   }
 }
 
-const app = new TestbookApp();
+const app = new BlackholeApp();
