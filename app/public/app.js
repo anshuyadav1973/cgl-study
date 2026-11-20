@@ -561,7 +561,7 @@ class BlackholeApp {
           </div>
           <div class="att-summary-item">
             <span class="att-summary-lbl">Accuracy:</span>
-            <strong class="att-summary-val">${latestAttempt.accuracy || 0}%</strong>
+            <strong class="att-summary-val">${bestAttempt.accuracy || 0}%</strong>
           </div>
         </div>
       ` : '';
