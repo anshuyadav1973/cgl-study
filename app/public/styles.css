@@ -2908,3 +2908,151 @@ body.testbook-theme {
 .rank-gold { color: #f59e0b; }
 .rank-silver { color: #94a3b8; }
 .rank-bronze { color: #d97706; }
+
+/* Navigation Tools: Fullscreen & Global Zoom */
+.btn-tb-nav-tool {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn-tb-nav-tool:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-tb-nav-tool:active {
+  transform: translateY(0);
+}
+
+.tb-zoom-control {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+  overflow: hidden;
+  height: 32px;
+}
+
+.zoom-btn {
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  padding: 0 10px;
+  height: 100%;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+
+.zoom-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.zoom-level-text {
+  padding: 0 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #a5f3fc;
+  cursor: pointer;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  height: 100%;
+  user-select: none;
+}
+
+.zoom-level-text:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Candidate Welcome Strip */
+.candidate-welcome-strip {
+  background: linear-gradient(90deg, #ecfdf5 0%, #f0fdf4 100%);
+  border: 1px solid #86efac;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.08);
+}
+
+.welcome-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.welcome-icon {
+  font-size: 24px;
+  background: #dcfce7;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.welcome-greeting {
+  font-size: 15px;
+  font-weight: 700;
+  color: #14532d;
+}
+
+.welcome-greeting strong {
+  color: #15803d;
+}
+
+.welcome-sub {
+  font-size: 12px;
+  color: #166534;
+  margin-top: 1px;
+}
+
+.welcome-badge {
+  background: #16a34a;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.nav-link-founder {
+  background: rgba(250, 204, 21, 0.14) !important;
+  color: #fef08a !important;
+  border: 1px solid rgba(250, 204, 21, 0.35) !important;
+  font-weight: 700 !important;
+}
+
+.nav-link-founder:hover {
+  background: rgba(250, 204, 21, 0.25) !important;
+  color: #ffffff !important;
+}

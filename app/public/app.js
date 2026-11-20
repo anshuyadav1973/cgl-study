@@ -41,6 +41,7 @@ class BlackholeApp {
     this.testFilter = 'all';
     this.testSearchQuery = '';
     this.fontSizeLevel = 0;
+    this.currentZoom = parseFloat(localStorage.getItem('cgl_ui_zoom')) || 1.0;
     this.bookmarkedQuestions = {};
     this.loadBookmarks();
 
@@ -48,6 +49,8 @@ class BlackholeApp {
   }
 
   async init() {
+    this.applyZoom();
+    this.setupFullscreenEvents();
     await this.checkAuth();
     await this.loadAllProgress();
     await this.loadTestsList();
@@ -69,6 +72,18 @@ class BlackholeApp {
       const drop = document.getElementById('profileDropdown');
       if (wrap && drop && !wrap.contains(e.target)) {
         drop.style.display = 'none';
+      }
+
+      const fModal = document.getElementById('founderModal');
+      if (fModal && e.target === fModal) {
+        this.closeFounderModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeFounderModal();
+        this.closeLeaderboardModal();
       }
     });
   }
@@ -109,21 +124,21 @@ class BlackholeApp {
       if (guestControls) guestControls.style.display = 'none';
       if (profileWrap) profileWrap.style.display = 'block';
 
-      // Avatar & Names (Strictly privacy protected: never display personal names like Anshul Yadav)
-      let displayName = this.currentUser.full_name || 'Candidate';
-      if (/anshul/i.test(displayName) || /yadav/i.test(displayName) || this.currentUser.role === 'admin') {
-        displayName = 'Candidate';
-      }
+      // Display candidate's real name used when logging in
+      const displayName = (this.currentUser && this.currentUser.full_name) 
+        ? this.currentUser.full_name.trim() 
+        : 'Candidate';
 
       const initials = displayName
         .split(' ')
+        .filter(Boolean)
         .map(n => n[0])
         .slice(0, 2)
         .join('')
-        .toUpperCase();
+        .toUpperCase() || 'CA';
 
       const elAvatar = document.getElementById('candidateAvatar');
-      if (elAvatar) elAvatar.innerText = initials || 'CA';
+      if (elAvatar) elAvatar.innerText = initials;
       const elName = document.getElementById('candidateName');
       if (elName) elName.innerText = displayName;
       const elExam = document.getElementById('candidateExam');
@@ -132,19 +147,24 @@ class BlackholeApp {
       const elDropName = document.getElementById('dropUserName');
       if (elDropName) elDropName.innerText = displayName;
       const elDropEmail = document.getElementById('dropUserEmail');
-      let displayEmail = this.currentUser.email || '';
-      if (/anshul/i.test(displayEmail)) {
-        displayEmail = 'admin@cglstudy.com';
-      }
-      if (elDropEmail) elDropEmail.innerText = displayEmail;
+      if (elDropEmail) elDropEmail.innerText = this.currentUser.email || '';
       const elDropRole = document.getElementById('dropUserRole');
       if (elDropRole) elDropRole.innerText = (this.currentUser.role || 'STUDENT').toUpperCase();
+
+      const welcomeStrip = document.getElementById('candidateWelcomeStrip');
+      const welcomeName = document.getElementById('welcomeCandidateName');
+      if (welcomeStrip && welcomeName) {
+        welcomeStrip.style.display = 'flex';
+        welcomeName.innerText = displayName;
+      }
 
       if (clearHistoryBtn) clearHistoryBtn.style.display = (this.historyData && this.historyData.length > 0) ? 'inline-block' : 'none';
     } else {
       if (guestControls) guestControls.style.display = 'flex';
       if (profileWrap) profileWrap.style.display = 'none';
       if (clearHistoryBtn) clearHistoryBtn.style.display = 'none';
+      const welcomeStrip = document.getElementById('candidateWelcomeStrip');
+      if (welcomeStrip) welcomeStrip.style.display = 'none';
     }
 
     if (this.tests && this.tests.length > 0) {
@@ -1612,6 +1632,15 @@ class BlackholeApp {
     document.getElementById('filterUnattemptedCount').innerText = res.totalQ - res.attemptedCount;
 
     // Testbook You vs Toppers Comparison Metrics
+    const candidateName = (this.currentUser && this.currentUser.full_name) ? this.currentUser.full_name : 'Candidate';
+    const compHeader = document.getElementById('compHeaderYou');
+    if (compHeader) compHeader.innerText = `You (${candidateName})`;
+
+    const stampEl = document.getElementById('resAttemptTimestamp');
+    if (stampEl && !res.customStamp) {
+      stampEl.innerText = `Candidate: ${candidateName} • Comprehensive score report and solutions`;
+    }
+
     const compScore = document.getElementById('compScoreYou');
     if (compScore) compScore.innerText = `${res.score} / ${res.maxMarks}`;
     const compAcc = document.getElementById('compAccYou');
@@ -2388,15 +2417,89 @@ class BlackholeApp {
   }
 
   toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.log('Fullscreen request error:', err);
-      });
+    const doc = document;
+    const docEl = document.documentElement;
+    const isFullscreen = doc.fullscreenElement || doc.webkitFullscreenElement || doc.mozFullScreenElement || doc.msFullscreenElement;
+
+    if (!isFullscreen) {
+      const request = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.mozRequestFullScreen || docEl.msRequestFullscreen;
+      if (request) {
+        request.call(docEl).then(() => {
+          this.updateFullscreenButtons(true);
+        }).catch(err => {
+          console.log('Fullscreen error:', err);
+        });
+      }
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(err => {});
+      const exit = doc.exitFullscreen || doc.webkitExitFullscreen || doc.mozCancelFullScreen || doc.msExitFullscreen;
+      if (exit) {
+        exit.call(doc).then(() => {
+          this.updateFullscreenButtons(false);
+        }).catch(err => {});
       }
     }
+  }
+
+  updateFullscreenButtons(isFullscreen) {
+    const btns = [
+      document.getElementById('btnGlobalFullscreen'),
+      document.getElementById('btnFullscreen')
+    ];
+    btns.forEach(btn => {
+      if (btn) {
+        btn.innerHTML = isFullscreen ? '<span>🗗</span> Exit Fullscreen' : '<span>⛶</span> Fullscreen';
+        btn.title = isFullscreen ? 'Exit Fullscreen Mode (Esc)' : 'Enter Fullscreen Mode';
+      }
+    });
+  }
+
+  setupFullscreenEvents() {
+    const handler = () => {
+      const isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+      this.updateFullscreenButtons(isFullscreen);
+    };
+    ['fullscreenchange', 'webkitfullscreenchange', 'mozfullscreenchange', 'MSFullscreenChange'].forEach(ev => {
+      document.addEventListener(ev, handler);
+    });
+  }
+
+  zoomIn() {
+    this.currentZoom = Math.min(1.5, Math.round((this.currentZoom + 0.1) * 10) / 10);
+    this.applyZoom();
+  }
+
+  zoomOut() {
+    this.currentZoom = Math.max(0.7, Math.round((this.currentZoom - 0.1) * 10) / 10);
+    this.applyZoom();
+  }
+
+  resetZoom() {
+    this.currentZoom = 1.0;
+    this.applyZoom();
+  }
+
+  applyZoom() {
+    if ('zoom' in document.body.style) {
+      document.body.style.zoom = this.currentZoom;
+    } else {
+      document.body.style.transform = `scale(${this.currentZoom})`;
+      document.body.style.transformOrigin = 'top center';
+    }
+    const disp = document.getElementById('zoomLevelDisplay');
+    if (disp) {
+      disp.innerText = `${Math.round(this.currentZoom * 100)}%`;
+    }
+    localStorage.setItem('cgl_ui_zoom', String(this.currentZoom));
+  }
+
+  openFounderModal() {
+    const modal = document.getElementById('founderModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  closeFounderModal() {
+    const modal = document.getElementById('founderModal');
+    if (modal) modal.style.display = 'none';
   }
 
   changeFontSize(level) {

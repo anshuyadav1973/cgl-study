@@ -19,6 +19,7 @@
         </div>
         <div class="brand-text">
           <span class="brand-name">blackhole</span>
+          <span class="brand-sub" style="font-size:10.5px; color:#cbd5e1; display:block; margin-top:-2px; letter-spacing:0.2px;">by Founder Anshul Yadav</span>
         </div>
       </div>
 
@@ -34,6 +35,9 @@
         </button>
         <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">
           <span>📊</span> Attempt History
+        </button>
+        <button class="nav-link-btn nav-link-founder" id="navLinkFounder" onclick="app.openFounderModal()" title="Know About Founder Anshul Yadav">
+          <span>👨‍🏫</span> Founder: Anshul Yadav
         </button>
       </nav>
 
@@ -60,6 +64,18 @@
         <span class="pass-star">⭐</span>
         <span class="pass-label">PASS PRO</span>
       </div>
+
+      <!-- Global Zoom In / Out Controls -->
+      <div class="tb-zoom-control" id="globalZoomControl" title="Adjust Page Zoom Level">
+        <button class="zoom-btn" onclick="app.zoomOut()" title="Zoom Out">🔍−</button>
+        <span class="zoom-level-text" id="zoomLevelDisplay" onclick="app.resetZoom()" title="Click to Reset Zoom to 100%">100%</span>
+        <button class="zoom-btn" onclick="app.zoomIn()" title="Zoom In">🔍+</button>
+      </div>
+
+      <!-- Global Fullscreen Toggle Button -->
+      <button class="btn-tb-nav-tool" id="btnGlobalFullscreen" onclick="app.toggleFullscreen()" title="Toggle Fullscreen Mode">
+        <span>⛶</span> Fullscreen
+      </button>
 
       <!-- Active Exam Tools (Question Paper, Instructions, Font Scaler, Calculator, Pause, Fullscreen) -->
       <button class="btn-tb-tool" id="btnQuestionPaper" title="View Full Question Paper" onclick="app.openQuestionPaperModal()" style="display:none;">
@@ -140,6 +156,10 @@
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
               My Personal Notes
             </button>
+            <button class="dropdown-item" onclick="app.openFounderModal(); app.toggleProfileDropdown(false);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+              About Founder (Anshul)
+            </button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item text-danger" onclick="app.logoutUser()">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
@@ -166,6 +186,20 @@
         <span class="active">SSC CGL Tier-2 Mock Test 2026</span>
       </div>
 
+      <!-- Candidate Welcome Greeting Strip (Displays Real Logged-in Candidate Name) -->
+      <div class="candidate-welcome-strip" id="candidateWelcomeStrip" style="display:none;">
+        <div class="welcome-left">
+          <span class="welcome-icon">👤</span>
+          <div class="welcome-text">
+            <span class="welcome-greeting">Welcome back, <strong id="welcomeCandidateName">Candidate</strong>!</span>
+            <span class="welcome-sub">Logged in with candidate account • Target: SSC CGL Mains 2026</span>
+          </div>
+        </div>
+        <div class="welcome-badge">
+          <span>🟢 VERIFIED ASPIRANT</span>
+        </div>
+      </div>
+
       <!-- Testbook Hero Banner -->
       <div class="dashboard-hero tb-hero">
         <div class="hero-content">
@@ -175,7 +209,7 @@
             <span class="tb-badge-tcs">LATEST 2025-26 TCS PATTERN</span>
           </div>
           <h1>SSC CGL (Tier-1 & Tier-2) Mock Test Series 2026</h1>
-          <p>Curated by SSC Exam Experts based on 2025-26 TCS Revised Syllabus & PYQs. Full Length Tests, Real Examination Interface, Bilingual Solutions & Speed Tricks.</p>
+          <p>Curated by SSC Exam Experts & Founder <strong>Anshul Yadav</strong> based on 2025-26 TCS Revised Syllabus & PYQs. Full Length Tests, Real Examination Interface, Bilingual Solutions & Speed Tricks.</p>
           
           <div class="tb-hero-highlights">
             <div class="tb-hh-item"><span class="icon">📝</span> <strong>10</strong> Full Length Mocks</div>
@@ -260,6 +294,18 @@
           <!-- Dynamically populated tests -->
         </div>
       </div>
+
+      <!-- Platform Footer with Founder Anshul Information -->
+      <footer style="margin-top: 40px; padding: 24px 0 10px 0; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 13px;">
+        <p style="margin: 0 0 6px 0; font-weight:500;">
+          Blackhole SSC CGL Examination Platform • Built & Mentored by Founder <strong>Anshul Yadav</strong>
+        </p>
+        <p style="margin: 0; font-size: 12px;">
+          <a href="javascript:void(0)" onclick="app.openFounderModal()" style="color:var(--tb-teal); font-weight:700; text-decoration:none;">Know About Founder: Anshul</a> &nbsp;•&nbsp; 
+          <a href="javascript:void(0)" onclick="app.openLeaderboardModal()" style="color:#64748b; text-decoration:none;">Live Leaderboard</a> &nbsp;•&nbsp; 
+          <a href="javascript:void(0)" onclick="app.showStudyMaterialsView()" style="color:#64748b; text-decoration:none;">Study Vault & Formulas</a>
+        </p>
+      </footer>
     </section>
 
     <!-- VIEW 2: Pre-Test Instructions Screen -->
@@ -475,7 +521,7 @@
               <thead>
                 <tr>
                   <th>Metric</th>
-                  <th>You</th>
+                  <th id="compHeaderYou" style="color:var(--tb-teal);">You</th>
                   <th>Topper</th>
                   <th>Average</th>
                 </tr>
@@ -991,6 +1037,70 @@
     </div>
   </div>
 
-  <script src="app.js?v=9.4"></script>
+  <!-- MODAL 10: About Founder Anshul Yadav Modal -->
+  <div class="modal-overlay" id="founderModal" style="display:none;">
+    <div class="modal-card modal-large" style="max-width: 650px; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
+      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: #fff; padding: 26px 24px; position: relative;">
+        <button class="modal-close-btn" onclick="app.closeFounderModal()" style="position:absolute; top:16px; right:16px; color:#fff; background:rgba(255,255,255,0.18); border-radius:50%; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-size:18px;">&times;</button>
+        <div style="display:flex; align-items:center; gap:18px;">
+          <div style="width:72px; height:72px; min-width:72px; border-radius:50%; background: linear-gradient(135deg, #6366f1 0%, #0d9488 100%); display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:800; color:#fff; border:3px solid rgba(255,255,255,0.4); box-shadow: 0 4px 14px rgba(0,0,0,0.3);">
+            AY
+          </div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <h2 style="margin:0; font-size:22px; font-weight:800; color:#fff;">Anshul Yadav</h2>
+              <span style="background:rgba(16, 185, 129, 0.25); color:#34d399; font-size:11px; font-weight:700; padding:2px 8px; border-radius:12px; border:1px solid #059669;">Verified Founder</span>
+            </div>
+            <p style="margin:4px 0 0 0; color:#c7d2fe; font-size:14px; font-weight:500;">Founder & Lead Educator, Blackhole SSC CGL Platform</p>
+            <div style="margin-top:6px; font-size:12px; color:#a5b4fc; display:flex; gap:10px; flex-wrap:wrap;">
+              <span>🎯 SSC CGL Specialist</span>
+              <span>•</span>
+              <span>⚡ TCS Pattern Architect</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body" style="padding: 22px 24px; color:#334155; line-height:1.65; max-height:65vh; overflow-y:auto;">
+        <div style="background:#f8fafc; border-left: 4px solid var(--tb-teal); padding: 12px 16px; border-radius: 0 8px 8px 0; margin-bottom: 20px;">
+          <em style="color:#0f172a; font-weight:600; font-size:13.5px; display:block;">
+            "Blackhole was born from a singular mission: to provide serious SSC CGL aspirants with honest, high-yield practice, zero-lag examination interface, and completely transparent All-India performance analytics."
+          </em>
+          <div style="text-align:right; margin-top:6px; font-size:12px; font-weight:700; color:var(--tb-teal);">— Anshul Yadav, Founder</div>
+        </div>
+
+        <h4 style="color:#1e293b; margin:0 0 8px 0; font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px;">
+          <span>🚀</span> The Story & Vision Behind Blackhole
+        </h4>
+        <p style="font-size:13px; margin:0 0 16px 0; color:#475569;">
+          As an educator and examination mentor, <strong>Anshul Yadav</strong> built Blackhole to eliminate the shortcomings of conventional mock platforms — eradicating fake rankings, simulated topper marks, and bloated UI. Blackhole offers a 100% exam-mirroring interface on the latest 2025–26 TCS pattern with real candidate rankings and authentic step-by-step solutions.
+        </p>
+
+        <h4 style="color:#1e293b; margin:0 0 8px 0; font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px;">
+          <span>⭐</span> Key Principles Built by Anshul Yadav
+        </h4>
+        <ul style="margin:0 0 18px 0; padding-left:20px; font-size:13px; color:#475569;">
+          <li style="margin-bottom:6px;"><strong>Real All India Live Leaderboard</strong>: Live percentiles and ranks based strictly on actual student test submissions.</li>
+          <li style="margin-bottom:6px;"><strong>High-Yield Maths Formula Vault</strong>: Handcrafted shortcuts, theorem banks, and geometry identities for Tier-2 speed mastery.</li>
+          <li style="margin-bottom:6px;"><strong>TCS Exam Simulation</strong>: Exact testbook/TCS style color palette, timer badges, question palette, and bilingual toggle.</li>
+          <li><strong>Multi-tenant Cloud Persistence</strong>: Cloud-synchronized student accounts, test progress, and personalized study notes.</li>
+        </ul>
+
+        <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+          <div>
+            <strong style="color:#1e40af; font-size:13px; display:block;">Have feedback or questions for Founder Anshul Yadav?</strong>
+            <span style="color:#3b82f6; font-size:12px;">Reach out directly for mentoring, feedback, or test inquiries.</span>
+          </div>
+          <a href="mailto:admin@cglstudy.com" class="btn btn-primary btn-sm" style="white-space:nowrap; text-decoration:none; padding:6px 14px; font-size:12px;">Contact Anshul</a>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding:14px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end;">
+        <button class="btn btn-secondary" onclick="app.closeFounderModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=9.5"></script>
 </body>
 </html>

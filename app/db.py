@@ -139,7 +139,7 @@ def init_db():
         c.execute('''
         INSERT INTO users (id, email, password_hash, salt, full_name, role, target_exam)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (admin_id, 'admin@cglstudy.com', pwd_hash, salt, 'Candidate', 'admin', 'SSC CGL 2026'))
+        ''', (admin_id, 'admin@cglstudy.com', pwd_hash, salt, 'Anshul Yadav', 'admin', 'SSC CGL 2026'))
         conn.commit()
 
     # Migrate legacy history.json if exists and results table is empty
@@ -582,14 +582,10 @@ def authenticate_user(email, password):
     expires = (datetime.utcnow() + timedelta(days=30)).isoformat()
     supabase_save_session(token, user['id'], expires)
 
-    display_name = user['full_name']
-    if 'anshul' in display_name.lower():
-        display_name = 'Candidate'
-
     user_data = {
         "id": user['id'],
         "email": user['email'],
-        "full_name": display_name,
+        "full_name": user['full_name'],
         "role": user['role'],
         "target_exam": user['target_exam']
     }
@@ -619,10 +615,7 @@ def get_user_from_token(token):
     row = c.fetchone()
     if row:
         conn.close()
-        d = dict(row)
-        if 'anshul' in d.get('full_name', '').lower():
-            d['full_name'] = 'Candidate'
-        return d
+        return dict(row)
 
     # If session not in SQLite, check Supabase
     cloud_sess = supabase_get_session(token)
@@ -646,10 +639,7 @@ def get_user_from_token(token):
                       (token, user_id, cloud_sess.get('expires_at')))
             conn.commit()
             conn.close()
-            d = dict(u_row)
-            if 'anshul' in d.get('full_name', '').lower():
-                d['full_name'] = 'Candidate'
-            return d
+            return dict(u_row)
 
     conn.close()
     return None
@@ -799,8 +789,6 @@ def get_real_leaderboard(test_id=None, current_user_id=None):
     for idx, r in enumerate(rows):
         rank = idx + 1
         name = r['user_name'] or 'Aspirant'
-        if 'anshul' in name.lower():
-            name = 'Candidate'
 
         time_sec = r['time_spent_seconds'] or 0
         mins = time_sec // 60
@@ -888,8 +876,6 @@ def save_test_result(user_id, result_data):
     c.execute('SELECT full_name, email FROM users WHERE id = ?', (user_id,))
     user = c.fetchone()
     u_name = user['full_name'] if user else 'Candidate'
-    if 'anshul' in u_name.lower():
-        u_name = 'Candidate'
     u_email = user['email'] if user else ''
 
     res_id = result_data.get('attemptId') or f"att_{secrets.token_hex(6)}_{int(time.time())}"
@@ -1162,11 +1148,6 @@ def get_admin_overview():
     ORDER BY created_at DESC
     ''')
     students = [dict(r) for r in c.fetchall()]
-    for s in students:
-        if 'anshul' in s.get('full_name', '').lower():
-            s['full_name'] = 'Candidate'
-        if 'anshul' in s.get('email', '').lower():
-            s['email'] = 'admin@cglstudy.com'
 
     c.execute('''
     SELECT id, user_name, user_email, test_title, score, max_marks, accuracy, time_spent_seconds, created_at
@@ -1174,11 +1155,6 @@ def get_admin_overview():
     ORDER BY created_at DESC LIMIT 50
     ''')
     recent_submissions = [dict(r) for r in c.fetchall()]
-    for r in recent_submissions:
-        if 'anshul' in r.get('user_name', '').lower():
-            r['user_name'] = 'Candidate'
-        if 'anshul' in r.get('user_email', '').lower():
-            r['user_email'] = 'admin@cglstudy.com'
 
     conn.close()
     return {
