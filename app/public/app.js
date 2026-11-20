@@ -2119,6 +2119,35 @@ class BlackholeApp {
     }
   }
 
+  async addFounderStrategyNote() {
+    if (!this.currentUser) {
+      this.openAuthModal('login');
+      return;
+    }
+    const title = "Founder Anshul Yadav's Tier-2 Math 75/75 Blueprint";
+    const topic = "Math Strategy";
+    const content = "Master the 3-Pass Rule:\n1. Pass 1 (Mins 0-12): Lock in all direct Arithmetic & Formula questions (14-16 questions).\n2. Pass 2 (Mins 12-20): Tackle Geometry, Mensuration & Algebra via option elimination and substitution.\n3. Pass 3 (Mins 20-25): Invest remaining minutes into multi-step problems and DI.\n\nNegative Marking Defense: Never guess blindly (+3.0 correct vs -1.0 penalty). Preserving negative marks is what separates top ranks!";
+
+    try {
+      const res = await fetch('/api/notes', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({ title, topic, content })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        alert("✅ Founder Anshul Yadav's strategy note has been saved to your Personal Notes!");
+        await this.loadStudentNotes();
+        const grid = document.getElementById('studentNotesGrid');
+        if (grid) grid.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        alert('Failed to save note.');
+      }
+    } catch (e) {
+      alert('Error saving note.');
+    }
+  }
+
   renderMarkdown(md) {
     if (!md) return '';
     let html = md
