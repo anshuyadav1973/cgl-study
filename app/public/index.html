@@ -317,6 +317,18 @@
           <p id="instTestSubtitle">Subtitle</p>
         </div>
 
+        <!-- Candidate Name in Pre-Test Instructions Screen -->
+        <div class="inst-candidate-strip" id="instCandidateStrip" style="background:#f8fafc; border-radius:8px; padding:10px 16px; margin: 12px 0 18px; display:flex; align-items:center; justify-content:space-between; border: 1px solid #e2e8f0;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:38px; height:38px; border-radius:50%; background:var(--tb-teal); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px;" id="instCandidateAvatar">CA</div>
+            <div>
+              <span style="font-size:11px; color:#64748b; display:block; text-transform:uppercase; font-weight:700;">Candidate Name:</span>
+              <strong style="font-size:15px; color:#0f172a;" id="instCandidateName">Candidate</strong>
+            </div>
+          </div>
+          <span style="font-size:12px; background:#e0f2fe; color:#0369a1; padding:3px 10px; border-radius:12px; font-weight:700;" id="instCandidateExam">SSC CGL Mains 2026</span>
+        </div>
+
         <div class="inst-meta-grid">
           <div class="meta-item">
             <span class="label">Total Questions</span>
@@ -423,6 +435,16 @@
         </div>
 
         <aside class="palette-sidebar">
+          <!-- TCS iON / Testbook Candidate Badge Card -->
+          <div class="exam-candidate-card" id="examCandidateCard">
+            <div class="exam-avatar" id="examCandidateAvatar">CA</div>
+            <div class="exam-candidate-info">
+              <span class="exam-cand-label">Candidate Name:</span>
+              <strong class="exam-cand-name" id="examCandidateName">Candidate</strong>
+              <span class="exam-cand-id" id="examCandidateExam">SSC CGL Mains 2026</span>
+            </div>
+          </div>
+
           <div class="palette-status-summary">
             <div class="stat-pill"><span class="dot green"></span><span id="countAnswered">0</span> Answered</div>
             <div class="stat-pill"><span class="dot red"></span><span id="countNotAnswered">0</span> Not Answered</div>
@@ -1101,6 +1123,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=9.5"></script>
+  <script src="app.js?v=9.6"></script>
 </body>
 </html>

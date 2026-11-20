@@ -158,6 +158,21 @@ class BlackholeApp {
         welcomeName.innerText = displayName;
       }
 
+      // Exam Sidebar & Instructions Candidate Cards
+      const elExamAvatar = document.getElementById('examCandidateAvatar');
+      if (elExamAvatar) elExamAvatar.innerText = initials;
+      const elExamName = document.getElementById('examCandidateName');
+      if (elExamName) elExamName.innerText = displayName;
+      const elExamExam = document.getElementById('examCandidateExam');
+      if (elExamExam) elExamExam.innerText = this.currentUser.target_exam || 'SSC CGL Mains 2026';
+
+      const elInstAvatar = document.getElementById('instCandidateAvatar');
+      if (elInstAvatar) elInstAvatar.innerText = initials;
+      const elInstName = document.getElementById('instCandidateName');
+      if (elInstName) elInstName.innerText = displayName;
+      const elInstExam = document.getElementById('instCandidateExam');
+      if (elInstExam) elInstExam.innerText = this.currentUser.target_exam || 'SSC CGL Mains 2026';
+
       if (clearHistoryBtn) clearHistoryBtn.style.display = (this.historyData && this.historyData.length > 0) ? 'inline-block' : 'none';
     } else {
       if (guestControls) guestControls.style.display = 'flex';
@@ -165,6 +180,11 @@ class BlackholeApp {
       if (clearHistoryBtn) clearHistoryBtn.style.display = 'none';
       const welcomeStrip = document.getElementById('candidateWelcomeStrip');
       if (welcomeStrip) welcomeStrip.style.display = 'none';
+
+      const elExamName = document.getElementById('examCandidateName');
+      if (elExamName) elExamName.innerText = 'Candidate (Guest)';
+      const elInstName = document.getElementById('instCandidateName');
+      if (elInstName) elInstName.innerText = 'Candidate (Guest)';
     }
 
     if (this.tests && this.tests.length > 0) {

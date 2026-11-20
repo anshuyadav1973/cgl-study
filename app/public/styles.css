@@ -3056,3 +3056,60 @@ body.testbook-theme {
   background: rgba(250, 204, 21, 0.25) !important;
   color: #ffffff !important;
 }
+
+/* TCS iON Candidate Badge Card in Active Exam Sidebar */
+.exam-candidate-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.exam-avatar {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tb-navy) 0%, var(--tb-teal) 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 16px;
+  border: 2px solid #e2e8f0;
+}
+
+.exam-candidate-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.exam-cand-label {
+  font-size: 10px;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.exam-cand-name {
+  font-size: 14px;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
+}
+
+.exam-cand-id {
+  font-size: 11px;
+  color: var(--tb-teal);
+  font-weight: 600;
+}
