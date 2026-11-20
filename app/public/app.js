@@ -29,6 +29,9 @@ class TestbookApp {
     this.userNotes = [];
     this.testFilter = 'all';
     this.testSearchQuery = '';
+    this.fontSizeLevel = 0;
+    this.bookmarkedQuestions = {};
+    this.loadBookmarks();
 
     this.init();
   }
@@ -315,6 +318,12 @@ class TestbookApp {
     if (calcBtn) calcBtn.style.display = 'none';
     if (langSelect) langSelect.style.display = 'none';
     if (navLinks) navLinks.style.display = 'flex';
+
+    const examTools = ['btnQuestionPaper', 'btnExamInstructions', 'fontControlWrap', 'btnPauseTest', 'btnFullscreen'];
+    examTools.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
   }
 
   setActiveNav(linkId) {
@@ -1053,6 +1062,12 @@ class TestbookApp {
       const navLinks = document.getElementById('tbNavLinks');
       if (navLinks) navLinks.style.display = 'none';
 
+      const examTools = ['btnQuestionPaper', 'btnExamInstructions', 'fontControlWrap', 'btnPauseTest', 'btnFullscreen'];
+      examTools.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'inline-flex';
+      });
+
       this.startTimer();
       this.renderPalette();
       this.loadQuestion(this.currentQIndex);
@@ -1171,6 +1186,12 @@ class TestbookApp {
     const navLinks = document.getElementById('tbNavLinks');
     if (navLinks) navLinks.style.display = 'none';
 
+    const examTools = ['btnQuestionPaper', 'btnExamInstructions', 'fontControlWrap', 'btnPauseTest', 'btnFullscreen'];
+    examTools.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'inline-flex';
+    });
+
     this.totalDurationSeconds = (this.currentTest.durationMinutes || 25) * 60;
     this.timeRemaining = this.totalDurationSeconds;
     this.startTimer();
@@ -1282,6 +1303,7 @@ class TestbookApp {
 
     document.getElementById('prevBtn').disabled = (index === 0);
     this.renderPalette();
+    this.updateBookmarkButton();
   }
 
   selectOption(optId) {
@@ -1521,6 +1543,67 @@ class TestbookApp {
     document.getElementById('filterIncorrectCount').innerText = res.incorrectCount;
     document.getElementById('filterUnattemptedCount').innerText = res.totalQ - res.attemptedCount;
 
+    // Testbook You vs Toppers Comparison Metrics
+    const compScore = document.getElementById('compScoreYou');
+    if (compScore) compScore.innerText = `${res.score} / ${res.maxMarks}`;
+    const compAcc = document.getElementById('compAccYou');
+    if (compAcc) compAcc.innerText = `${res.accuracy}%`;
+    const compAtt = document.getElementById('compAttYou');
+    if (compAtt) compAtt.innerText = `${res.attemptedCount} / ${res.totalQ}`;
+    const compTime = document.getElementById('compTimeYou');
+    if (compTime) compTime.innerText = res.timeFormatted;
+
+    // Estimated All India Rank
+    const compRank = document.getElementById('compRankYou');
+    let estimatedRank = Math.max(1, Math.round((100 - res.percentage) * 26 + 1));
+    if (res.percentage >= 95) estimatedRank = Math.floor(Math.random() * 5) + 1;
+    if (compRank) compRank.innerText = `AIR #${estimatedRank}`;
+
+    // Topic-wise Performance Breakdown
+    const breakdownContainer = document.getElementById('topicBreakdownList');
+    if (breakdownContainer && res.questions) {
+      const topicStats = {};
+      res.questions.forEach(q => {
+        const top = q.topic || 'Quantitative Aptitude';
+        if (!topicStats[top]) {
+          topicStats[top] = { total: 0, correct: 0, incorrect: 0, unattempted: 0 };
+        }
+        topicStats[top].total++;
+        if (q.status === 'correct') topicStats[top].correct++;
+        else if (q.status === 'incorrect') topicStats[top].incorrect++;
+        else topicStats[top].unattempted++;
+      });
+
+      breakdownContainer.innerHTML = Object.entries(topicStats).map(([topic, stat]) => {
+        const acc = stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
+        let badgeClass = 'strong';
+        let badgeLabel = 'Strong';
+        let barColor = '#10b981';
+
+        if (acc < 45) {
+          badgeClass = 'weak';
+          badgeLabel = 'Needs Focus';
+          barColor = '#ef4444';
+        } else if (acc < 75) {
+          badgeClass = 'moderate';
+          badgeLabel = 'Moderate';
+          barColor = '#f59e0b';
+        }
+
+        return `
+          <div class="topic-row">
+            <div class="topic-meta-row">
+              <span class="topic-name">${topic} (${stat.correct}/${stat.total} Correct)</span>
+              <span class="topic-tag ${badgeClass}">${badgeLabel} (${acc}%)</span>
+            </div>
+            <div class="topic-bar-bg">
+              <div class="topic-bar-fill" style="width: ${acc}%; background: ${barColor};"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     this.evaluatedQuestions = res.questions;
     this.filterSolutions('all');
   }
@@ -1567,7 +1650,7 @@ class TestbookApp {
         <div class="sol-explanation-box">
           <div class="sol-exp-title">Detailed Solution / विस्तृत व्याख्या:</div>
           <div class="sol-exp-text">${q.solution || 'Solution not available.'}</div>
-          ${q.trick ? `<div class="trick-box"><strong>Smart Trick / GP TRICK:</strong> ${q.trick}</div>` : ''}
+          ${q.trick ? `<div class="trick-box" style="background:#eff6ff; border-left:4px solid #2563eb; padding:10px 14px; border-radius:6px; margin-top:10px; font-size:13px; color:#1e3a8a;"><strong>💡 Testbook Smart Trick / Speed Method:</strong> ${q.trick}</div>` : ''}
         </div>
       `;
       container.appendChild(card);
@@ -2024,6 +2107,216 @@ class TestbookApp {
       }
     } catch (e) {
       alert('Network error while saving test.');
+    }
+  }
+
+  // --- Testbook CBT Examination Tools & Modal Controls ---
+  loadBookmarks() {
+    try {
+      const raw = localStorage.getItem('cgl_bookmarks');
+      this.bookmarkedQuestions = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      this.bookmarkedQuestions = {};
+    }
+  }
+
+  isBookmarked(qIndex) {
+    if (!this.currentTest) return false;
+    const tId = this.currentTest.id;
+    return !!(this.bookmarkedQuestions[tId] && this.bookmarkedQuestions[tId][qIndex]);
+  }
+
+  toggleBookmark() {
+    if (!this.currentTest) return;
+    const tId = this.currentTest.id;
+    if (!this.bookmarkedQuestions[tId]) {
+      this.bookmarkedQuestions[tId] = {};
+    }
+    const isBk = !!this.bookmarkedQuestions[tId][this.currentQIndex];
+    if (isBk) {
+      delete this.bookmarkedQuestions[tId][this.currentQIndex];
+    } else {
+      this.bookmarkedQuestions[tId][this.currentQIndex] = true;
+    }
+    try {
+      localStorage.setItem('cgl_bookmarks', JSON.stringify(this.bookmarkedQuestions));
+    } catch (e) {}
+    this.updateBookmarkButton();
+  }
+
+  updateBookmarkButton() {
+    const btn = document.getElementById('bookmarkBtn');
+    const txt = document.getElementById('bookmarkText');
+    if (!btn || !txt) return;
+    const bk = this.isBookmarked(this.currentQIndex);
+    txt.innerText = bk ? '★ Bookmarked' : '☆ Bookmark';
+    if (bk) {
+      btn.style.color = '#eab308';
+      btn.style.borderColor = '#facc15';
+      btn.style.fontWeight = '700';
+    } else {
+      btn.style.color = '';
+      btn.style.borderColor = '';
+      btn.style.fontWeight = '';
+    }
+  }
+
+  openQuestionPaperModal() {
+    if (!this.currentTest) return;
+    const modal = document.getElementById('questionPaperModal');
+    const titleEl = document.getElementById('qpTestTitle');
+    const listEl = document.getElementById('qpQuestionsList');
+    if (!modal || !listEl) return;
+
+    if (titleEl) {
+      titleEl.innerText = `${this.currentTest.title} (${this.currentTest.questions.length} Questions)`;
+    }
+
+    listEl.innerHTML = '';
+    this.currentTest.questions.forEach((q, idx) => {
+      const item = document.createElement('div');
+      item.className = 'qp-item';
+
+      const isEn = this.language === 'en';
+      const isHi = this.language === 'hi';
+      let qText = '';
+      if (isEn) {
+        qText = q.question_en || q.question_hi || '';
+      } else if (isHi) {
+        qText = q.question_hi || q.question_en || '';
+      } else {
+        qText = `<div>${q.question_en || ''}</div>${q.question_hi ? `<div style="margin-top:6px; color:#475569;">${q.question_hi}</div>` : ''}`;
+      }
+
+      let optsHtml = '';
+      if (q.options && Array.isArray(q.options)) {
+        optsHtml = `<div class="qp-item-options">` + q.options.map(o => `<div><strong>(${o.id})</strong> ${o.text}</div>`).join('') + `</div>`;
+      }
+
+      const userAnsObj = this.userAnswers[idx];
+      const hasAns = userAnsObj && userAnsObj.selected;
+      const statusBadge = hasAns
+        ? `<span style="background:#dcfce7; color:#15803d; font-weight:700; padding:2px 8px; border-radius:12px; font-size:11px;">Answered: (${userAnsObj.selected})</span>`
+        : `<span style="background:#f1f5f9; color:#64748b; font-weight:600; padding:2px 8px; border-radius:12px; font-size:11px;">Not Answered</span>`;
+
+      item.innerHTML = `
+        <div class="qp-item-header">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span>Question ${idx + 1} &bull; ${q.topic || 'Quantitative Aptitude'}</span>
+            ${statusBadge}
+          </div>
+          <button class="btn-jump-q" onclick="app.jumpToQuestion(${idx})">Jump to Q${idx + 1} &rarr;</button>
+        </div>
+        <div class="qp-item-qtext">${qText}</div>
+        ${optsHtml}
+      `;
+      listEl.appendChild(item);
+    });
+
+    modal.style.display = 'flex';
+  }
+
+  closeQuestionPaperModal() {
+    const modal = document.getElementById('questionPaperModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  jumpToQuestion(index) {
+    this.closeQuestionPaperModal();
+    this.loadQuestion(index);
+  }
+
+  openExamInstructionsModal() {
+    const modal = document.getElementById('examInstructionsModal');
+    if (modal) modal.style.display = 'flex';
+  }
+
+  closeExamInstructionsModal() {
+    const modal = document.getElementById('examInstructionsModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  openLeaderboardModal() {
+    const modal = document.getElementById('leaderboardModal');
+    const tbody = document.getElementById('leaderboardTableBody');
+    if (!modal || !tbody) return;
+
+    const topperNames = [
+      { rank: 1, name: 'Aditya S. (AIR 1)', score: '75 / 75', acc: '100%', time: '13m 45s', perc: '99.98%' },
+      { rank: 2, name: 'Pooja Sharma', score: '75 / 75', acc: '98%', time: '14m 12s', perc: '99.94%' },
+      { rank: 3, name: 'Vikramaditya R.', score: '74 / 75', acc: '96%', time: '15m 02s', perc: '99.85%' },
+      { rank: 4, name: 'Kavita Meena', score: '73 / 75', acc: '96%', time: '15m 40s', perc: '99.72%' },
+      { rank: 5, name: 'Rohit Verma', score: '72 / 75', acc: '95%', time: '16m 18s', perc: '99.50%' },
+      { rank: 6, name: 'Sneha Patel', score: '71 / 75', acc: '94%', time: '16m 55s', perc: '99.28%' },
+      { rank: 7, name: 'Manish Rawat', score: '70 / 75', acc: '92%', time: '17m 10s', perc: '99.01%' },
+      { rank: 8, name: 'Abhishek Roy', score: '69 / 75', acc: '92%', time: '17m 42s', perc: '98.75%' },
+      { rank: 9, name: 'Divya Aggarwal', score: '68 / 75', acc: '90%', time: '18m 05s', perc: '98.40%' },
+      { rank: 10, name: 'Gaurav Joshi', score: '68 / 75', acc: '90%', time: '18m 20s', perc: '98.15%' }
+    ];
+
+    tbody.innerHTML = topperNames.map(top => {
+      let medal = '';
+      if (top.rank === 1) medal = '🥇 <span class="rank-badge rank-gold">#1</span>';
+      else if (top.rank === 2) medal = '🥈 <span class="rank-badge rank-silver">#2</span>';
+      else if (top.rank === 3) medal = '🥉 <span class="rank-badge rank-bronze">#3</span>';
+      else medal = `<span class="rank-badge" style="color:#64748b;">#${top.rank}</span>`;
+
+      return `
+        <tr>
+          <td>${medal}</td>
+          <td><strong style="color:#1e293b;">${top.name}</strong></td>
+          <td><strong style="color:var(--tb-teal);">${top.score}</strong></td>
+          <td>${top.acc}</td>
+          <td>${top.time}</td>
+          <td><span style="background:#e0f2fe; color:#0369a1; font-weight:700; padding:2px 8px; border-radius:12px; font-size:12px;">${top.perc}</span></td>
+        </tr>
+      `;
+    }).join('');
+
+    modal.style.display = 'flex';
+  }
+
+  closeLeaderboardModal() {
+    const modal = document.getElementById('leaderboardModal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(err => {
+        console.log('Fullscreen request error:', err);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(err => {});
+      }
+    }
+  }
+
+  changeFontSize(level) {
+    this.fontSizeLevel = level;
+    const qContent = document.getElementById('questionContentArea');
+    if (!qContent) return;
+    if (level === -1) {
+      qContent.style.fontSize = '13.5px';
+    } else if (level === 1) {
+      qContent.style.fontSize = '17.5px';
+    } else {
+      qContent.style.fontSize = '15px';
+    }
+    const buttons = document.querySelectorAll('#fontControlWrap button');
+    if (buttons.length === 3) {
+      buttons[0].classList.toggle('active', level === -1);
+      buttons[1].classList.toggle('active', level === 0);
+      buttons[2].classList.toggle('active', level === 1);
+    }
+  }
+
+  async pauseTest() {
+    if (confirm('Are you sure you want to pause this test and return to the dashboard? Your remaining time and all answered questions are safely saved.')) {
+      await this.saveActiveTestProgress();
+      this.stopTimer();
+      this.showDashboard();
     }
   }
 }
