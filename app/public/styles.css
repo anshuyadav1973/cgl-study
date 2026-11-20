@@ -3602,6 +3602,59 @@ body.testbook-theme {
   /* ========================================================
      ACTIVE EXAM INTERFACE (TCS) MOBILE OPTIMIZATION
      ======================================================== */
+  body.in-exam .tb-header {
+    height: 52px;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  body.in-exam #headerTestInfo {
+    display: none !important;
+  }
+  body.in-exam #globalZoomControl,
+  body.in-exam #btnGlobalFullscreen,
+  body.in-exam #btnQuestionPaper,
+  body.in-exam #fontControlWrap,
+  body.in-exam #btnFullscreen {
+    display: none !important;
+  }
+  body.in-exam .timer-badge {
+    padding: 4px 8px;
+    gap: 4px;
+    border-radius: 12px;
+  }
+  body.in-exam .timer-label {
+    display: none;
+  }
+  body.in-exam .timer-digits {
+    font-size: 14px;
+  }
+  body.in-exam .icon-clock {
+    width: 14px;
+    height: 14px;
+  }
+  body.in-exam .btn-calc span,
+  body.in-exam #btnPauseTest span,
+  body.in-exam #btnExamInstructions span {
+    display: none;
+  }
+  body.in-exam .btn-calc,
+  body.in-exam #btnPauseTest,
+  body.in-exam #btnExamInstructions {
+    padding: 4px 8px;
+    min-height: 32px;
+  }
+  body.in-exam .lang-selector-wrap label {
+    display: none;
+  }
+  body.in-exam .lang-selector-wrap select {
+    font-size: 11px;
+    padding: 3px 6px;
+    max-width: 85px;
+    height: 32px;
+  }
+
   #testInterfaceView {
     padding: 0;
     background: #ffffff;
