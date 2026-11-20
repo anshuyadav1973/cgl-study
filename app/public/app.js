@@ -1,5 +1,16 @@
 // Blackhole Examination Application Engine & Student Educational Portal
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[m]));
+}
+
 class BlackholeApp {
   constructor() {
     this.tests = [];
@@ -826,6 +837,7 @@ class BlackholeApp {
 
       this.currentTest = { id: attempt.testId, title: attempt.testTitle };
       this.showResults({
+        testId: attempt.testId,
         title: attempt.testTitle || 'SSC CGL Mains Mock Test',
         score: attempt.score,
         maxMarks: attempt.maxMarks || 75,
@@ -1509,9 +1521,18 @@ class BlackholeApp {
         timeSpentSeconds: timeSpentTotal,
         questions: evaluatedQuestions
       })
-    }).then(() => this.loadHistory()).catch(err => console.error('Save result error:', err));
+    })
+      .then(async r => {
+        const stats = await r.json();
+        this.loadHistory();
+        if (stats && stats.realRank) {
+          this.updateResultWithRealStats(stats);
+        }
+      })
+      .catch(err => console.error('Save result error:', err));
 
     this.showResults({
+      testId: this.currentTest.id,
       title: this.currentTest.title,
       score,
       maxMarks,
@@ -1524,6 +1545,50 @@ class BlackholeApp {
       timeFormatted: `${timeMins}m ${timeSecs}s`,
       questions: evaluatedQuestions
     });
+  }
+
+  updateResultWithRealStats(stats) {
+    if (!stats) return;
+
+    const compRank = document.getElementById('compRankYou');
+    const compScoreTop = document.getElementById('compScoreTop');
+    const compScoreAvg = document.getElementById('compScoreAvg');
+
+    const compAccTop = document.getElementById('compAccTop');
+    const compAccAvg = document.getElementById('compAccAvg');
+
+    const compAttTop = document.getElementById('compAttTop');
+    const compAttAvg = document.getElementById('compAttAvg');
+
+    const compTimeTop = document.getElementById('compTimeTop');
+    const compTimeAvg = document.getElementById('compTimeAvg');
+
+    const compRankTop = document.getElementById('compRankTop');
+    const compRankAvg = document.getElementById('compRankAvg');
+
+    if (compRank && stats.realRank) {
+      const total = stats.totalCandidates || 1;
+      compRank.innerText = `AIR #${stats.realRank} / ${total}`;
+    }
+
+    if (stats.topper) {
+      if (compScoreTop) compScoreTop.innerText = `${stats.topper.score} / ${stats.topper.maxMarks || 75}`;
+      if (compAccTop) compAccTop.innerText = `${stats.topper.accuracy}%`;
+      if (compAttTop) compAttTop.innerText = `${stats.topper.attempted} / 25`;
+      if (compTimeTop) compTimeTop.innerText = stats.topper.timeFormatted;
+      if (compRankTop) compRankTop.innerText = 'AIR #1';
+    }
+
+    if (stats.average) {
+      if (compScoreAvg) compScoreAvg.innerText = `${stats.average.score} / 75`;
+      if (compAccAvg) compAccAvg.innerText = `${stats.average.accuracy}%`;
+      if (compAttAvg) compAttAvg.innerText = `${stats.average.attempted} / 25`;
+      if (compTimeAvg) compTimeAvg.innerText = stats.average.timeFormatted;
+      if (compRankAvg) {
+        const avgRank = Math.max(1, Math.ceil((stats.totalCandidates || 1) / 2));
+        compRankAvg.innerText = `AIR #${avgRank}`;
+      }
+    }
   }
 
   showResults(res) {
@@ -1556,11 +1621,14 @@ class BlackholeApp {
     const compTime = document.getElementById('compTimeYou');
     if (compTime) compTime.innerText = res.timeFormatted;
 
-    // Estimated All India Rank
-    const compRank = document.getElementById('compRankYou');
-    let estimatedRank = Math.max(1, Math.round((100 - res.percentage) * 26 + 1));
-    if (res.percentage >= 95) estimatedRank = Math.floor(Math.random() * 5) + 1;
-    if (compRank) compRank.innerText = `AIR #${estimatedRank}`;
+    // Fetch real live statistics & ranking from database
+    const tId = res.testId || (this.currentTest && this.currentTest.id) || 'cgl-mains-mock-01';
+    fetch(`/api/test-stats?testId=${encodeURIComponent(tId)}&score=${res.score}`, {
+      headers: this.getAuthHeaders()
+    })
+      .then(r => r.json())
+      .then(stats => this.updateResultWithRealStats(stats))
+      .catch(err => console.error('Error fetching real test stats:', err));
 
     // Topic-wise Performance Breakdown
     const breakdownContainer = document.getElementById('topicBreakdownList');
@@ -2239,44 +2307,79 @@ class BlackholeApp {
     if (modal) modal.style.display = 'none';
   }
 
-  openLeaderboardModal() {
+  async openLeaderboardModal() {
     const modal = document.getElementById('leaderboardModal');
     const tbody = document.getElementById('leaderboardTableBody');
+    const subtitle = document.getElementById('leaderboardSubtitle');
     if (!modal || !tbody) return;
 
-    const topperNames = [
-      { rank: 1, name: 'Aditya S. (AIR 1)', score: '75 / 75', acc: '100%', time: '13m 45s', perc: '99.98%' },
-      { rank: 2, name: 'Pooja Sharma', score: '75 / 75', acc: '98%', time: '14m 12s', perc: '99.94%' },
-      { rank: 3, name: 'Vikramaditya R.', score: '74 / 75', acc: '96%', time: '15m 02s', perc: '99.85%' },
-      { rank: 4, name: 'Kavita Meena', score: '73 / 75', acc: '96%', time: '15m 40s', perc: '99.72%' },
-      { rank: 5, name: 'Rohit Verma', score: '72 / 75', acc: '95%', time: '16m 18s', perc: '99.50%' },
-      { rank: 6, name: 'Sneha Patel', score: '71 / 75', acc: '94%', time: '16m 55s', perc: '99.28%' },
-      { rank: 7, name: 'Manish Rawat', score: '70 / 75', acc: '92%', time: '17m 10s', perc: '99.01%' },
-      { rank: 8, name: 'Abhishek Roy', score: '69 / 75', acc: '92%', time: '17m 42s', perc: '98.75%' },
-      { rank: 9, name: 'Divya Aggarwal', score: '68 / 75', acc: '90%', time: '18m 05s', perc: '98.40%' },
-      { rank: 10, name: 'Gaurav Joshi', score: '68 / 75', acc: '90%', time: '18m 20s', perc: '98.15%' }
-    ];
+    modal.style.display = 'flex';
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" style="text-align:center; padding:30px; color:#64748b;">
+          <div style="font-size:24px; margin-bottom:8px;">⏳</div>
+          Loading live rankings from database...
+        </td>
+      </tr>
+    `;
 
-    tbody.innerHTML = topperNames.map(top => {
-      let medal = '';
-      if (top.rank === 1) medal = '🥇 <span class="rank-badge rank-gold">#1</span>';
-      else if (top.rank === 2) medal = '🥈 <span class="rank-badge rank-silver">#2</span>';
-      else if (top.rank === 3) medal = '🥉 <span class="rank-badge rank-bronze">#3</span>';
-      else medal = `<span class="rank-badge" style="color:#64748b;">#${top.rank}</span>`;
+    try {
+      const res = await fetch('/api/leaderboard', {
+        headers: this.getAuthHeaders()
+      });
+      const data = await res.json();
 
-      return `
+      if (!Array.isArray(data) || data.length === 0) {
+        if (subtitle) {
+          subtitle.innerText = 'Live performance rankings based on verified student test submissions';
+        }
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:40px 20px; color:#64748b;">
+              <div style="font-size:32px; margin-bottom:12px;">🎯</div>
+              <strong style="display:block; font-size:15px; color:#1e293b; margin-bottom:6px;">No Test Submissions Yet</strong>
+              <span>Be the first aspirant to complete a mock test and claim AIR Rank #1!</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      if (subtitle) {
+        subtitle.innerText = `Live performance rankings based on ${data.length} verified candidate attempt${data.length > 1 ? 's' : ''}`;
+      }
+
+      tbody.innerHTML = data.map(item => {
+        let medal = '';
+        if (item.rank === 1) medal = '🥇 <span class="rank-badge rank-gold">#1</span>';
+        else if (item.rank === 2) medal = '🥈 <span class="rank-badge rank-silver">#2</span>';
+        else if (item.rank === 3) medal = '🥉 <span class="rank-badge rank-bronze">#3</span>';
+        else medal = `<span class="rank-badge" style="color:#64748b; font-weight:700;">#${item.rank}</span>`;
+
+        const youTag = item.isYou ? ' <span style="background:var(--tb-teal); color:#fff; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; margin-left:4px;">YOU</span>' : '';
+        const rowBg = item.isYou ? 'background:rgba(13, 148, 136, 0.08);' : '';
+
+        return `
+          <tr style="${rowBg}">
+            <td>${medal}</td>
+            <td><strong style="color:#1e293b;">${escapeHtml(item.name)}</strong>${youTag}</td>
+            <td><strong style="color:var(--tb-teal);">${item.scoreFormatted}</strong></td>
+            <td>${item.accuracyFormatted}</td>
+            <td>${item.timeFormatted}</td>
+            <td><span style="background:#e0f2fe; color:#0369a1; font-weight:700; padding:2px 8px; border-radius:12px; font-size:12px;">${item.percentileFormatted}</span></td>
+          </tr>
+        `;
+      }).join('');
+    } catch (err) {
+      console.error('Failed to load leaderboard:', err);
+      tbody.innerHTML = `
         <tr>
-          <td>${medal}</td>
-          <td><strong style="color:#1e293b;">${top.name}</strong></td>
-          <td><strong style="color:var(--tb-teal);">${top.score}</strong></td>
-          <td>${top.acc}</td>
-          <td>${top.time}</td>
-          <td><span style="background:#e0f2fe; color:#0369a1; font-weight:700; padding:2px 8px; border-radius:12px; font-size:12px;">${top.perc}</span></td>
+          <td colspan="6" style="text-align:center; padding:30px; color:#ef4444;">
+            Unable to fetch live rankings. Please try again.
+          </td>
         </tr>
       `;
-    }).join('');
-
-    modal.style.display = 'flex';
+    }
   }
 
   closeLeaderboardModal() {

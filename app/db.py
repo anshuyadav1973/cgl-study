@@ -187,6 +187,13 @@ def init_db():
     except Exception as e:
         pass
 
+    try:
+        synced_res = sync_results_from_supabase()
+        if synced_res > 0:
+            print(f"Synchronized {synced_res} test result(s) from Supabase cloud.")
+    except Exception as e:
+        pass
+
 # --- Supabase Cloud Persistence for Accounts, Sessions & In-Progress Tests ---
 import urllib.request
 import urllib.error
@@ -655,6 +662,224 @@ def delete_session(token):
     conn.close()
 
 # Results & History Helpers
+def get_test_stats(test_id, user_score=None):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT COUNT(*) FROM test_results')
+    if c.fetchone()[0] == 0:
+        conn.close()
+        sync_results_from_supabase()
+        conn = get_db()
+        c = conn.cursor()
+
+    c.execute('SELECT COUNT(*) as cnt, MAX(score) as max_s, AVG(score) as avg_s, MAX(accuracy) as max_acc, AVG(accuracy) as avg_acc, MIN(time_spent_seconds) as min_t, AVG(time_spent_seconds) as avg_t, MAX(attempted) as max_att, AVG(attempted) as avg_att FROM test_results WHERE test_id = ?', (test_id,))
+    row = c.fetchone()
+
+    total_candidates = (row['cnt'] or 0)
+    if total_candidates == 0:
+        conn.close()
+        u_score = user_score if user_score is not None else 0
+        return {
+            "totalCandidates": 1 if user_score is not None else 0,
+            "realRank": 1,
+            "realPercentile": 100.0,
+            "topper": {
+                "score": u_score,
+                "maxMarks": 75,
+                "accuracy": 100,
+                "attempted": 25,
+                "timeFormatted": "15m 00s"
+            },
+            "average": {
+                "score": u_score,
+                "accuracy": 100,
+                "attempted": 25,
+                "timeFormatted": "15m 00s"
+            }
+        }
+
+    c.execute('SELECT score, max_marks, accuracy, attempted, time_spent_seconds FROM test_results WHERE test_id = ? ORDER BY score DESC, accuracy DESC, time_spent_seconds ASC LIMIT 1', (test_id,))
+    topper_row = c.fetchone()
+    topper_t = topper_row['time_spent_seconds'] if topper_row else 0
+
+    topper_stats = {
+        "score": topper_row['score'] if topper_row else 0,
+        "maxMarks": topper_row['max_marks'] if topper_row else 75,
+        "accuracy": topper_row['accuracy'] if topper_row else 0,
+        "attempted": topper_row['attempted'] if topper_row else 0,
+        "timeFormatted": f"{(topper_t // 60)}m {(topper_t % 60):02d}s"
+    }
+
+    avg_t = int(row['avg_t'] or 0)
+    average_stats = {
+        "score": round(row['avg_s'] or 0, 1),
+        "accuracy": round(row['avg_acc'] or 0, 1),
+        "attempted": round(row['avg_att'] or 0, 1),
+        "timeFormatted": f"{(avg_t // 60)}m {(avg_t % 60):02d}s"
+    }
+
+    real_rank = 1
+    if user_score is not None:
+        c.execute('SELECT COUNT(*) FROM test_results WHERE test_id = ? AND score > ?', (test_id, user_score))
+        real_rank = c.fetchone()[0] + 1
+
+    real_percentile = round(((total_candidates - real_rank + 1) / total_candidates) * 100, 1)
+
+    conn.close()
+    return {
+        "totalCandidates": total_candidates,
+        "realRank": real_rank,
+        "realPercentile": real_percentile,
+        "topper": topper_stats,
+        "average": average_stats
+    }
+
+def get_real_leaderboard(test_id=None, current_user_id=None):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT COUNT(*) FROM test_results')
+    if c.fetchone()[0] == 0:
+        conn.close()
+        sync_results_from_supabase()
+        conn = get_db()
+        c = conn.cursor()
+
+    if test_id:
+        c.execute('''
+        SELECT 
+            tr.id as attempt_id,
+            tr.user_id,
+            COALESCE(u.full_name, tr.user_name, 'Aspirant') as user_name,
+            tr.test_id,
+            tr.test_title,
+            tr.score,
+            tr.max_marks,
+            tr.accuracy,
+            tr.attempted,
+            tr.time_spent_seconds,
+            tr.created_at
+        FROM test_results tr
+        LEFT JOIN users u ON tr.user_id = u.id
+        WHERE tr.test_id = ?
+        ORDER BY tr.score DESC, tr.accuracy DESC, tr.time_spent_seconds ASC, tr.created_at ASC
+        LIMIT 100
+        ''', (test_id,))
+    else:
+        # Overall Leaderboard: highest score per user across all mock tests
+        c.execute('''
+        SELECT 
+            tr.id as attempt_id,
+            tr.user_id,
+            COALESCE(u.full_name, tr.user_name, 'Aspirant') as user_name,
+            tr.test_id,
+            tr.test_title,
+            tr.score,
+            tr.max_marks,
+            tr.accuracy,
+            tr.attempted,
+            tr.time_spent_seconds,
+            tr.created_at
+        FROM test_results tr
+        LEFT JOIN users u ON tr.user_id = u.id
+        WHERE tr.id IN (
+            SELECT id FROM test_results t1
+            WHERE t1.score = (
+                SELECT MAX(t2.score) FROM test_results t2 WHERE t2.user_id = t1.user_id
+            )
+            GROUP BY t1.user_id
+        )
+        ORDER BY tr.score DESC, tr.accuracy DESC, tr.time_spent_seconds ASC, tr.created_at ASC
+        LIMIT 100
+        ''')
+
+    rows = c.fetchall()
+    total_entries = len(rows)
+    leaderboard = []
+
+    for idx, r in enumerate(rows):
+        rank = idx + 1
+        name = r['user_name'] or 'Aspirant'
+        if 'anshul' in name.lower():
+            name = 'Candidate'
+
+        time_sec = r['time_spent_seconds'] or 0
+        mins = time_sec // 60
+        secs = time_sec % 60
+        time_formatted = f"{mins}m {secs:02d}s"
+
+        percentile = round(((total_entries - rank + 1) / total_entries) * 100, 1) if total_entries > 0 else 100.0
+        is_you = bool(current_user_id and r['user_id'] == current_user_id)
+
+        leaderboard.append({
+            "rank": rank,
+            "name": name,
+            "isYou": is_you,
+            "userId": r['user_id'],
+            "testTitle": r['test_title'],
+            "score": r['score'],
+            "maxMarks": r['max_marks'],
+            "scoreFormatted": f"{r['score']} / {r['max_marks']}",
+            "accuracy": r['accuracy'],
+            "accuracyFormatted": f"{r['accuracy']}%",
+            "timeSpentSeconds": time_sec,
+            "timeFormatted": time_formatted,
+            "percentile": percentile,
+            "percentileFormatted": f"{percentile}%",
+            "attempted": r['attempted'],
+            "date": (r['created_at'] or '')[:10]
+        })
+
+    conn.close()
+    return leaderboard
+
+def sync_results_from_supabase():
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return 0
+    url = url.rstrip('/')
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/test_results?select=*&limit=500",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=8) as res:
+            rows = json.loads(res.read().decode('utf-8'))
+            if not rows:
+                return 0
+            conn = get_db()
+            c = conn.cursor()
+            synced = 0
+            for r in rows:
+                c.execute('''
+                INSERT OR IGNORE INTO test_results 
+                (id, user_id, user_name, user_email, test_id, test_title, score, max_marks, accuracy, attempted, correct, incorrect, unattempted, time_spent_seconds, created_at, synced_to_cloud)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                ''', (
+                    r['id'],
+                    r.get('user_id') or 'usr_guest',
+                    r.get('user_name', 'Candidate'),
+                    r.get('user_email', ''),
+                    r.get('test_id', 'cgl-mains-mock-01'),
+                    r.get('test_title', 'SSC CGL Mock Test'),
+                    r.get('score', 0),
+                    r.get('max_marks', 75),
+                    r.get('accuracy', 0),
+                    r.get('attempted', 0),
+                    r.get('correct', 0),
+                    r.get('incorrect', 0),
+                    r.get('unattempted', 0),
+                    r.get('time_spent_seconds', 0),
+                    r.get('created_at', datetime.utcnow().isoformat())
+                ))
+                synced += 1
+            conn.commit()
+            conn.close()
+            return synced
+    except Exception as e:
+        print("Error pulling results from Supabase:", e)
+        return 0
+
 def save_test_result(user_id, result_data):
     conn = get_db()
     c = conn.cursor()
@@ -669,6 +894,8 @@ def save_test_result(user_id, result_data):
 
     res_id = result_data.get('attemptId') or f"att_{secrets.token_hex(6)}_{int(time.time())}"
     questions_json = json.dumps(result_data.get('questions', []), ensure_ascii=False)
+    test_id = result_data.get('testId', 'cgl-mains-mock-01')
+    score = result_data.get('score', 0)
 
     c.execute('''
     INSERT INTO test_results 
@@ -679,9 +906,9 @@ def save_test_result(user_id, result_data):
         user_id,
         u_name,
         u_email,
-        result_data.get('testId', 'cgl-mains-mock-01'),
+        test_id,
         result_data.get('testTitle', 'SSC CGL Mains Mock Test'),
-        result_data.get('score', 0),
+        score,
         result_data.get('maxMarks', 75),
         result_data.get('accuracy', 0),
         result_data.get('attempted', 0),
@@ -723,7 +950,18 @@ def save_test_result(user_id, result_data):
         print("Error syncing legacy history file:", e)
 
     conn.close()
-    return res_id
+
+    # Compute real stats & real rank for this candidate
+    stats = get_test_stats(test_id, user_score=score)
+    stats['attemptId'] = res_id
+
+    # Sync to Supabase
+    try:
+        sync_records_to_supabase()
+    except Exception:
+        pass
+
+    return stats
 
 def get_user_history(user_id):
     conn = get_db()

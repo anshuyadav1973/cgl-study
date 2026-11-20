@@ -146,6 +146,26 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             history = db.get_user_history(user['id'])
             return self.send_json(history)
 
+        # API: Real Live Leaderboard & All India Rankings
+        if path == "/api/leaderboard":
+            user = self.get_auth_user()
+            current_user_id = user['id'] if user else None
+            parsed = urllib.parse.urlparse(self.path)
+            params = urllib.parse.parse_qs(parsed.query)
+            test_id = params.get("testId", [None])[0]
+            leaderboard_data = db.get_real_leaderboard(test_id=test_id, current_user_id=current_user_id)
+            return self.send_json(leaderboard_data)
+
+        # API: Real Test Statistics & Rank Comparison
+        if path == "/api/test-stats":
+            parsed = urllib.parse.urlparse(self.path)
+            params = urllib.parse.parse_qs(parsed.query)
+            test_id = params.get("testId", ['cgl-mains-mock-01'])[0]
+            score_param = params.get("score", [None])[0]
+            user_score = float(score_param) if score_param is not None else None
+            stats = db.get_test_stats(test_id, user_score=user_score)
+            return self.send_json(stats)
+
         # API: Personal Study Notes
         if path == "/api/notes":
             user = self.get_auth_user()
@@ -298,13 +318,8 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/submit":
             user = self.get_auth_user()
             user_id = user['id'] if user else "user_guest"
-            attempt_id = db.save_test_result(user_id, payload)
-            # Trigger background cloud sync if Supabase is active
-            try:
-                db.sync_records_to_supabase()
-            except Exception:
-                pass
-            return self.send_json({"status": "success", "attemptId": attempt_id})
+            stats = db.save_test_result(user_id, payload)
+            return self.send_json({"status": "success", **stats})
 
         # Save Personal Note
         if path == "/api/notes":
