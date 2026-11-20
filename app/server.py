@@ -201,42 +201,6 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                     "category": "Quantitative Aptitude",
                     "description": "11 core mathematical modules, diagnostic weakness log, and progress monitoring.",
                     "content": math_content
-                },
-                {
-                    "id": "mat_formula_vault",
-                    "title": "SSC CGL Tier-2 High-Yield Formula Vault & Smart Shortcuts",
-                    "category": "Maths Revision",
-                    "description": "Essential formulas for Frustum, Circle Tangents, Inradius/Circumradius, Successive Percentage, and GP TRICKS.",
-                    "content": """# SSC CGL Tier-2 Mathematics Formula Vault
-
-### 1. Algebra & Polynomials
-- **Symmetric Identity**: $a^3 + b^3 + c^3 - 3abc = (a + b + c)(a^2 + b^2 + c^2 - ab - bc - ca) = \\frac{1}{2}(a+b+c)[(a-b)^2 + (b-c)^2 + (c-a)^2]$
-- If $a + b + c = 0$, then $a^3 + b^3 + c^3 = 3abc$.
-- If $x + \\frac{1}{x} = k$, then:
-  - $x^2 + \\frac{1}{x^2} = k^2 - 2$
-  - $x^3 + \\frac{1}{x^3} = k^3 - 3k$
-  - $x^5 + \\frac{1}{x^5} = (x^2 + \\frac{1}{x^2})(x^3 + \\frac{1}{x^3}) - (x + \\frac{1}{x})$
-
-### 2. Geometry & Circles
-- **Direct Common Tangent (DCT)**: $D = \\sqrt{d^2 - (r_1 - r_2)^2}$
-- **Transverse Common Tangent (TCT)**: $T = \\sqrt{d^2 - (r_1 + r_2)^2}$
-- **Inradius of Right-angled Triangle**: $r = \\frac{P + B - H}{2}$
-- **Circumradius of Right-angled Triangle**: $R = \\frac{H}{2}$
-- **Apollonius' Theorem**: In $\\triangle ABC$ with median $AD$, $AB^2 + AC^2 = 2(AD^2 + BD^2)$.
-
-### 3. Mensuration 3D
-- **Frustum of a Right Circular Cone**:
-  - Slant height: $l = \\sqrt{h^2 + (R - r)^2}$
-  - Curved Surface Area (CSA): $\\pi(R + r)l$
-  - Total Surface Area (TSA): $\\pi(R + r)l + \\pi R^2 + \\pi r^2$
-  - Volume: $\\frac{1}{3}\\pi h (R^2 + r^2 + Rr)$
-
-### 4. Commercial Maths
-- **Dishonest Shopkeeper**: Percentage Profit = $\\frac{\\text{True Weight} - \\text{False Weight}}{\\text{False Weight}} \\times 100\\%$
-- **Compound Interest Equal Installments**: $P = \\frac{x}{1 + \\frac{R}{100}} + \\frac{x}{(1 + \\frac{R}{100})^2}$
-- **Difference between CI and SI for 2 Years**: $D_2 = P\\left(\\frac{R}{100}\\right)^2$
-- **Difference between CI and SI for 3 Years**: $D_3 = P\\left(\\frac{R}{100}\\right)^2 \\left(\\frac{300 + R}{100}\\right)$
-"""
                 }
             ]
             return self.send_json(materials)
@@ -266,6 +230,14 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
                 "connection_status": msg,
                 "is_connected": connected
             })
+
+        # Candidate Profile
+        if path == "/api/user/profile":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized. Please sign in."}, status=401)
+            prof = db.get_user_profile(user['id'])
+            return self.send_json(prof or user)
 
         # Static File Delivery
         return super().do_GET()
@@ -313,6 +285,49 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             if token:
                 db.delete_session(token)
             return self.send_json({"status": "logged_out"})
+
+        # Auth: Send OTP (Mobile / Gmail)
+        if path == "/api/auth/send-otp":
+            identifier = payload.get("identifier", "").strip()
+            if not identifier:
+                return self.send_json({"error": "Please provide your Mobile Number or Gmail address."}, status=400)
+            clean_id = identifier.replace(" ", "").replace("-", "")
+            otp = db.create_or_update_otp(clean_id)
+            masked = clean_id[:3] + "•••" + (clean_id[-3:] if len(clean_id) > 6 else "")
+            return self.send_json({
+                "status": "success",
+                "message": f"6-digit OTP code sent successfully to {masked}",
+                "otp": otp
+            })
+
+        # Auth: Verify OTP & Sign In / Register
+        if path == "/api/auth/verify-otp":
+            identifier = payload.get("identifier", "").strip()
+            otp = str(payload.get("otp", "")).strip()
+            full_name = payload.get("full_name")
+            target_exam = payload.get("target_exam", "SSC CGL 2026")
+            if not identifier or not otp:
+                return self.send_json({"error": "Identifier and 6-digit OTP code are required."}, status=400)
+            clean_id = identifier.replace(" ", "").replace("-", "")
+            valid, err = db.verify_otp_code(clean_id, otp)
+            if not valid:
+                return self.send_json({"error": err or "Invalid OTP code."}, status=400)
+            user_data, token = db.login_or_register_with_otp(clean_id, full_name, target_exam)
+            return self.send_json({"status": "success", "user": user_data, "token": token})
+
+        # Candidate Profile Update
+        if path in ["/api/user/profile", "/api/user/profile/update"]:
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized. Please sign in."}, status=401)
+            full_name = payload.get("full_name")
+            target_exam = payload.get("target_exam")
+            mobile = payload.get("mobile")
+            email = payload.get("email")
+            updated_prof, err = db.update_user_profile(user['id'], full_name, target_exam, mobile, email)
+            if err:
+                return self.send_json({"error": err}, status=400)
+            return self.send_json({"status": "success", "profile": updated_prof})
 
         # Submit Test Result
         if path == "/api/submit":
@@ -429,6 +444,31 @@ class ProductionAppHandler(http.server.SimpleHTTPRequestHandler):
             if deleted:
                 return self.send_json({"status": "success", "deleted": attempt_id})
             return self.send_json({"error": "Attempt not found or access denied"}, status=404)
+
+        return self.send_json({"error": "Not found"}, status=404)
+
+    def do_PUT(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+        content_length = int(self.headers.get("Content-Length", 0))
+        post_data = self.rfile.read(content_length) if content_length > 0 else b"{}"
+        try:
+            payload = json.loads(post_data.decode("utf-8")) if post_data else {}
+        except Exception:
+            payload = {}
+
+        if path == "/api/user/profile":
+            user = self.get_auth_user()
+            if not user:
+                return self.send_json({"error": "Unauthorized. Please sign in."}, status=401)
+            full_name = payload.get("full_name")
+            target_exam = payload.get("target_exam")
+            mobile = payload.get("mobile")
+            email = payload.get("email")
+            updated_prof, err = db.update_user_profile(user['id'], full_name, target_exam, mobile, email)
+            if err:
+                return self.send_json({"error": err}, status=400)
+            return self.send_json({"status": "success", "profile": updated_prof})
 
         return self.send_json({"error": "Not found"}, status=404)
 

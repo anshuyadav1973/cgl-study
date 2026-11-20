@@ -202,7 +202,7 @@ class BlackholeApp {
     }
   }
 
-  openAuthModal(tab = 'login', infoMessage = null) {
+  openAuthModal(tab = 'otp', infoMessage = null) {
     const modal = document.getElementById('authModal');
     if (modal) modal.style.display = 'flex';
     this.switchAuthTab(tab);
@@ -224,24 +224,158 @@ class BlackholeApp {
   }
 
   switchAuthTab(tab) {
+    const otpTab = document.getElementById('authTabOtp');
     const loginTab = document.getElementById('authTabLogin');
     const regTab = document.getElementById('authTabRegister');
+    const otpForm = document.getElementById('otpAuthForm');
     const loginForm = document.getElementById('loginForm');
     const regForm = document.getElementById('registerForm');
     const title = document.getElementById('authModalTitle');
 
-    if (tab === 'login') {
-      loginTab.classList.add('active');
-      regTab.classList.remove('active');
-      loginForm.style.display = 'block';
-      regForm.style.display = 'none';
-      title.innerText = 'Student Sign In';
+    [otpTab, loginTab, regTab].forEach(t => t && t.classList.remove('active'));
+    [otpForm, loginForm, regForm].forEach(f => f && (f.style.display = 'none'));
+
+    if (tab === 'otp') {
+      if (otpTab) otpTab.classList.add('active');
+      if (otpForm) otpForm.style.display = 'block';
+      if (title) title.innerText = 'Mobile / Gmail OTP Sign In';
+    } else if (tab === 'login') {
+      if (loginTab) loginTab.classList.add('active');
+      if (loginForm) loginForm.style.display = 'block';
+      if (title) title.innerText = 'Student Password Sign In';
     } else {
-      loginTab.classList.remove('active');
-      regTab.classList.add('active');
-      loginForm.style.display = 'none';
-      regForm.style.display = 'block';
-      title.innerText = 'Create Student Account';
+      if (regTab) regTab.classList.add('active');
+      if (regForm) regForm.style.display = 'block';
+      if (title) title.innerText = 'Create Student Account';
+    }
+  }
+
+  async sendAuthOtp(isResend = false) {
+    const input = document.getElementById('otpIdentifierInput');
+    const identifier = input ? input.value.trim() : '';
+    const alertBox = document.getElementById('authAlertBox');
+
+    if (!identifier) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Please enter your 10-digit mobile number or Gmail address.';
+        alertBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        if (alertBox) {
+          alertBox.className = 'auth-alert error';
+          alertBox.innerText = data.error || 'Failed to send OTP code.';
+          alertBox.style.display = 'block';
+        }
+        return;
+      }
+
+      this.currentOtpIdentifier = identifier;
+      const targetDisp = document.getElementById('otpTargetDisplay');
+      if (targetDisp) targetDisp.innerText = identifier;
+
+      const stepSend = document.getElementById('otpStepSend');
+      const stepVerify = document.getElementById('otpStepVerify');
+      if (stepSend) stepSend.style.display = 'none';
+      if (stepVerify) stepVerify.style.display = 'block';
+
+      if (alertBox) {
+        alertBox.className = 'auth-alert success';
+        alertBox.innerText = data.message || `OTP code sent to ${identifier}!`;
+        alertBox.style.display = 'block';
+      }
+
+      if (data.otp) {
+        const codeInput = document.getElementById('otpCodeInput');
+        if (codeInput && !codeInput.value) codeInput.value = data.otp;
+      }
+
+      const codeInput = document.getElementById('otpCodeInput');
+      if (codeInput) codeInput.focus();
+    } catch (e) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Network error while requesting OTP.';
+        alertBox.style.display = 'block';
+      }
+    }
+  }
+
+  resetOtpStep() {
+    const stepSend = document.getElementById('otpStepSend');
+    const stepVerify = document.getElementById('otpStepVerify');
+    if (stepSend) stepSend.style.display = 'block';
+    if (stepVerify) stepVerify.style.display = 'none';
+    const alertBox = document.getElementById('authAlertBox');
+    if (alertBox) alertBox.style.display = 'none';
+  }
+
+  async handleOtpSubmit(e) {
+    e.preventDefault();
+    const identifier = this.currentOtpIdentifier || (document.getElementById('otpIdentifierInput') ? document.getElementById('otpIdentifierInput').value.trim() : '');
+    const otp = document.getElementById('otpCodeInput') ? document.getElementById('otpCodeInput').value.trim() : '';
+    const fullName = document.getElementById('otpFullNameInput') ? document.getElementById('otpFullNameInput').value.trim() : '';
+    const alertBox = document.getElementById('authAlertBox');
+
+    if (!otp || otp.length < 4) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Please enter the 6-digit OTP code.';
+        alertBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          identifier,
+          otp,
+          full_name: fullName || undefined,
+          target_exam: 'SSC CGL Mains 2026'
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        if (alertBox) {
+          alertBox.className = 'auth-alert error';
+          alertBox.innerText = data.error || 'Invalid OTP code.';
+          alertBox.style.display = 'block';
+        }
+        return;
+      }
+
+      this.token = data.token;
+      this.currentUser = data.user;
+      localStorage.setItem('cgl_session_v3', this.token);
+      if (this.currentUser.email) localStorage.setItem('cgl_candidate_email', this.currentUser.email);
+      if (this.currentUser.full_name) localStorage.setItem('cgl_candidate_name', this.currentUser.full_name);
+      this.updateUserInterface();
+      this.closeAuthModal();
+      await this.loadAllProgress();
+      await this.loadHistory();
+      this.renderTestCards();
+
+      const welcomeName = this.currentUser.full_name || 'Candidate';
+      alert(`Welcome to Blackhole, ${welcomeName}!`);
+    } catch (e) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Network error during OTP verification.';
+        alertBox.style.display = 'block';
+      }
     }
   }
 
@@ -356,6 +490,273 @@ class BlackholeApp {
       this.renderTestCards();
       this.showDashboard();
       this.loadHistory();
+    }
+  }
+
+  // --- Candidate Profile Management ---
+  async openCandidateProfileModal() {
+    if (!this.currentUser) {
+      this.openAuthModal('otp', 'Please sign in with your Mobile number or Gmail to view your profile.');
+      return;
+    }
+
+    const modal = document.getElementById('candidateProfileModal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+
+    // Populate profile modal components
+    const avatar = document.getElementById('profModalAvatar');
+    const nameDisp = document.getElementById('profModalName');
+    const emailDisp = document.getElementById('profModalEmail');
+    const roleBadge = document.getElementById('profModalRoleBadge');
+    const createdDisp = document.getElementById('profModalCreated');
+
+    const nameInput = document.getElementById('profInputName');
+    const examSelect = document.getElementById('profSelectExam');
+    const emailInput = document.getElementById('profInputEmail');
+    const mobileInput = document.getElementById('profInputMobile');
+
+    const statTests = document.getElementById('profStatTests');
+    const statAvg = document.getElementById('profStatAvgScore');
+    const statAcc = document.getElementById('profStatAccuracy');
+
+    const emailBadge = document.getElementById('profEmailStatusBadge');
+    const mobileBadge = document.getElementById('profMobileStatusBadge');
+
+    const u = this.currentUser;
+    const initials = (u.full_name || 'CA').split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase();
+    if (avatar) avatar.innerText = initials || 'CA';
+    if (nameDisp) nameDisp.innerText = u.full_name || 'Candidate';
+    if (emailDisp) emailDisp.innerText = u.email || '—';
+    if (roleBadge) roleBadge.innerText = (u.role || 'STUDENT').toUpperCase();
+    if (createdDisp) createdDisp.innerText = (u.created_at || '2026').substring(0, 10);
+
+    if (nameInput) nameInput.value = u.full_name || '';
+    if (examSelect) examSelect.value = u.target_exam || 'SSC CGL 2026';
+    if (emailInput) emailInput.value = u.email || '';
+    if (mobileInput) mobileInput.value = u.mobile || '';
+
+    // History statistics
+    if (statTests) statTests.innerText = this.historyData ? this.historyData.length : 0;
+    if (this.historyData && this.historyData.length > 0) {
+      const totalAccuracy = this.historyData.reduce((acc, h) => acc + (h.accuracy || 0), 0);
+      const avgAcc = Math.round(totalAccuracy / this.historyData.length);
+      if (statAcc) statAcc.innerText = `${avgAcc}%`;
+
+      const totalScores = this.historyData.reduce((acc, h) => acc + (h.score || 0), 0);
+      const totalMax = this.historyData.reduce((acc, h) => acc + (h.maxMarks || 75), 0);
+      const avgScorePercent = Math.round((totalScores / (totalMax || 1)) * 100);
+      if (statAvg) statAvg.innerText = `${avgScorePercent}%`;
+    } else {
+      if (statAcc) statAcc.innerText = '0%';
+      if (statAvg) statAvg.innerText = '0%';
+    }
+
+    // Refresh profile details directly from database API
+    try {
+      const res = await fetch('/api/user/profile', { headers: this.getAuthHeaders() });
+      if (res.ok) {
+        const prof = await res.json();
+        if (prof) {
+          if (nameInput) nameInput.value = prof.full_name || '';
+          if (examSelect) examSelect.value = prof.target_exam || 'SSC CGL 2026';
+          if (emailInput) emailInput.value = prof.email || '';
+          if (mobileInput) mobileInput.value = prof.mobile || '';
+          if (emailBadge) {
+            emailBadge.innerText = prof.email ? '✓ Verified' : 'Unverified';
+            emailBadge.style.background = prof.email ? '#dcfce7' : '#fee2e2';
+            emailBadge.style.color = prof.email ? '#15803d' : '#991b1b';
+          }
+          if (mobileBadge) {
+            const isMobVer = Boolean(prof.mobile_verified);
+            mobileBadge.innerText = isMobVer ? '✓ Verified' : (prof.mobile ? '⚠️ Not Verified' : 'Not Provided');
+            mobileBadge.style.background = isMobVer ? '#dcfce7' : '#fef3c7';
+            mobileBadge.style.color = isMobVer ? '#15803d' : '#b45309';
+          }
+        }
+      }
+    } catch(e){}
+  }
+
+  closeCandidateProfileModal() {
+    const modal = document.getElementById('candidateProfileModal');
+    if (modal) modal.style.display = 'none';
+    const alertBox = document.getElementById('profileAlertBox');
+    if (alertBox) alertBox.style.display = 'none';
+    const wrap = document.getElementById('profMobileOtpWrap');
+    if (wrap) wrap.style.display = 'none';
+  }
+
+  async sendProfileMobileOtp() {
+    const mobileInput = document.getElementById('profInputMobile');
+    const mobile = mobileInput ? mobileInput.value.trim() : '';
+    const alertBox = document.getElementById('profileAlertBox');
+
+    if (!mobile || mobile.length < 10) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Please enter a valid 10-digit mobile number.';
+        alertBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: mobile })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        if (alertBox) {
+          alertBox.className = 'auth-alert error';
+          alertBox.innerText = data.error || 'Failed to send OTP to mobile.';
+          alertBox.style.display = 'block';
+        }
+        return;
+      }
+
+      this.pendingMobileToVerify = mobile;
+      const wrap = document.getElementById('profMobileOtpWrap');
+      if (wrap) wrap.style.display = 'block';
+
+      if (data.otp) {
+        const inp = document.getElementById('profMobileOtpInput');
+        if (inp) inp.value = data.otp;
+      }
+
+      if (alertBox) {
+        alertBox.className = 'auth-alert success';
+        alertBox.innerText = `6-digit OTP code sent to ${mobile}! Enter below to verify.`;
+        alertBox.style.display = 'block';
+      }
+    } catch(e) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Network error while sending OTP.';
+        alertBox.style.display = 'block';
+      }
+    }
+  }
+
+  async confirmProfileMobileOtp() {
+    const mobile = this.pendingMobileToVerify || (document.getElementById('profInputMobile') ? document.getElementById('profInputMobile').value.trim() : '');
+    const otp = document.getElementById('profMobileOtpInput') ? document.getElementById('profMobileOtpInput').value.trim() : '';
+    const alertBox = document.getElementById('profileAlertBox');
+
+    if (!otp) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Please enter the 6-digit OTP code.';
+        alertBox.style.display = 'block';
+      }
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: mobile, otp })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        if (alertBox) {
+          alertBox.className = 'auth-alert error';
+          alertBox.innerText = data.error || 'Invalid OTP code.';
+          alertBox.style.display = 'block';
+        }
+        return;
+      }
+
+      // Mark mobile verified in profile
+      await fetch('/api/user/profile', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({ mobile: mobile })
+      });
+
+      const badge = document.getElementById('profMobileStatusBadge');
+      if (badge) {
+        badge.innerText = '✓ Verified';
+        badge.style.background = '#dcfce7';
+        badge.style.color = '#15803d';
+      }
+      const wrap = document.getElementById('profMobileOtpWrap');
+      if (wrap) wrap.style.display = 'none';
+
+      if (alertBox) {
+        alertBox.className = 'auth-alert success';
+        alertBox.innerText = 'Mobile number verified successfully!';
+        alertBox.style.display = 'block';
+      }
+    } catch(e) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Network error while verifying OTP.';
+        alertBox.style.display = 'block';
+      }
+    }
+  }
+
+  async handleSaveProfile(e) {
+    e.preventDefault();
+    const fullName = document.getElementById('profInputName').value.trim();
+    const targetExam = document.getElementById('profSelectExam').value;
+    const email = document.getElementById('profInputEmail').value.trim();
+    const mobile = document.getElementById('profInputMobile').value.trim();
+    const alertBox = document.getElementById('profileAlertBox');
+
+    try {
+      const res = await fetch('/api/user/profile', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({
+          full_name: fullName,
+          target_exam: targetExam,
+          email: email,
+          mobile: mobile
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        if (alertBox) {
+          alertBox.className = 'auth-alert error';
+          alertBox.innerText = data.error || 'Failed to update profile.';
+          alertBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (data.profile) {
+        this.currentUser = { ...this.currentUser, ...data.profile };
+      } else {
+        this.currentUser.full_name = fullName;
+        this.currentUser.target_exam = targetExam;
+        if (email) this.currentUser.email = email;
+        if (mobile) this.currentUser.mobile = mobile;
+      }
+
+      localStorage.setItem('cgl_candidate_name', this.currentUser.full_name);
+      if (this.currentUser.email) localStorage.setItem('cgl_candidate_email', this.currentUser.email);
+      this.updateUserInterface();
+
+      if (alertBox) {
+        alertBox.className = 'auth-alert success';
+        alertBox.innerText = 'Profile details saved successfully!';
+        alertBox.style.display = 'block';
+      }
+
+      setTimeout(() => {
+        this.closeCandidateProfileModal();
+      }, 1200);
+    } catch(e) {
+      if (alertBox) {
+        alertBox.className = 'auth-alert error';
+        alertBox.innerText = 'Network error while saving profile.';
+        alertBox.style.display = 'block';
+      }
     }
   }
 
@@ -706,8 +1107,8 @@ class BlackholeApp {
       const history = await res.json();
       this.historyData = history || [];
 
-      // If server returned 0 but local cache has attempts, merge them
-      if (this.historyData.length === 0) {
+      // If user is not authenticated and server returned 0, fallback to guest local cache
+      if (!this.currentUser && this.historyData.length === 0) {
         try {
           const localAttempts = JSON.parse(localStorage.getItem('cgl_candidate_attempts') || '[]');
           if (localAttempts.length > 0) {
@@ -896,13 +1297,24 @@ class BlackholeApp {
     }
 
     try {
+      // 1. Immediately remove from browser localStorage cache
+      try {
+        let localAttempts = JSON.parse(localStorage.getItem('cgl_candidate_attempts') || '[]');
+        localAttempts = localAttempts.filter(a => (a.attemptId || a.id) !== attemptId);
+        localStorage.setItem('cgl_candidate_attempts', JSON.stringify(localAttempts));
+      } catch(e){}
+
+      // 2. Remove immediately from memory state
+      this.historyData = this.historyData.filter(a => (a.attemptId || a.id) !== attemptId);
+
+      // 3. Delete permanently from server (SQLite + Supabase + deleted_attempts tombstones)
       const res = await fetch(`/api/history/${encodeURIComponent(attemptId)}`, {
         method: 'DELETE',
         headers: this.getAuthHeaders()
       });
       const data = await res.json();
       if (res.ok) {
-        alert('Test attempt successfully deleted.');
+        alert('Test attempt permanently deleted.');
         await this.loadHistory();
         await this.renderHistory();
       } else {
@@ -920,13 +1332,22 @@ class BlackholeApp {
     }
 
     try {
+      // 1. Clear permanently from browser storage
+      try {
+        localStorage.removeItem('cgl_candidate_attempts');
+      } catch(e){}
+
+      // 2. Clear from active memory
+      this.historyData = [];
+
+      // 3. Delete permanently across SQLite, Supabase and file storage
       const res = await fetch('/api/history/clear', {
         method: 'POST',
         headers: this.getAuthHeaders()
       });
       const data = await res.json();
       if (res.ok) {
-        alert('All test attempts cleared successfully.');
+        alert('All test attempts permanently cleared.');
         await this.loadHistory();
         await this.renderHistory();
       } else {

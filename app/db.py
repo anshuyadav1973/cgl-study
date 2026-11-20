@@ -129,6 +129,38 @@ def init_db():
     )
     ''')
 
+    # Deleted attempts tombstone table for permanent history deletion
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS deleted_attempts (
+        attempt_id TEXT PRIMARY KEY,
+        user_id TEXT,
+        deleted_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    # OTP codes table for mobile and Gmail OTP authentication
+    c.execute('''
+    CREATE TABLE IF NOT EXISTS otp_codes (
+        identifier TEXT PRIMARY KEY,
+        otp TEXT NOT NULL,
+        expires_at TEXT NOT NULL,
+        attempts INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+
+    # Ensure profile columns exist in users table
+    for col, ctype, cdefault in [
+        ('mobile', 'TEXT', "''"),
+        ('mobile_verified', 'INTEGER', '0'),
+        ('email_verified', 'INTEGER', '1'),
+        ('updated_at', 'TEXT', "''")
+    ]:
+        try:
+            c.execute(f"ALTER TABLE users ADD COLUMN {col} {ctype} DEFAULT {cdefault}")
+        except Exception:
+            pass
+
     conn.commit()
 
     # Create default admin account if none exists
@@ -837,8 +869,14 @@ def sync_results_from_supabase():
                 return 0
             conn = get_db()
             c = conn.cursor()
+            # Fetch tombstones of permanently deleted attempts
+            c.execute('SELECT attempt_id FROM deleted_attempts')
+            tombstones = {row['attempt_id'] for row in c.fetchall()}
+
             synced = 0
             for r in rows:
+                if r.get('id') in tombstones:
+                    continue  # Permanently deleted by candidate: do not resurrect!
                 uid = r.get('user_id')
                 u_email = (r.get('user_email') or '').strip().lower()
                 u_name = r.get('user_name', 'Candidate')
@@ -1043,10 +1081,19 @@ def get_user_history(user_id):
 def delete_test_result(user_id, attempt_id, is_admin=False):
     conn = get_db()
     c = conn.cursor()
+
+    # Register in deleted_attempts tombstone table so sync NEVER resurrects it
+    c.execute('INSERT OR REPLACE INTO deleted_attempts (attempt_id, user_id) VALUES (?, ?)', (attempt_id, user_id))
+
+    # Get user email
+    c.execute('SELECT email FROM users WHERE id = ?', (user_id,))
+    u_row = c.fetchone()
+    email = u_row['email'].strip().lower() if u_row and u_row['email'] else ''
+
     if is_admin:
         c.execute('DELETE FROM test_results WHERE id = ?', (attempt_id,))
     else:
-        c.execute('DELETE FROM test_results WHERE id = ? AND user_id = ?', (attempt_id, user_id))
+        c.execute('DELETE FROM test_results WHERE id = ? AND (user_id = ? OR LOWER(user_email) = ?)', (attempt_id, user_id, email))
     deleted = c.rowcount > 0
     conn.commit()
 
@@ -1100,10 +1147,26 @@ def delete_test_result(user_id, attempt_id, is_admin=False):
 def clear_user_history(user_id, is_admin=False):
     conn = get_db()
     c = conn.cursor()
+
+    # Get user email
+    c.execute('SELECT email FROM users WHERE id = ?', (user_id,))
+    u_row = c.fetchone()
+    email = u_row['email'].strip().lower() if u_row and u_row['email'] else ''
+
+    # Get attempt IDs being deleted and record tombstones
     if is_admin:
+        c.execute('SELECT id FROM test_results')
+        rows = c.fetchall()
+        c.executemany('INSERT OR REPLACE INTO deleted_attempts (attempt_id, user_id) VALUES (?, ?)', [(r['id'], 'admin') for r in rows])
         c.execute('DELETE FROM test_results')
     else:
-        c.execute('DELETE FROM test_results WHERE user_id = ?', (user_id,))
+        c.execute('SELECT id FROM test_results WHERE user_id = ? OR LOWER(user_email) = ?', (user_id, email))
+        rows = c.fetchall()
+        c.executemany('INSERT OR REPLACE INTO deleted_attempts (attempt_id, user_id) VALUES (?, ?)', [(r['id'], user_id) for r in rows])
+        c.execute('DELETE FROM test_results WHERE user_id = ? OR LOWER(user_email) = ?', (user_id, email))
+        # Also clean up any test progress for this user
+        c.execute('DELETE FROM test_progress WHERE user_id = ?', (user_id,))
+
     count = c.rowcount
     conn.commit()
 
@@ -1140,6 +1203,233 @@ def clear_user_history(user_id, is_admin=False):
     # Clear from Supabase
     supa_url = get_setting('SUPABASE_URL')
     supa_key = get_setting('SUPABASE_KEY')
+    if supa_url and supa_key:
+        try:
+            if is_admin:
+                req = urllib.request.Request(
+                    f"{supa_url.rstrip('/')}/rest/v1/test_results",
+                    headers={"apikey": supa_key, "Authorization": f"Bearer {supa_key}"},
+                    method="DELETE"
+                )
+                with urllib.request.urlopen(req, timeout=5):
+                    pass
+            else:
+                # Delete by user_id
+                req1 = urllib.request.Request(
+                    f"{supa_url.rstrip('/')}/rest/v1/test_results?user_id=eq.{user_id}",
+                    headers={"apikey": supa_key, "Authorization": f"Bearer {supa_key}"},
+                    method="DELETE"
+                )
+                with urllib.request.urlopen(req1, timeout=5):
+                    pass
+                # Also delete by user_email
+                if email:
+                    quoted_email = urllib.parse.quote(email)
+                    req2 = urllib.request.Request(
+                        f"{supa_url.rstrip('/')}/rest/v1/test_results?user_email=eq.{quoted_email}",
+                        headers={"apikey": supa_key, "Authorization": f"Bearer {supa_key}"},
+                        method="DELETE"
+                    )
+                    with urllib.request.urlopen(req2, timeout=5):
+                        pass
+        except Exception:
+            pass
+
+    return count
+
+# OTP Verification & Candidate Profile Helpers
+def create_or_update_otp(identifier):
+    identifier = identifier.strip().lower()
+    otp = f"{secrets.randbelow(900000) + 100000}"
+    expires_at = (datetime.utcnow() + timedelta(minutes=10)).isoformat()
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('''
+    INSERT OR REPLACE INTO otp_codes (identifier, otp, expires_at, attempts, created_at)
+    VALUES (?, ?, ?, 0, CURRENT_TIMESTAMP)
+    ''', (identifier, otp, expires_at))
+    conn.commit()
+    conn.close()
+    print(f"\n[🔐 AUTH OTP DISPATCH] Destination: {identifier} | OTP: {otp} | Expires in 10 mins\n")
+    return otp
+
+def verify_otp_code(identifier, entered_otp):
+    identifier = identifier.strip().lower()
+    entered_otp = str(entered_otp).strip()
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT * FROM otp_codes WHERE identifier = ?', (identifier,))
+    row = c.fetchone()
+    if not row:
+        conn.close()
+        return False, "OTP not requested or has expired. Please request a new OTP."
+
+    expires_at = datetime.fromisoformat(row['expires_at'])
+    if datetime.utcnow() > expires_at:
+        c.execute('DELETE FROM otp_codes WHERE identifier = ?', (identifier,))
+        conn.commit()
+        conn.close()
+        return False, "OTP has expired. Please request a new OTP."
+
+    if row['otp'] != entered_otp:
+        c.execute('UPDATE otp_codes SET attempts = attempts + 1 WHERE identifier = ?', (identifier,))
+        conn.commit()
+        conn.close()
+        return False, "Invalid OTP code. Please enter the correct 6-digit OTP."
+
+    c.execute('DELETE FROM otp_codes WHERE identifier = ?', (identifier,))
+    conn.commit()
+    conn.close()
+    return True, None
+
+def login_or_register_with_otp(identifier, full_name=None, target_exam='SSC CGL 2026'):
+    conn = get_db()
+    c = conn.cursor()
+    identifier = identifier.strip().lower()
+    is_email = '@' in identifier
+
+    if is_email:
+        email = identifier
+        c.execute('SELECT * FROM users WHERE LOWER(email) = ?', (email,))
+        user = c.fetchone()
+        if not user:
+            cloud_u = supabase_get_user_by_email(email)
+            if cloud_u:
+                c.execute('''
+                INSERT OR REPLACE INTO users (id, email, password_hash, salt, full_name, role, target_exam, email_verified)
+                VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+                ''', (cloud_u['id'], cloud_u['email'], cloud_u['password_hash'], cloud_u['salt'], cloud_u['full_name'], cloud_u.get('role', 'student'), cloud_u.get('target_exam', 'SSC CGL 2026')))
+                conn.commit()
+                c.execute('SELECT * FROM users WHERE id = ?', (cloud_u['id'],))
+                user = c.fetchone()
+
+        if not user:
+            user_id = f"usr_{secrets.token_hex(8)}"
+            pwd_hash, salt = hash_password(secrets.token_hex(16))
+            name = full_name.strip() if full_name else email.split('@')[0].capitalize()
+            c.execute('''
+            INSERT INTO users (id, email, password_hash, salt, full_name, role, target_exam, email_verified)
+            VALUES (?, ?, ?, ?, ?, 'student', ?, 1)
+            ''', (user_id, email, pwd_hash, salt, name, target_exam))
+            conn.commit()
+            c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+            user = c.fetchone()
+            supabase_save_user(dict(user))
+    else:
+        mobile = identifier.replace('+', '').replace('-', '').replace(' ', '')
+        default_email = f"user_{mobile}@blackhole.cgl"
+        c.execute('SELECT * FROM users WHERE mobile = ? OR email = ?', (mobile, default_email))
+        user = c.fetchone()
+        if not user:
+            user_id = f"usr_{secrets.token_hex(8)}"
+            pwd_hash, salt = hash_password(secrets.token_hex(16))
+            name = full_name.strip() if full_name else f"Candidate ({mobile[-4:]})"
+            c.execute('''
+            INSERT INTO users (id, email, password_hash, salt, full_name, role, target_exam, mobile, mobile_verified)
+            VALUES (?, ?, ?, ?, ?, 'student', ?, ?, 1)
+            ''', (user_id, default_email, pwd_hash, salt, name, target_exam, mobile))
+            conn.commit()
+            c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+            user = c.fetchone()
+            supabase_save_user(dict(user))
+        else:
+            c.execute('UPDATE users SET mobile = ?, mobile_verified = 1 WHERE id = ?', (mobile, user['id']))
+            conn.commit()
+            c.execute('SELECT * FROM users WHERE id = ?', (user['id'],))
+            user = c.fetchone()
+
+    token = create_session(c, user['id'])
+    conn.commit()
+    expires = (datetime.utcnow() + timedelta(days=30)).isoformat()
+    supabase_save_session(token, user['id'], expires)
+
+    user_data = {
+        "id": user['id'],
+        "email": user['email'],
+        "full_name": user['full_name'],
+        "role": user['role'],
+        "target_exam": user['target_exam'],
+        "mobile": user['mobile'] if 'mobile' in user.keys() else '',
+        "mobile_verified": bool(user['mobile_verified'] if 'mobile_verified' in user.keys() else False),
+        "email_verified": bool(user['email_verified'] if 'email_verified' in user.keys() else True)
+    }
+    conn.close()
+    return user_data, token
+
+def get_user_profile(user_id):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+    u = c.fetchone()
+    if not u:
+        conn.close()
+        return None
+
+    c.execute('SELECT COUNT(*) as cnt, AVG(accuracy) as avg_acc, AVG(score) as avg_score FROM test_results WHERE user_id = ? OR LOWER(user_email) = ?', (user_id, u['email'].lower()))
+    stats = c.fetchone()
+
+    data = {
+        "id": u['id'],
+        "email": u['email'],
+        "full_name": u['full_name'],
+        "role": u['role'],
+        "target_exam": u['target_exam'],
+        "mobile": u['mobile'] if 'mobile' in u.keys() else '',
+        "mobile_verified": bool(u['mobile_verified'] if 'mobile_verified' in u.keys() else 0),
+        "email_verified": bool(u['email_verified'] if 'email_verified' in u.keys() else 1),
+        "created_at": u['created_at'],
+        "tests_attempted": stats['cnt'] or 0,
+        "avg_accuracy": round(stats['avg_acc'] or 0),
+        "avg_score": round(stats['avg_score'] or 0)
+    }
+    conn.close()
+    return data
+
+def update_user_profile(user_id, full_name, target_exam, mobile=None, email=None):
+    conn = get_db()
+    c = conn.cursor()
+    c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+    u = c.fetchone()
+    if not u:
+        conn.close()
+        return None, "User not found"
+
+    updates = []
+    params = []
+
+    if full_name and full_name.strip():
+        updates.append('full_name = ?')
+        params.append(full_name.strip())
+
+    if target_exam and target_exam.strip():
+        updates.append('target_exam = ?')
+        params.append(target_exam.strip())
+
+    if mobile is not None:
+        clean_mobile = mobile.strip().replace(' ', '').replace('-', '')
+        updates.append('mobile = ?')
+        params.append(clean_mobile)
+
+    if email and email.strip() and email.strip().lower() != u['email'].lower():
+        c.execute('SELECT id FROM users WHERE LOWER(email) = ? AND id != ?', (email.strip().lower(), user_id))
+        if c.fetchone():
+            conn.close()
+            return None, "This email is already in use by another account."
+        updates.append('email = ?')
+        params.append(email.strip().lower())
+
+    updates.append('updated_at = CURRENT_TIMESTAMP')
+    params.append(user_id)
+
+    c.execute(f"UPDATE users SET {', '.join(updates)} WHERE id = ?", params)
+    conn.commit()
+
+    c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+    updated_u = dict(c.fetchone())
+    supabase_save_user(updated_u)
+
+    conn.close()
+    return get_user_profile(user_id), None
     if supa_url and supa_key:
         try:
             param = "" if is_admin else f"?user_id=eq.{user_id}"

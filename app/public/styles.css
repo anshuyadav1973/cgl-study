@@ -2284,19 +2284,21 @@ body.testbook-theme {
 
 /* Auth Modal */
 .auth-modal-card {
-  max-width: 420px;
+  max-width: 460px;
+  width: 95%;
 }
 
 .auth-tabs-row {
   display: flex;
   border-bottom: 2px solid #e2e8f0;
   background: #f8fafc;
+  overflow-x: auto;
 }
 
 .auth-tab {
   flex: 1;
-  padding: 12px;
-  font-size: 14px;
+  padding: 11px 8px;
+  font-size: 13px;
   font-weight: 600;
   background: transparent;
   border: none;
@@ -2305,6 +2307,8 @@ body.testbook-theme {
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
   transition: all 0.2s;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .auth-tab.active {

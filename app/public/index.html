@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>Blackhole - SSC CGL Mains 2026 Mock Test Series</title>
-  <link rel="stylesheet" href="styles.css?v=3.9">
+  <link rel="stylesheet" href="styles.css?v=4.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -144,6 +144,10 @@
             <span class="drop-user-role" id="dropUserRole">STUDENT</span>
           </div>
           <div class="dropdown-items">
+            <button class="dropdown-item" onclick="app.openCandidateProfileModal(); app.toggleProfileDropdown(false);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              My Profile & Account Details
+            </button>
             <button class="dropdown-item" onclick="app.showHistoryView(); app.toggleProfileDropdown(false);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
               My Attempt History (<span id="dropAttemptCount">0</span>)
@@ -154,7 +158,7 @@
             </button>
             <button class="dropdown-item" onclick="app.showStudyMaterialsView('founder'); app.toggleProfileDropdown(false);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
-              About Founder (Anshul Yadav)
+              About Anshul Yadav (A Learner)
             </button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item text-danger" onclick="app.logoutUser()">
@@ -732,7 +736,7 @@
         <div class="study-sub-tabs">
           <button class="study-sub-tab active" id="tabBtnGA" onclick="app.switchStudyTab('ga')">60-Day General Awareness Plan</button>
           <button class="study-sub-tab" id="tabBtnNotes" onclick="app.switchStudyTab('notes')">My Personal Notes (<span id="userNotesCount">0</span>)</button>
-          <button class="study-sub-tab" id="tabBtnFounder" onclick="app.switchStudyTab('founder')">👨‍🏫 Founder's Desk (Anshul Yadav)</button>
+          <button class="study-sub-tab" id="tabBtnFounder" onclick="app.switchStudyTab('founder')">👨‍🏫 Anshul Yadav (A Learner)</button>
         </div>
 
         <!-- Tab 1: GA 60-Day Plan -->
@@ -752,11 +756,18 @@
         <!-- Tab 3: Dedicated Panel for Founder Anshul Yadav -->
         <div class="study-tab-content" id="studyContentFounder" style="display:none;">
           <div class="founder-quote-panel">
+            <div class="founder-header-badge" style="display:flex; align-items:center; gap:14px; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid #f1f5f9;">
+              <div style="width:50px; height:50px; border-radius:50%; background:linear-gradient(135deg, #0d9488 0%, #0f766e 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:18px; box-shadow:0 3px 10px rgba(13,148,136,0.25);">AY</div>
+              <div>
+                <h3 style="margin:0; font-size:19px; color:#0f172a; font-weight:800;">Anshul Yadav</h3>
+                <span style="display:inline-block; margin-top:2px; background:#f0fdfa; color:#0f766e; border:1px solid #ccfbf1; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:12px;">A Learner</span>
+              </div>
+            </div>
             <blockquote class="founder-statement">
               "Blackhole was born from a singular mission: to provide serious SSC CGL aspirants with honest, high-yield practice, zero-lag examination interface, and completely transparent All-India performance analytics."
             </blockquote>
             <div class="founder-signoff">
-              — Anshul Yadav, Founder
+              — Anshul Yadav, A Learner
             </div>
           </div>
         </div>
@@ -774,15 +785,52 @@
 
       <!-- Auth Sub Tabs -->
       <div class="auth-tabs-row">
-        <button class="auth-tab active" id="authTabLogin" onclick="app.switchAuthTab('login')">Sign In</button>
-        <button class="auth-tab" id="authTabRegister" onclick="app.switchAuthTab('register')">Create New Account</button>
+        <button class="auth-tab active" id="authTabOtp" onclick="app.switchAuthTab('otp')">📱 Mobile / Gmail OTP</button>
+        <button class="auth-tab" id="authTabLogin" onclick="app.switchAuthTab('login')">🔑 Password Sign In</button>
+        <button class="auth-tab" id="authTabRegister" onclick="app.switchAuthTab('register')">📝 Register</button>
       </div>
 
       <div class="modal-body">
         <div id="authAlertBox" class="auth-alert" style="display:none;"></div>
 
-        <!-- LOGIN FORM -->
-        <form id="loginForm" onsubmit="app.handleLogin(event)">
+        <!-- 1. OTP AUTHENTICATION FORM (Mobile / Gmail) -->
+        <form id="otpAuthForm" onsubmit="app.handleOtpSubmit(event)">
+          <!-- Step A: Identifier Input -->
+          <div id="otpStepSend">
+            <div class="form-group">
+              <label style="font-weight:600; font-size:13px; color:#1e293b;">Mobile Number or Gmail Address</label>
+              <input type="text" id="otpIdentifierInput" required placeholder="e.g. 9876543210 or candidate@gmail.com" autocomplete="username">
+              <small style="color:#64748b; font-size:12px; margin-top:5px; display:block;">Enter your 10-digit mobile number or your Gmail address to receive an instant 6-digit OTP code.</small>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" id="btnSendOtp" onclick="app.sendAuthOtp()">Send 6-Digit OTP</button>
+          </div>
+
+          <!-- Step B: OTP Verification & Auto Sign-In -->
+          <div id="otpStepVerify" style="display:none; margin-top:12px;">
+            <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:10px 14px; margin-bottom:14px; font-size:13px; color:#166534;">
+              <span>✉️ OTP code sent to: </span><strong id="otpTargetDisplay"></strong>
+            </div>
+
+            <div class="form-group">
+              <label style="font-weight:600; font-size:13px; color:#1e293b;">Enter 6-Digit OTP Code</label>
+              <input type="text" id="otpCodeInput" maxlength="6" placeholder="• • • • • •" style="letter-spacing:6px; font-size:22px; font-weight:800; text-align:center; padding:10px;">
+            </div>
+
+            <div class="form-group" id="otpNameGroup">
+              <label style="font-weight:600; font-size:13px; color:#1e293b;">Candidate Full Name <span style="font-size:11px; color:#64748b; font-weight:normal;">(for new aspirants)</span></label>
+              <input type="text" id="otpFullNameInput" placeholder="Enter your full name">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" id="btnVerifyOtp">Verify OTP & Sign In</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; font-size:12.5px;">
+              <a href="javascript:void(0)" onclick="app.resetOtpStep()" style="color:#64748b; text-decoration:none;">← Change Number/Email</a>
+              <a href="javascript:void(0)" onclick="app.sendAuthOtp(true)" style="color:#0d9488; font-weight:600; text-decoration:none;">Resend OTP</a>
+            </div>
+          </div>
+        </form>
+
+        <!-- 2. LOGIN FORM -->
+        <form id="loginForm" onsubmit="app.handleLogin(event)" style="display:none;">
           <div class="form-group">
             <label>Email Address</label>
             <input type="email" id="loginEmail" required placeholder="e.g. student@gmail.com">
@@ -794,7 +842,7 @@
           <button type="submit" class="btn btn-primary btn-block">Sign In to Blackhole</button>
         </form>
 
-        <!-- REGISTER FORM -->
+        <!-- 3. REGISTER FORM -->
         <form id="registerForm" onsubmit="app.handleRegister(event)" style="display:none;">
           <div class="form-group">
             <label>Full Name</label>
@@ -821,8 +869,104 @@
         </form>
 
         <div class="auth-footer-text">
-          <span>🔒 Protected by secure password hashing and session encryption.</span>
+          <span>🔒 Protected by cryptographic OTP codes, secure password hashing, and session encryption.</span>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 1B: Candidate Profile & Account Settings Modal -->
+  <div class="modal-overlay" id="candidateProfileModal" style="display:none;">
+    <div class="modal-card" style="max-width: 580px; max-height: 90vh;">
+      <div class="modal-header">
+        <h3 style="display:flex; align-items:center; gap:8px;">
+          <span>👤</span> Candidate Profile & Account Details
+        </h3>
+        <button class="modal-close-btn" onclick="app.closeCandidateProfileModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 20px; overflow-y:auto; max-height:75vh;">
+        <div id="profileAlertBox" class="auth-alert" style="display:none;"></div>
+
+        <!-- Profile Top Banner -->
+        <div class="profile-banner-card" style="display:flex; align-items:center; gap:16px; background:linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:18px;">
+          <div class="avatar" id="profModalAvatar" style="width:54px; height:54px; font-size:20px; font-weight:800; background:linear-gradient(135deg, #0d9488, #0f766e); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(13,148,136,0.25);">CA</div>
+          <div style="flex:1;">
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <h4 id="profModalName" style="margin:0; font-size:17px; color:#0f172a; font-weight:800;">Candidate</h4>
+              <span class="badge" id="profModalRoleBadge" style="background:#0d9488; color:#fff; font-size:11px; padding:2px 8px; border-radius:12px; font-weight:700;">STUDENT</span>
+            </div>
+            <div id="profModalEmail" style="font-size:13px; color:#64748b; margin-top:2px;">candidate@gmail.com</div>
+            <div style="font-size:12px; color:#94a3b8; margin-top:2px;">Registered: <span id="profModalCreated">2026</span></div>
+          </div>
+        </div>
+
+        <!-- Performance Quick Stats -->
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-bottom:20px; text-align:center;">
+          <div style="background:#f8fafc; padding:12px 8px; border-radius:8px; border:1px solid #e2e8f0;">
+            <div style="font-size:18px; font-weight:800; color:#0f172a;" id="profStatTests">0</div>
+            <div style="font-size:11px; color:#64748b; font-weight:600; text-transform:uppercase;">Tests Attempted</div>
+          </div>
+          <div style="background:#f8fafc; padding:12px 8px; border-radius:8px; border:1px solid #e2e8f0;">
+            <div style="font-size:18px; font-weight:800; color:#0d9488;" id="profStatAvgScore">0%</div>
+            <div style="font-size:11px; color:#64748b; font-weight:600; text-transform:uppercase;">Avg Score</div>
+          </div>
+          <div style="background:#f8fafc; padding:12px 8px; border-radius:8px; border:1px solid #e2e8f0;">
+            <div style="font-size:18px; font-weight:800; color:#6366f1;" id="profStatAccuracy">0%</div>
+            <div style="font-size:11px; color:#64748b; font-weight:600; text-transform:uppercase;">Accuracy</div>
+          </div>
+        </div>
+
+        <!-- Editable Details Form -->
+        <form id="candidateProfileForm" onsubmit="app.handleSaveProfile(event)">
+          <div class="form-group">
+            <label style="font-weight:600; font-size:13px; color:#334155;">Full Name / Candidate Name</label>
+            <input type="text" id="profInputName" required placeholder="Your full name" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px;">
+          </div>
+
+          <div class="form-group">
+            <label style="font-weight:600; font-size:13px; color:#334155;">Target Examination</label>
+            <select id="profSelectExam" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; background:#fff;">
+              <option value="SSC CGL 2026">SSC CGL Mains 2026</option>
+              <option value="SSC CGL 2025">SSC CGL Tier-1/Tier-2 2025</option>
+              <option value="SSC CHSL 2026">SSC CHSL Tier-II</option>
+              <option value="SSC CPO 2026">SSC CPO Sub-Inspector</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label style="font-weight:600; font-size:13px; color:#334155;">Email Address (Gmail)</label>
+              <span id="profEmailStatusBadge" style="font-size:11px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 8px; border-radius:10px;">✓ Verified</span>
+            </div>
+            <input type="email" id="profInputEmail" placeholder="yourname@gmail.com" style="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px;">
+          </div>
+
+          <!-- Mobile Number with OTP Verification -->
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+              <label style="font-weight:600; font-size:13px; color:#334155;">Mobile Number (for OTP Login & Verification)</label>
+              <span id="profMobileStatusBadge" style="font-size:11px; background:#fef3c7; color:#b45309; font-weight:700; padding:2px 8px; border-radius:10px;">⚠️ Not Verified</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <input type="tel" id="profInputMobile" maxlength="10" placeholder="10-digit mobile number" style="flex:1; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px;">
+              <button type="button" class="btn btn-outline" id="btnVerifyMobileOtp" onclick="app.sendProfileMobileOtp()" style="white-space:nowrap; padding:10px 14px; font-size:12.5px;">Verify with OTP</button>
+            </div>
+          </div>
+
+          <!-- Mobile OTP Input Sub-box (appears after click) -->
+          <div id="profMobileOtpWrap" style="display:none; background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:12px; margin-top:8px;">
+            <div style="font-size:12.5px; color:#166534; margin-bottom:6px;">6-digit OTP code sent to your mobile. Enter below:</div>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="profMobileOtpInput" maxlength="6" placeholder="OTP Code" style="flex:1; text-align:center; font-weight:700; letter-spacing:4px; padding:8px; border:1px solid #86efac; border-radius:6px;">
+              <button type="button" class="btn btn-primary" onclick="app.confirmProfileMobileOtp()" style="padding:8px 16px; font-size:12.5px;">Confirm OTP</button>
+            </div>
+          </div>
+
+          <div style="margin-top:24px; display:flex; gap:10px; justify-content:flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="app.closeCandidateProfileModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="btnSaveProfile">💾 Save Profile Changes</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -1140,6 +1284,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=10.5"></script>
+  <script src="app.js?v=11.0"></script>
 </body>
 </html>
