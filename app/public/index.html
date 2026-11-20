@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>Blackhole - SSC CGL Mains 2026 Mock Test Series</title>
-  <link rel="stylesheet" href="styles.css?v=3.4">
+  <link rel="stylesheet" href="styles.css?v=3.5">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -19,7 +19,7 @@
         </div>
         <div class="brand-text">
           <span class="brand-name">blackhole</span>
-          <span class="brand-sub" style="font-size:10.5px; color:#cbd5e1; display:block; margin-top:-2px; letter-spacing:0.2px;">by Founder Anshul Yadav</span>
+          <span class="brand-sub" style="font-size:10.5px; color:#cbd5e1; display:block; margin-top:-2px; letter-spacing:0.2px;">SSC CGL Tier-2 2026</span>
         </div>
       </div>
 
@@ -35,9 +35,6 @@
         </button>
         <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">
           <span>📊</span> Attempt History
-        </button>
-        <button class="nav-link-btn nav-link-founder" id="navLinkFounder" onclick="app.openFounderModal()" title="Know About Founder Anshul Yadav">
-          <span>👨‍🏫</span> Founder: Anshul Yadav
         </button>
       </nav>
 
@@ -75,6 +72,11 @@
       <!-- Global Fullscreen Toggle Button -->
       <button class="btn-tb-nav-tool" id="btnGlobalFullscreen" onclick="app.toggleFullscreen()" title="Toggle Fullscreen Mode">
         <span>⛶</span> Fullscreen
+      </button>
+
+      <!-- Founder Details: Only on Right Top of the screen -->
+      <button class="btn-tb-nav-tool btn-founder-header" id="btnHeaderFounder" onclick="app.openFounderModal()" title="About Founder Anshul Yadav">
+        <span>👨‍🏫</span> <span class="founder-btn-text-full">Founder: Anshul Yadav</span><span class="founder-btn-text-short">Founder</span>
       </button>
 
       <!-- Active Exam Tools (Question Paper, Instructions, Font Scaler, Calculator, Pause, Fullscreen) -->
@@ -158,7 +160,7 @@
             </button>
             <button class="dropdown-item" onclick="app.openFounderModal(); app.toggleProfileDropdown(false);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
-              About Founder (Anshul)
+              About Founder (Anshul Yadav)
             </button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item text-danger" onclick="app.logoutUser()">
@@ -211,7 +213,7 @@
           </div>
           <h1>SSC CGL (Tier-1 & Tier-2) Comprehensive Mock Test Series 2026</h1>
           <p class="tb-hero-desc">
-            Engineered to 100% mirror the official Staff Selection Commission (SSC) & Tata Consultancy Services (TCS) examination architecture. Curated by SSC Exam Specialists and Founder <strong>Anshul Yadav</strong>, every mock provides authentic Tier-2 sectional timing, exact marking rules (+3.0 correct, -1.0 wrong), on-the-fly bilingual language switching (English & हिन्दी), dual-approach solutions (Formal Academic Proof + 15-Second Speed Trick), and 100% transparent All-India candidate rankings.
+            Engineered to 100% mirror the official Staff Selection Commission (SSC) & Tata Consultancy Services (TCS) examination architecture. Curated by SSC Exam Specialists and Top Rankers, every mock provides authentic Tier-2 sectional timing, exact marking rules (+3.0 correct, -1.0 wrong), on-the-fly bilingual language switching (English & हिन्दी), dual-approach solutions (Formal Academic Proof + 15-Second Speed Trick), and 100% transparent All-India candidate rankings.
           </p>
           
           <div class="tb-hero-highlights">
@@ -252,7 +254,7 @@
             <span class="guide-icon">📘</span>
             <div>
               <h3 class="guide-title">SSC CGL 2026 Tier-2 (Paper-I) Exam Pattern & Syllabus Guide</h3>
-              <p class="guide-subtitle">Official Section-1 Module-I Blueprint, Chapter Weightage & Founder Anshul Yadav's 75/75 Strategy</p>
+              <p class="guide-subtitle">Official Section-1 Module-I Blueprint, Chapter Weightage & 75/75 Scoring Strategy</p>
             </div>
           </div>
           <button class="guide-toggle-btn" id="btnGuideToggle">▼ Expand Syllabus Guide</button>
@@ -279,7 +281,7 @@
             </div>
           </div>
           <div class="guide-mentor-tip">
-            <strong>💡 Founder Anshul Yadav's Golden Strategy for Tier-2 Maths:</strong>
+            <strong>💡 Expert Strategy for Tier-2 Maths (Target 75/75):</strong>
             <em>"Master the 3-Pass Rule: In Pass 1 (first 10-12 mins), secure all 14-16 direct Arithmetic and Formula-based questions. In Pass 2, tackle Geometry, Mensuration and Algebra using option elimination and smart substitution. In Pass 3, invest your remaining minutes into multi-step problems and DI. Never engage in blind guesswork—in Tier-2, preserving negative marks (+3 vs -1) is what separates a 4600 GP Inspector from missing the cutoff!"</em>
           </div>
         </div>
@@ -343,13 +345,12 @@
         </div>
       </div>
 
-      <!-- Platform Footer with Founder Anshul Information -->
+      <!-- Platform Footer -->
       <footer style="margin-top: 40px; padding: 24px 0 10px 0; border-top: 1px solid #e2e8f0; text-align: center; color: #64748b; font-size: 13px;">
         <p style="margin: 0 0 6px 0; font-weight:500;">
-          Blackhole SSC CGL Examination Platform • Built & Mentored by Founder <strong>Anshul Yadav</strong>
+          Blackhole SSC CGL Examination Platform • Premier Tier-2 Online Test Series
         </p>
         <p style="margin: 0; font-size: 12px;">
-          <a href="javascript:void(0)" onclick="app.openFounderModal()" style="color:var(--tb-teal); font-weight:700; text-decoration:none;">Know About Founder: Anshul</a> &nbsp;•&nbsp; 
           <a href="javascript:void(0)" onclick="app.openLeaderboardModal()" style="color:#64748b; text-decoration:none;">Live Leaderboard</a> &nbsp;•&nbsp; 
           <a href="javascript:void(0)" onclick="app.showStudyMaterialsView()" style="color:#64748b; text-decoration:none;">Study Vault & Formulas</a>
         </p>
@@ -1204,6 +1205,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=10.0"></script>
+  <script src="app.js?v=10.1"></script>
 </body>
 </html>
