@@ -1,0 +1,19 @@
+name: Keep Blackhole Alive
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Web Service
+        run: |
+          echo "Pinging Blackhole web service to prevent Render spin-down..."
+          curl -s -f -m 30 "https://blackhole-cgl.onrender.com/healthz" || curl -s -f -m 30 "https://blackhole-cgl.onrender.com/"
+          echo "Keep-alive ping successfully delivered."
