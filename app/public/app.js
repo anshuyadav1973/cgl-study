@@ -269,6 +269,9 @@ class BlackholeApp {
         const testToStart = this.pendingTestId;
         this.pendingTestId = null;
         await this.selectTest(testToStart);
+      } else if (data.already_existed) {
+        const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
+        alert(`Welcome back, ${welcomeName}! You already had an account, so you were logged in directly.`);
       } else {
         alert(`Account created successfully! Welcome, ${this.currentUser.full_name}!`);
       }

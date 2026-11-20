@@ -179,15 +179,327 @@ def init_db():
 
     conn.close()
 
+    # Automatically synchronize cloud accounts from Supabase to SQLite on startup
+    try:
+        synced = sync_cloud_users_to_sqlite()
+        if synced > 0:
+            print(f"Synchronized {synced} user account(s) from Supabase cloud.")
+    except Exception as e:
+        pass
+
+# --- Supabase Cloud Persistence for Accounts, Sessions & In-Progress Tests ---
+import urllib.request
+import urllib.error
+import urllib.parse
+
+def supabase_get_headers():
+    key = get_setting('SUPABASE_KEY')
+    return {
+        'apikey': key,
+        'Authorization': f'Bearer {key}',
+        'Content-Type': 'application/json'
+    }
+
+def supabase_save_user(user_dict):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return False
+    url = url.rstrip('/')
+    email = user_dict['email'].strip().lower()
+    note_id = 'auth_' + hashlib.sha256(email.encode('utf-8')).hexdigest()[:20]
+    payload = {
+        'id': note_id,
+        'title': email,
+        'content': json.dumps(user_dict, ensure_ascii=False),
+        'topic': '__sys_auth_user'
+    }
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes",
+            data=json.dumps(payload).encode('utf-8'),
+            headers={
+                **supabase_get_headers(),
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            method='POST'
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            return resp.status in [200, 201, 204]
+    except Exception as e:
+        print("Error saving user to Supabase:", e)
+        return False
+
+def supabase_get_user_by_email(email):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return None
+    url = url.rstrip('/')
+    email = email.strip().lower()
+    quoted = urllib.parse.quote(email)
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_auth_user&title=eq.{quoted}&select=*",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            if rows and rows[0].get('content'):
+                return json.loads(rows[0]['content'])
+    except Exception as e:
+        print("Error fetching user from Supabase:", e)
+    return None
+
+def supabase_get_user_by_id(user_id):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return None
+    url = url.rstrip('/')
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_auth_user&select=*&limit=100",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            for r in rows:
+                if r.get('content'):
+                    try:
+                        u = json.loads(r['content'])
+                        if u.get('id') == user_id:
+                            return u
+                    except Exception:
+                        pass
+    except Exception as e:
+        print("Error fetching user by id from Supabase:", e)
+    return None
+
+def supabase_save_session(token, user_id, expires_at):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return False
+    url = url.rstrip('/')
+    note_id = 'sess_' + hashlib.sha256(token.encode('utf-8')).hexdigest()[:20]
+    payload = {
+        'id': note_id,
+        'title': token,
+        'content': json.dumps({'user_id': user_id, 'expires_at': expires_at}),
+        'topic': '__sys_auth_session'
+    }
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes",
+            data=json.dumps(payload).encode('utf-8'),
+            headers={
+                **supabase_get_headers(),
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            method='POST'
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            return resp.status in [200, 201, 204]
+    except Exception as e:
+        return False
+
+def supabase_get_session(token):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return None
+    url = url.rstrip('/')
+    quoted = urllib.parse.quote(token)
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_auth_session&title=eq.{quoted}&select=*",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            if rows and rows[0].get('content'):
+                return json.loads(rows[0]['content'])
+    except Exception as e:
+        pass
+    return None
+
+def supabase_save_progress(user_id, test_id, progress_data):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return False
+    url = url.rstrip('/')
+    composite_key = f"{user_id}:::{test_id}"
+    note_id = 'prog_' + hashlib.sha256(composite_key.encode('utf-8')).hexdigest()[:20]
+    payload = {
+        'id': note_id,
+        'title': composite_key,
+        'content': json.dumps(progress_data, ensure_ascii=False),
+        'topic': '__sys_test_progress'
+    }
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes",
+            data=json.dumps(payload).encode('utf-8'),
+            headers={
+                **supabase_get_headers(),
+                'Prefer': 'resolution=merge-duplicates'
+            },
+            method='POST'
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            return resp.status in [200, 201, 204]
+    except Exception as e:
+        print("Error saving progress to Supabase:", e)
+        return False
+
+def supabase_get_progress(user_id, test_id):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return None
+    url = url.rstrip('/')
+    composite_key = f"{user_id}:::{test_id}"
+    quoted = urllib.parse.quote(composite_key)
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_test_progress&title=eq.{quoted}&select=*",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            if rows and rows[0].get('content'):
+                return json.loads(rows[0]['content'])
+    except Exception as e:
+        pass
+    return None
+
+def supabase_delete_progress(user_id, test_id):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return False
+    url = url.rstrip('/')
+    composite_key = f"{user_id}:::{test_id}"
+    quoted = urllib.parse.quote(composite_key)
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_test_progress&title=eq.{quoted}",
+            headers=supabase_get_headers(),
+            method='DELETE'
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            return resp.status in [200, 204]
+    except Exception as e:
+        pass
+    return False
+
+def supabase_get_all_progress(user_id):
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return {}
+    url = url.rstrip('/')
+    prefix = f"{user_id}:::"
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_test_progress&select=*&limit=100",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=6) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            res = {}
+            for r in rows:
+                title = r.get('title', '')
+                if title.startswith(prefix) and r.get('content'):
+                    t_id = title[len(prefix):]
+                    try:
+                        res[t_id] = json.loads(r['content'])
+                    except Exception:
+                        pass
+            return res
+    except Exception as e:
+        pass
+    return {}
+
+def sync_cloud_users_to_sqlite():
+    url = get_setting('SUPABASE_URL')
+    key = get_setting('SUPABASE_KEY')
+    if not url or not key:
+        return 0
+    url = url.rstrip('/')
+    try:
+        req = urllib.request.Request(
+            f"{url}/rest/v1/student_notes?topic=eq.__sys_auth_user&select=*&limit=200",
+            headers=supabase_get_headers()
+        )
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            rows = json.loads(resp.read().decode('utf-8'))
+            if not rows:
+                return 0
+            conn = get_db()
+            c = conn.cursor()
+            synced = 0
+            for r in rows:
+                if r.get('content'):
+                    try:
+                        u = json.loads(r['content'])
+                        c.execute('''
+                        INSERT OR REPLACE INTO users (id, email, password_hash, salt, full_name, role, target_exam)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                        ''', (u['id'], u['email'], u['password_hash'], u['salt'], u['full_name'], u.get('role', 'student'), u.get('target_exam', 'SSC CGL 2026')))
+                        synced += 1
+                    except Exception:
+                        pass
+            conn.commit()
+            conn.close()
+            return synced
+    except Exception as e:
+        print("Error syncing cloud users to SQLite:", e)
+        return 0
+
 # Auth Helpers
 def register_user(email, password, full_name, target_exam='SSC CGL 2026', role='student'):
     conn = get_db()
     c = conn.cursor()
     email = email.strip().lower()
-    c.execute('SELECT id FROM users WHERE email = ?', (email,))
-    if c.fetchone():
-        conn.close()
-        return None, "An account with this email already exists."
+
+    # Check local SQLite
+    c.execute('SELECT * FROM users WHERE email = ?', (email,))
+    existing_user = c.fetchone()
+
+    # If not in SQLite, check Supabase
+    if not existing_user:
+        cloud_u = supabase_get_user_by_email(email)
+        if cloud_u:
+            c.execute('''
+            INSERT OR REPLACE INTO users (id, email, password_hash, salt, full_name, role, target_exam)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (cloud_u['id'], cloud_u['email'], cloud_u['password_hash'], cloud_u['salt'], cloud_u['full_name'], cloud_u.get('role', 'student'), cloud_u.get('target_exam', 'SSC CGL 2026')))
+            conn.commit()
+            c.execute('SELECT * FROM users WHERE id = ?', (cloud_u['id'],))
+            existing_user = c.fetchone()
+
+    if existing_user:
+        # If user already exists and provided their matching password, log them in directly!
+        if verify_password(password, existing_user['password_hash'], existing_user['salt']):
+            token = create_session(c, existing_user['id'])
+            conn.commit()
+            expires = (datetime.utcnow() + timedelta(days=30)).isoformat()
+            supabase_save_session(token, existing_user['id'], expires)
+            user_data = {
+                "id": existing_user['id'],
+                "email": existing_user['email'],
+                "full_name": existing_user['full_name'],
+                "role": existing_user['role'],
+                "target_exam": existing_user['target_exam']
+            }
+            conn.close()
+            return {"user": user_data, "token": token, "already_existed": True}, None
+        else:
+            conn.close()
+            return None, "An account with this email already exists. Please switch to the Sign In tab to log in."
 
     user_id = f"usr_{secrets.token_hex(8)}"
     pwd_hash, salt = hash_password(password)
@@ -203,31 +515,65 @@ def register_user(email, password, full_name, target_exam='SSC CGL 2026', role='
     user_data = {
         "id": user_id,
         "email": email,
-        "full_name": full_name,
+        "full_name": full_name.strip(),
         "role": role,
         "target_exam": target_exam
     }
+
+    # Persist user & session to Supabase immediately
+    cloud_record = {
+        "id": user_id,
+        "email": email,
+        "password_hash": pwd_hash,
+        "salt": salt,
+        "full_name": full_name.strip(),
+        "role": role,
+        "target_exam": target_exam
+    }
+    supabase_save_user(cloud_record)
+    expires = (datetime.utcnow() + timedelta(days=30)).isoformat()
+    supabase_save_session(token, user_id, expires)
+
     return {"user": user_data, "token": token}, None
 
 def authenticate_user(email, password):
     conn = get_db()
     c = conn.cursor()
     email = email.strip().lower()
+
+    # 1. Check local SQLite
     if email in ('anshul@cglstudy.com', 'admin@cglstudy.com'):
         c.execute('SELECT * FROM users WHERE email = ? OR email = ? OR id = ?', ('admin@cglstudy.com', 'anshul@cglstudy.com', 'user_admin_anshul'))
     else:
         c.execute('SELECT * FROM users WHERE email = ?', (email,))
     user = c.fetchone()
+
+    # 2. If not found in SQLite, check Supabase Cloud!
+    if not user:
+        cloud_u = supabase_get_user_by_email(email)
+        if cloud_u:
+            c.execute('''
+            INSERT OR REPLACE INTO users (id, email, password_hash, salt, full_name, role, target_exam)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ''', (cloud_u['id'], cloud_u['email'], cloud_u['password_hash'], cloud_u['salt'], cloud_u['full_name'], cloud_u.get('role', 'student'), cloud_u.get('target_exam', 'SSC CGL 2026')))
+            conn.commit()
+            c.execute('SELECT * FROM users WHERE id = ?', (cloud_u['id'],))
+            user = c.fetchone()
+
     if not user:
         conn.close()
-        return None, "Invalid email or password."
+        return None, "No account found with this email. Please click 'Create New Account' to register."
 
     if not verify_password(password, user['password_hash'], user['salt']):
         conn.close()
-        return None, "Invalid email or password."
+        return None, "Incorrect password. Please verify your password and try again."
 
     token = create_session(c, user['id'])
     conn.commit()
+
+    # Persist session to Supabase
+    expires = (datetime.utcnow() + timedelta(days=30)).isoformat()
+    supabase_save_session(token, user['id'], expires)
 
     display_name = user['full_name']
     if 'anshul' in display_name.lower():
@@ -264,12 +610,41 @@ def get_user_from_token(token):
     WHERE s.token = ?
     ''', (token,))
     row = c.fetchone()
-    conn.close()
     if row:
+        conn.close()
         d = dict(row)
         if 'anshul' in d.get('full_name', '').lower():
             d['full_name'] = 'Candidate'
         return d
+
+    # If session not in SQLite, check Supabase
+    cloud_sess = supabase_get_session(token)
+    if cloud_sess:
+        user_id = cloud_sess.get('user_id')
+        c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+        u_row = c.fetchone()
+        if not u_row:
+            cloud_u = supabase_get_user_by_id(user_id)
+            if cloud_u:
+                c.execute('''
+                INSERT OR REPLACE INTO users (id, email, password_hash, salt, full_name, role, target_exam)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                ''', (cloud_u['id'], cloud_u['email'], cloud_u['password_hash'], cloud_u['salt'], cloud_u['full_name'], cloud_u.get('role', 'student'), cloud_u.get('target_exam', 'SSC CGL 2026')))
+                conn.commit()
+                c.execute('SELECT * FROM users WHERE id = ?', (user_id,))
+                u_row = c.fetchone()
+
+        if u_row:
+            c.execute('INSERT OR REPLACE INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)',
+                      (token, user_id, cloud_sess.get('expires_at')))
+            conn.commit()
+            conn.close()
+            d = dict(u_row)
+            if 'anshul' in d.get('full_name', '').lower():
+                d['full_name'] = 'Candidate'
+            return d
+
+    conn.close()
     return None
 
 def delete_session(token):
@@ -499,7 +874,7 @@ def clear_user_history(user_id, is_admin=False):
 def get_user_notes(user_id):
     conn = get_db()
     c = conn.cursor()
-    c.execute('SELECT * FROM student_notes WHERE user_id = ? ORDER BY updated_at DESC', (user_id,))
+    c.execute("SELECT * FROM student_notes WHERE user_id = ? AND topic NOT LIKE '__sys_%' ORDER BY updated_at DESC", (user_id,))
     rows = [dict(r) for r in c.fetchall()]
     conn.close()
     return rows
@@ -590,6 +965,12 @@ def save_test_progress(user_id, test_id, progress_data):
     conn.commit()
     conn.close()
 
+    # Also persist to Supabase cloud
+    try:
+        supabase_save_progress(user_id, test_id, progress_data)
+    except Exception:
+        pass
+
 def get_test_progress(user_id, test_id):
     conn = get_db()
     c = conn.cursor()
@@ -600,7 +981,22 @@ def get_test_progress(user_id, test_id):
         try:
             return json.loads(row['progress_json'])
         except Exception:
-            return None
+            pass
+
+    # If not in SQLite, check Supabase
+    try:
+        cloud_p = supabase_get_progress(user_id, test_id)
+        if cloud_p:
+            # Cache into SQLite
+            conn = get_db()
+            c = conn.cursor()
+            c.execute('INSERT OR REPLACE INTO test_progress (user_id, test_id, progress_json) VALUES (?, ?, ?)',
+                      (user_id, test_id, json.dumps(cloud_p, ensure_ascii=False)))
+            conn.commit()
+            conn.close()
+            return cloud_p
+    except Exception:
+        pass
     return None
 
 def delete_test_progress(user_id, test_id):
@@ -609,6 +1005,11 @@ def delete_test_progress(user_id, test_id):
     c.execute('DELETE FROM test_progress WHERE user_id = ? AND test_id = ?', (user_id, test_id))
     conn.commit()
     conn.close()
+
+    try:
+        supabase_delete_progress(user_id, test_id)
+    except Exception:
+        pass
 
 def get_all_user_progress(user_id):
     conn = get_db()
@@ -622,6 +1023,16 @@ def get_all_user_progress(user_id):
             result[r['test_id']] = json.loads(r['progress_json'])
         except Exception:
             pass
+
+    # Merge with Supabase
+    try:
+        cloud_map = supabase_get_all_progress(user_id)
+        for t_id, p_obj in cloud_map.items():
+            if t_id not in result:
+                result[t_id] = p_obj
+    except Exception:
+        pass
+
     return result
 
 # Supabase Sync / Configuration
