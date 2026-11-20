@@ -267,6 +267,8 @@ class BlackholeApp {
       this.token = data.token;
       this.currentUser = data.user;
       localStorage.setItem('cgl_session_v3', this.token);
+      if (this.currentUser.email) localStorage.setItem('cgl_candidate_email', this.currentUser.email);
+      if (this.currentUser.full_name) localStorage.setItem('cgl_candidate_name', this.currentUser.full_name);
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadAllProgress();
@@ -277,7 +279,7 @@ class BlackholeApp {
         this.pendingTestId = null;
         await this.selectTest(testToStart);
       } else {
-        const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
+        const welcomeName = this.currentUser.full_name || 'Candidate';
         alert(`Welcome back, ${welcomeName}!`);
       }
     } catch (err) {
@@ -311,6 +313,8 @@ class BlackholeApp {
       this.token = data.token;
       this.currentUser = data.user;
       localStorage.setItem('cgl_session_v3', this.token);
+      if (this.currentUser.email) localStorage.setItem('cgl_candidate_email', this.currentUser.email);
+      if (this.currentUser.full_name) localStorage.setItem('cgl_candidate_name', this.currentUser.full_name);
       this.updateUserInterface();
       this.closeAuthModal();
       await this.loadAllProgress();
@@ -321,7 +325,7 @@ class BlackholeApp {
         this.pendingTestId = null;
         await this.selectTest(testToStart);
       } else if (data.already_existed) {
-        const welcomeName = /anshul/i.test(this.currentUser.full_name) ? 'Candidate' : this.currentUser.full_name;
+        const welcomeName = this.currentUser.full_name || 'Candidate';
         alert(`Welcome back, ${welcomeName}! You already had an account, so you were logged in directly.`);
       } else {
         alert(`Account created successfully! Welcome, ${this.currentUser.full_name}!`);
@@ -467,14 +471,27 @@ class BlackholeApp {
     const progTabEl = document.getElementById('catCountProgress');
     if (progTabEl) progTabEl.innerText = inProgCount;
 
+    // Update attempted count in tab
+    let attemptedCount = 0;
+    this.tests.forEach(t => {
+      const atts = (this.historyData || []).filter(h => h.testId === t.id);
+      if (atts.length > 0) attemptedCount++;
+    });
+    const attTabEl = document.getElementById('catCountAttempted');
+    if (attTabEl) attTabEl.innerText = attemptedCount;
+
     let filteredTests = this.tests.filter((t, idx) => {
       const hasProg = !!this.getActiveTestProgress(t.id);
       const isFree = (t.id === 'cgl-mains-mock-01' || idx === 0);
+      const testAttempts = (this.historyData || []).filter(h => h.testId === t.id);
+      const isAttempted = testAttempts.length > 0;
 
       if (filter === 'free') {
         if (!isFree) return false;
       } else if (filter === 'inprogress') {
         if (!hasProg) return false;
+      } else if (filter === 'attempted') {
+        if (!isAttempted) return false;
       }
 
       if (query) {
@@ -502,6 +519,10 @@ class BlackholeApp {
       card.className = 'test-card tb-card';
       const hasProgress = !!this.getActiveTestProgress(t.id);
       const isFree = (t.id === 'cgl-mains-mock-01' || idx === 0);
+      const testAttempts = (this.historyData || []).filter(h => h.testId === t.id);
+      const isAttempted = testAttempts.length > 0;
+      const latestAttempt = isAttempted ? testAttempts[testAttempts.length - 1] : null;
+      const bestAttempt = isAttempted ? [...testAttempts].sort((a, b) => (b.score || 0) - (a.score || 0))[0] : null;
 
       let actionHtml = '';
       if (!this.currentUser) {
@@ -517,9 +538,33 @@ class BlackholeApp {
             </button>
           </div>
         `;
+      } else if (isAttempted) {
+        actionHtml = `
+          <div style="display:flex; gap:8px; width:100%; justify-content:flex-end; align-items:center;">
+            <button class="tb-btn-solutions" onclick="app.viewAttemptFromHistoryByTestId('${t.id}')" title="Review questions and step-by-step solutions">
+              <span>📊</span> Solutions
+            </button>
+            <button class="btn tb-btn-start" onclick="app.selectTest('${t.id}')" style="font-size:12px; padding:7px 14px; display:inline-flex; align-items:center; gap:5px;">
+              <span>🔄</span> Re-attempt
+            </button>
+          </div>
+        `;
       } else {
         actionHtml = `<button class="btn tb-btn-start" onclick="app.selectTest('${t.id}')">Start Now</button>`;
       }
+
+      const attemptSummaryHtml = isAttempted ? `
+        <div class="test-attempted-summary-strip">
+          <div class="att-summary-item">
+            <span class="att-summary-lbl">Your Best Score:</span>
+            <strong class="att-summary-val">${bestAttempt.score} / ${bestAttempt.maxMarks || 75}</strong>
+          </div>
+          <div class="att-summary-item">
+            <span class="att-summary-lbl">Accuracy:</span>
+            <strong class="att-summary-val">${latestAttempt.accuracy || 0}%</strong>
+          </div>
+        </div>
+      ` : '';
 
       card.innerHTML = `
         <div class="test-card-top">
@@ -528,6 +573,7 @@ class BlackholeApp {
               ? `<span class="tb-badge-free-card">FREE TEST</span>` 
               : `<span class="tb-badge-tier2-card">TIER-2 FULL MOCK</span>`}
             <span class="tb-badge-lang">🌐 English, हिन्दी</span>
+            ${isAttempted ? `<span class="tb-badge-attempted">✅ ATTEMPTED${testAttempts.length > 1 ? ` (${testAttempts.length}x)` : ''}</span>` : ''}
             ${hasProgress ? `<span class="tb-badge-in-progress">⏱️ IN PROGRESS</span>` : ''}
           </div>
           <h3 class="test-card-title">${t.title}</h3>
@@ -551,13 +597,15 @@ class BlackholeApp {
           </span>
         </div>
 
+        ${attemptSummaryHtml}
+
         <div class="tb-card-features">
           <div class="tb-feat-bullet">✓ Latest 2025-26 TCS Pattern</div>
           <div class="tb-feat-bullet">✓ Detailed Solutions & Speed Tricks</div>
         </div>
 
         <div class="test-card-actions tb-card-footer">
-          <span class="test-past-score">+3.0 Correct / -1.0 Wrong</span>
+          <span class="test-past-score">${isAttempted ? `<strong style="color:#15803d;">✓ Completed (${testAttempts.length} Attempt${testAttempts.length > 1 ? 's' : ''})</strong>` : '+3.0 Correct / -1.0 Wrong'}</span>
           ${actionHtml}
         </div>
       `;
@@ -565,23 +613,53 @@ class BlackholeApp {
     });
   }
 
+  async viewAttemptFromHistoryByTestId(testId) {
+    if (!this.historyData || this.historyData.length === 0) {
+      await this.loadHistory();
+    }
+    const idx = (this.historyData || []).map((h, i) => ({ h, i }))
+      .filter(x => x.h.testId === testId)
+      .map(x => x.i)
+      .pop();
+    if (idx !== undefined && idx >= 0) {
+      await this.reviewPastAttempt(idx);
+    } else {
+      await this.selectTest(testId);
+    }
+  }
+
   async loadHistory() {
     if (!this.currentUser) {
-      this.historyData = [];
+      let localAttempts = [];
+      try { localAttempts = JSON.parse(localStorage.getItem('cgl_candidate_attempts') || '[]'); } catch(e){}
+      this.historyData = localAttempts;
       const countEl = document.getElementById('navHistoryCount');
-      if (countEl) countEl.innerText = 0;
+      if (countEl) countEl.innerText = this.historyData.length;
       const dropCountEl = document.getElementById('dropAttemptCount');
-      if (dropCountEl) dropCountEl.innerText = 0;
+      if (dropCountEl) dropCountEl.innerText = this.historyData.length;
       const statTestsAttempted = document.getElementById('statTestsAttempted');
-      if (statTestsAttempted) statTestsAttempted.innerText = 0;
-      const statAccuracy = document.getElementById('statAccuracy');
-      if (statAccuracy) statAccuracy.innerText = '0%';
-      const statAvgScore = document.getElementById('statAvgScore');
-      if (statAvgScore) statAvgScore.innerText = '0%';
+      if (statTestsAttempted) statTestsAttempted.innerText = this.historyData.length;
+      if (this.historyData.length > 0) {
+        const totalAccuracy = this.historyData.reduce((acc, h) => acc + (h.accuracy || 0), 0);
+        const avgAcc = Math.round(totalAccuracy / this.historyData.length);
+        const statAcc = document.getElementById('statAccuracy');
+        if (statAcc) statAcc.innerText = `${avgAcc}%`;
+        const totalScores = this.historyData.reduce((acc, h) => acc + (h.score || 0), 0);
+        const totalMax = this.historyData.reduce((acc, h) => acc + (h.maxMarks || 75), 0);
+        const avgScorePercent = Math.round((totalScores / (totalMax || 1)) * 100);
+        const statAvg = document.getElementById('statAvgScore');
+        if (statAvg) statAvg.innerText = `${avgScorePercent}%`;
+      } else {
+        const statAccuracy = document.getElementById('statAccuracy');
+        if (statAccuracy) statAccuracy.innerText = '0%';
+        const statAvgScore = document.getElementById('statAvgScore');
+        if (statAvgScore) statAvgScore.innerText = '0%';
+      }
       const banner = document.getElementById('recentAttemptBanner');
       if (banner) banner.style.display = 'none';
       const clearBtn = document.getElementById('btnClearHistory');
-      if (clearBtn) clearBtn.style.display = 'none';
+      if (clearBtn) clearBtn.style.display = this.historyData.length > 0 ? 'inline-block' : 'none';
+      this.renderTestCards();
       return;
     }
 
@@ -589,6 +667,16 @@ class BlackholeApp {
       const res = await fetch('/api/history', { headers: this.getAuthHeaders() });
       const history = await res.json();
       this.historyData = history || [];
+
+      // If server returned 0 but local cache has attempts, merge them
+      if (this.historyData.length === 0) {
+        try {
+          const localAttempts = JSON.parse(localStorage.getItem('cgl_candidate_attempts') || '[]');
+          if (localAttempts.length > 0) {
+            this.historyData = localAttempts;
+          }
+        } catch(e){}
+      }
 
       const countEl = document.getElementById('navHistoryCount');
       if (countEl) countEl.innerText = this.historyData.length;
@@ -637,6 +725,8 @@ class BlackholeApp {
       }
     } catch (err) {
       console.log('No history available.');
+    } finally {
+      this.renderTestCards();
     }
   }
 
@@ -1543,28 +1633,39 @@ class BlackholeApp {
     const timeMins = Math.floor(timeSpentTotal / 60);
     const timeSecs = timeSpentTotal % 60;
 
+    const submissionPayload = {
+      testId: this.currentTest.id,
+      testTitle: this.currentTest.title,
+      timestamp: new Date().toISOString(),
+      score,
+      maxMarks,
+      accuracy,
+      attempted: attemptedCount,
+      correct: correctCount,
+      incorrect: incorrectCount,
+      unattempted: unattemptedCount,
+      timeSpentSeconds: timeSpentTotal,
+      userEmail: (this.currentUser && this.currentUser.email) ? this.currentUser.email : (localStorage.getItem('cgl_candidate_email') || ''),
+      userName: (this.currentUser && this.currentUser.full_name) ? this.currentUser.full_name : (localStorage.getItem('cgl_candidate_name') || ''),
+      questions: evaluatedQuestions
+    };
+
+    try {
+      const localAttempts = JSON.parse(localStorage.getItem('cgl_candidate_attempts') || '[]');
+      localAttempts.push(submissionPayload);
+      localStorage.setItem('cgl_candidate_attempts', JSON.stringify(localAttempts));
+    } catch(e) {}
+
     // Send to backend with Auth header
     fetch('/api/submit', {
       method: 'POST',
       headers: this.getAuthHeaders(),
-      body: JSON.stringify({
-        testId: this.currentTest.id,
-        testTitle: this.currentTest.title,
-        timestamp: new Date().toISOString(),
-        score,
-        maxMarks,
-        accuracy,
-        attempted: attemptedCount,
-        correct: correctCount,
-        incorrect: incorrectCount,
-        unattempted: unattemptedCount,
-        timeSpentSeconds: timeSpentTotal,
-        questions: evaluatedQuestions
-      })
+      body: JSON.stringify(submissionPayload)
     })
       .then(async r => {
         const stats = await r.json();
-        this.loadHistory();
+        await this.loadHistory();
+        this.renderTestCards();
         if (stats && stats.realRank) {
           this.updateResultWithRealStats(stats);
         }

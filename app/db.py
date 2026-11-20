@@ -839,15 +839,34 @@ def sync_results_from_supabase():
             c = conn.cursor()
             synced = 0
             for r in rows:
+                uid = r.get('user_id')
+                u_email = (r.get('user_email') or '').strip().lower()
+                u_name = r.get('user_name', 'Candidate')
+
+                if not uid or uid in ['usr_guest', 'user_guest']:
+                    if u_email:
+                        c.execute('SELECT id, full_name FROM users WHERE LOWER(email) = ?', (u_email,))
+                        matched_u = c.fetchone()
+                        if matched_u:
+                            uid = matched_u['id']
+                            if not u_name or u_name == 'Candidate':
+                                u_name = matched_u['full_name']
+                uid = uid or 'usr_guest'
+
+                # Convert questions_evaluated_json to string if list/dict
+                q_json = r.get('questions_evaluated_json')
+                if q_json is not None and not isinstance(q_json, str):
+                    q_json = json.dumps(q_json)
+
                 c.execute('''
-                INSERT OR IGNORE INTO test_results 
-                (id, user_id, user_name, user_email, test_id, test_title, score, max_marks, accuracy, attempted, correct, incorrect, unattempted, time_spent_seconds, created_at, synced_to_cloud)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+                INSERT OR REPLACE INTO test_results 
+                (id, user_id, user_name, user_email, test_id, test_title, score, max_marks, accuracy, attempted, correct, incorrect, unattempted, time_spent_seconds, questions_evaluated_json, created_at, synced_to_cloud)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
                 ''', (
                     r['id'],
-                    r.get('user_id') or 'usr_guest',
-                    r.get('user_name', 'Candidate'),
-                    r.get('user_email', ''),
+                    uid,
+                    u_name,
+                    u_email,
                     r.get('test_id', 'cgl-mains-mock-01'),
                     r.get('test_title', 'SSC CGL Mock Test'),
                     r.get('score', 0),
@@ -858,6 +877,7 @@ def sync_results_from_supabase():
                     r.get('incorrect', 0),
                     r.get('unattempted', 0),
                     r.get('time_spent_seconds', 0),
+                    q_json,
                     r.get('created_at', datetime.utcnow().isoformat())
                 ))
                 synced += 1
@@ -873,10 +893,25 @@ def save_test_result(user_id, result_data):
     c = conn.cursor()
     
     # Fetch user details
-    c.execute('SELECT full_name, email FROM users WHERE id = ?', (user_id,))
+    c.execute('SELECT id, full_name, email FROM users WHERE id = ?', (user_id,))
     user = c.fetchone()
-    u_name = user['full_name'] if user else 'Candidate'
-    u_email = user['email'] if user else ''
+
+    # If guest or user not found, check if candidate email matches an existing registered user
+    u_email = (result_data.get('userEmail') or '').strip().lower()
+    u_name = result_data.get('userName') or ''
+    if (not user or user_id in ['user_guest', 'usr_guest']) and u_email:
+        c.execute('SELECT id, full_name, email FROM users WHERE LOWER(email) = ?', (u_email,))
+        matched_user = c.fetchone()
+        if matched_user:
+            user = matched_user
+            user_id = user['id']
+
+    if user:
+        u_name = user['full_name']
+        u_email = user['email']
+    else:
+        u_name = u_name or 'Candidate'
+        u_email = u_email or ''
 
     res_id = result_data.get('attemptId') or f"att_{secrets.token_hex(6)}_{int(time.time())}"
     questions_json = json.dumps(result_data.get('questions', []), ensure_ascii=False)
@@ -952,11 +987,34 @@ def save_test_result(user_id, result_data):
 def get_user_history(user_id):
     conn = get_db()
     c = conn.cursor()
-    c.execute('''
-    SELECT * FROM test_results 
-    WHERE user_id = ? 
-    ORDER BY created_at ASC
-    ''', (user_id,))
+    c.execute('SELECT email, role FROM users WHERE id = ?', (user_id,))
+    u_row = c.fetchone()
+    u_email = (u_row['email'].strip().lower() if u_row and u_row['email'] else '')
+    is_admin = bool(u_row and u_row['role'] == 'admin')
+
+    # Update any test_results belonging to this email that had guest id
+    if u_email:
+        c.execute('UPDATE test_results SET user_id = ? WHERE (user_id IN ("usr_guest", "user_guest", "") OR user_id IS NULL) AND LOWER(user_email) = ?', (user_id, u_email))
+        conn.commit()
+
+    if is_admin:
+        c.execute('''
+        SELECT * FROM test_results 
+        WHERE user_id = ? OR (user_email != '' AND LOWER(user_email) = ?) OR user_id IN ('usr_guest', 'user_guest')
+        ORDER BY created_at ASC
+        ''', (user_id, u_email))
+    elif u_email:
+        c.execute('''
+        SELECT * FROM test_results 
+        WHERE user_id = ? OR (user_email != '' AND LOWER(user_email) = ?)
+        ORDER BY created_at ASC
+        ''', (user_id, u_email))
+    else:
+        c.execute('''
+        SELECT * FROM test_results 
+        WHERE user_id = ? 
+        ORDER BY created_at ASC
+        ''', (user_id,))
     rows = c.fetchall()
     conn.close()
 
@@ -975,6 +1033,9 @@ def get_user_history(user_id):
             "unattempted": r['unattempted'],
             "timeSpentSeconds": r['time_spent_seconds'],
             "attemptId": r['id'],
+            "userId": r['user_id'],
+            "userName": r['user_name'],
+            "userEmail": r['user_email'],
             "questions": json.loads(r['questions_evaluated_json']) if r['questions_evaluated_json'] else []
         })
     return res
@@ -1318,6 +1379,7 @@ def sync_records_to_supabase():
     for row in unsynced:
         payload = {
             "id": row['id'],
+            "user_id": row['user_id'],
             "user_name": row['user_name'],
             "user_email": row['user_email'],
             "test_id": row['test_id'],
@@ -1330,6 +1392,7 @@ def sync_records_to_supabase():
             "incorrect": row['incorrect'],
             "unattempted": row['unattempted'],
             "time_spent_seconds": row['time_spent_seconds'],
+            "questions_evaluated_json": row['questions_evaluated_json'],
             "created_at": row['created_at']
         }
         try:
