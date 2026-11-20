@@ -1960,12 +1960,7 @@ class BlackholeApp {
     document.querySelectorAll('.study-sub-tab').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.study-tab-content').forEach(c => c.style.display = 'none');
 
-    if (tab === 'formula') {
-      const btn = document.getElementById('tabBtnFormula');
-      const content = document.getElementById('studyContentFormula');
-      if (btn) btn.classList.add('active');
-      if (content) content.style.display = 'block';
-    } else if (tab === 'notes') {
+    if (tab === 'notes') {
       const btn = document.getElementById('tabBtnNotes');
       const content = document.getElementById('studyContentNotes');
       if (btn) btn.classList.add('active');

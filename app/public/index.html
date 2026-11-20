@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>Blackhole - SSC CGL Mains 2026 Mock Test Series</title>
-  <link rel="stylesheet" href="styles.css?v=3.8">
+  <link rel="stylesheet" href="styles.css?v=3.9">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -346,7 +346,7 @@
         </p>
         <p style="margin: 0; font-size: 12px;">
           <a href="javascript:void(0)" onclick="app.openLeaderboardModal()" style="color:#64748b; text-decoration:none;">Live Leaderboard</a> &nbsp;•&nbsp; 
-          <a href="javascript:void(0)" onclick="app.showStudyMaterialsView()" style="color:#64748b; text-decoration:none;">Study Vault & Formulas</a>
+          <a href="javascript:void(0)" onclick="app.showStudyMaterialsView()" style="color:#64748b; text-decoration:none;">Study Vault & Notes</a>
         </p>
       </footer>
     </section>
@@ -723,7 +723,7 @@
           <div>
             <div class="series-pill">STUDENT VAULT</div>
             <h1>Study Materials, Syllabi & Notes</h1>
-            <p>Structured preparation resources for SSC CGL Mains 2026: 60-day General Awareness plan, Tier-2 formula vault, and your personal study notes.</p>
+            <p>Structured preparation resources for SSC CGL Mains 2026: 60-day General Awareness plan and your personal study notes.</p>
           </div>
           <button class="btn btn-primary" onclick="app.openNoteModal()">+ Create Personal Note</button>
         </div>
@@ -731,7 +731,6 @@
         <!-- Material Tabs -->
         <div class="study-sub-tabs">
           <button class="study-sub-tab active" id="tabBtnGA" onclick="app.switchStudyTab('ga')">60-Day General Awareness Plan</button>
-          <button class="study-sub-tab" id="tabBtnFormula" onclick="app.switchStudyTab('formula')">Formula Vault & Tricks</button>
           <button class="study-sub-tab" id="tabBtnNotes" onclick="app.switchStudyTab('notes')">My Personal Notes (<span id="userNotesCount">0</span>)</button>
           <button class="study-sub-tab" id="tabBtnFounder" onclick="app.switchStudyTab('founder')">👨‍🏫 Founder's Desk (Anshul Yadav)</button>
         </div>
@@ -743,97 +742,21 @@
           </div>
         </div>
 
-        <!-- Tab 2: Formula Vault -->
-        <div class="study-tab-content" id="studyContentFormula" style="display:none;">
-          <div class="material-card" id="formulaVaultMarkdownContainer">
-            <div style="padding:20px; color:#64748b;">Loading Formula Vault...</div>
-          </div>
-        </div>
-
-        <!-- Tab 3: Student Personal Notes -->
+        <!-- Tab 2: Student Personal Notes -->
         <div class="study-tab-content" id="studyContentNotes" style="display:none;">
           <div class="notes-grid" id="studentNotesGrid">
             <!-- Dynamically populated personal notes -->
           </div>
         </div>
 
-        <!-- Tab 4: Dedicated Panel for Founder Anshul Yadav -->
+        <!-- Tab 3: Dedicated Panel for Founder Anshul Yadav -->
         <div class="study-tab-content" id="studyContentFounder" style="display:none;">
-          <div class="founder-notes-wrap" id="founderNotesSection" style="margin-top:0; border-top:none; padding-top:0;">
-            <div class="founder-notes-card">
-              <div class="founder-card-header">
-                <div class="founder-avatar-wrap">
-                  <div class="founder-avatar">AY</div>
-                  <div class="founder-badge-pill">Verified Founder</div>
-                </div>
-                <div class="founder-intro">
-                  <div class="founder-role-tag">PLATFORM FOUNDER & LEAD EDUCATOR</div>
-                  <h2 class="founder-name">Anshul Yadav</h2>
-                  <p class="founder-title">Founder, Blackhole SSC CGL Platform • TCS Examination Architecture Specialist</p>
-                  <div class="founder-specialties">
-                    <span>🎯 SSC CGL Math Specialist</span>
-                    <span>•</span>
-                    <span>⚡ TCS Architecture</span>
-                    <span>•</span>
-                    <span>💡 Speed Tricks & Proofs</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="founder-quote-banner">
-                <div class="quote-symbol">“</div>
-                <p class="quote-text">
-                  "Blackhole was born from a singular mission: to provide serious SSC CGL aspirants with honest, high-yield practice, zero-lag examination interface, and completely transparent All-India performance analytics."
-                </p>
-                <div class="quote-author">— Anshul Yadav, Founder</div>
-              </div>
-
-              <div class="founder-pillars-grid">
-                <div class="founder-pillar-item">
-                  <div class="pillar-icon">🏆</div>
-                  <div>
-                    <h4>100% Real Live Rankings</h4>
-                    <p>Eradicated fake topper marks and simulated percentiles. Every score on Blackhole is strictly evaluated from genuine candidate test submissions.</p>
-                  </div>
-                </div>
-                <div class="founder-pillar-item">
-                  <div class="pillar-icon">⚡</div>
-                  <div>
-                    <h4>Dual-Method Math Solutions</h4>
-                    <p>Every problem features both the rigorous academic proof and the 15-second speed trick to build conceptual mastery and speed.</p>
-                  </div>
-                </div>
-                <div class="founder-pillar-item">
-                  <div class="pillar-icon">⏱️</div>
-                  <div>
-                    <h4>TCS Examination Architecture</h4>
-                    <p>Faithfully replicates the exact 2025–26 TCS server interface with authentic sectional timers (+3.0 / -1.0 marking) and bilingual switching.</p>
-                  </div>
-                </div>
-                <div class="founder-pillar-item">
-                  <div class="pillar-icon">📚</div>
-                  <div>
-                    <h4>High-Yield Formula & Notes Vault</h4>
-                    <p>Direct access to hand-curated theorems, shortcuts, geometry identities, and student personal notes for targeted revision.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="founder-strategy-box">
-                <div class="strategy-badge">💡 FOUNDER'S TIER-2 STRATEGY NOTE</div>
-                <h4 style="margin: 0 0 8px 0; color: #0f172a; font-size: 15px; font-weight:700;">Founder Anshul Yadav's 3-Pass Rule for 75/75 in Maths:</h4>
-                <p style="margin: 0 0 12px 0; color: #475569; font-size: 13.5px; line-height: 1.6;">
-                  <em>"In Pass 1 (first 10–12 minutes), lock in all 14–16 direct arithmetic and formula-based questions. In Pass 2, tackle Geometry, Mensuration, and Algebra using option elimination and smart substitution. In Pass 3, invest your remaining minutes into multi-step problems and DI. Never guess blindly—preserving negative marks (+3.0 vs -1.0) is what determines top ranks in Tier-2!"</em>
-                </p>
-                <div class="founder-strategy-actions">
-                  <button class="btn btn-secondary btn-sm" onclick="app.addFounderStrategyNote()" title="Save Founder's note into your personal notes">
-                    <span>📌</span> Save Founder's Strategy to My Notes
-                  </button>
-                  <a href="mailto:admin@cglstudy.com" class="btn btn-primary btn-sm" style="text-decoration:none;">
-                    <span>✉️</span> Contact Founder Anshul Yadav
-                  </a>
-                </div>
-              </div>
+          <div class="founder-quote-panel">
+            <blockquote class="founder-statement">
+              "Blackhole was born from a singular mission: to provide serious SSC CGL aspirants with honest, high-yield practice, zero-lag examination interface, and completely transparent All-India performance analytics."
+            </blockquote>
+            <div class="founder-signoff">
+              — Anshul Yadav, Founder
             </div>
           </div>
         </div>
@@ -1217,6 +1140,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=10.4"></script>
+  <script src="app.js?v=10.5"></script>
 </body>
 </html>
