@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   <title>Blackhole - SSC CGL Mains 2026 Mock Test Series</title>
-  <link rel="stylesheet" href="styles.css?v=3.7">
+  <link rel="stylesheet" href="styles.css?v=3.8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -151,6 +151,10 @@
             <button class="dropdown-item" onclick="app.showStudyMaterialsView('notes'); app.toggleProfileDropdown(false);">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
               My Personal Notes
+            </button>
+            <button class="dropdown-item" onclick="app.showStudyMaterialsView('founder'); app.toggleProfileDropdown(false);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"></circle><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path></svg>
+              About Founder (Anshul Yadav)
             </button>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item text-danger" onclick="app.logoutUser()">
@@ -729,6 +733,7 @@
           <button class="study-sub-tab active" id="tabBtnGA" onclick="app.switchStudyTab('ga')">60-Day General Awareness Plan</button>
           <button class="study-sub-tab" id="tabBtnFormula" onclick="app.switchStudyTab('formula')">Formula Vault & Tricks</button>
           <button class="study-sub-tab" id="tabBtnNotes" onclick="app.switchStudyTab('notes')">My Personal Notes (<span id="userNotesCount">0</span>)</button>
+          <button class="study-sub-tab" id="tabBtnFounder" onclick="app.switchStudyTab('founder')">👨‍🏫 Founder's Desk (Anshul Yadav)</button>
         </div>
 
         <!-- Tab 1: GA 60-Day Plan -->
@@ -745,14 +750,16 @@
           </div>
         </div>
 
-        <!-- Tab 4: Student Personal Notes -->
+        <!-- Tab 3: Student Personal Notes -->
         <div class="study-tab-content" id="studyContentNotes" style="display:none;">
           <div class="notes-grid" id="studentNotesGrid">
             <!-- Dynamically populated personal notes -->
           </div>
+        </div>
 
-          <!-- About the Founder "Anshul Yadav" Section under Personal Notes -->
-          <div class="founder-notes-wrap" id="founderNotesSection">
+        <!-- Tab 4: Dedicated Panel for Founder Anshul Yadav -->
+        <div class="study-tab-content" id="studyContentFounder" style="display:none;">
+          <div class="founder-notes-wrap" id="founderNotesSection" style="margin-top:0; border-top:none; padding-top:0;">
             <div class="founder-notes-card">
               <div class="founder-card-header">
                 <div class="founder-avatar-wrap">
@@ -1210,6 +1217,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=10.3"></script>
+  <script src="app.js?v=10.4"></script>
 </body>
 </html>

@@ -1971,6 +1971,12 @@ class BlackholeApp {
       if (btn) btn.classList.add('active');
       if (content) content.style.display = 'block';
       this.loadStudentNotes();
+    } else if (tab === 'founder') {
+      this.currentStudyTab = 'founder';
+      const btn = document.getElementById('tabBtnFounder');
+      const content = document.getElementById('studyContentFounder');
+      if (btn) btn.classList.add('active');
+      if (content) content.style.display = 'block';
     } else {
       // Default to GA Plan
       this.currentStudyTab = 'ga';
