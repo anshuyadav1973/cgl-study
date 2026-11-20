@@ -3109,43 +3109,7 @@ body.testbook-theme {
   white-space: nowrap;
 }
 
-/* Founder Button (Strictly in Header Right) */
-.btn-founder-header {
-  background: rgba(250, 204, 21, 0.16) !important;
-  color: #fef08a !important;
-  border: 1px solid rgba(250, 204, 21, 0.45) !important;
-  font-weight: 700 !important;
-  display: inline-flex !important;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
 
-.btn-founder-header:hover {
-  background: rgba(250, 204, 21, 0.28) !important;
-  color: #ffffff !important;
-  border-color: rgba(250, 204, 21, 0.75) !important;
-  transform: translateY(-1px);
-}
-
-.founder-btn-text-short {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .founder-btn-text-full {
-    display: none;
-  }
-  .founder-btn-text-short {
-    display: inline;
-  }
-}
-
-/* Hide during active exam so candidates focus 100% on questions */
-body.in-exam #btnHeaderFounder {
-  display: none !important;
-}
 
 /* TCS iON Candidate Badge Card in Active Exam Sidebar */
 .exam-candidate-card {
