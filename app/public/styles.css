@@ -61,6 +61,8 @@ body.testbook-theme {
   gap: 10px;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .tb-brand-icon {
