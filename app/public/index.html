@@ -3,27 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blackhole Test Portal - SSC CGL Mains 2026</title>
-  <link rel="stylesheet" href="styles.css?v=2.5">
+  <title>Testbook - SSC CGL Mains 2026 Mock Test Series</title>
+  <link rel="stylesheet" href="styles.css?v=3.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body class="testbook-theme">
-  <!-- Top Navigation Bar -->
+  <!-- Top Navigation Bar (Testbook Official Layout) -->
   <header class="tb-header">
     <div class="header-left">
-      <div class="tb-brand" onclick="app.showDashboard()">
-        <span class="tb-logo-icon">🕳️</span>
+      <div class="tb-brand" onclick="app.showDashboard()" title="Testbook SSC CGL Test Series Portal">
+        <div class="tb-brand-icon">
+          <span>tb</span>
+        </div>
         <div class="brand-text">
-          <span class="brand-name">blackhole</span>
+          <span class="brand-name">test<span class="brand-name-light">book</span></span>
+          <span class="brand-pass-badge">PASS PRO</span>
         </div>
       </div>
 
       <nav class="tb-nav-links" id="tbNavLinks">
-        <button class="nav-link-btn active" id="navLinkTests" onclick="app.showDashboard()">Mock Tests</button>
-        <button class="nav-link-btn" id="navLinkMaterials" onclick="app.showStudyMaterialsView()">Study Vault & Notes</button>
-        <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">Attempt History</button>
+        <button class="nav-link-btn active" id="navLinkTests" onclick="app.showDashboard()">
+          <span>📝</span> Mock Tests <span class="nav-count-pill" id="navTestCountBadge">10</span>
+        </button>
+        <button class="nav-link-btn" id="navLinkMaterials" onclick="app.showStudyMaterialsView()">
+          <span>📚</span> Study Vault & Notes
+        </button>
+        <button class="nav-link-btn" id="navLinkHistory" onclick="app.showHistoryView()">
+          <span>📊</span> Attempt History
+        </button>
       </nav>
 
       <div class="test-header-info" id="headerTestInfo" style="display:none;">
@@ -44,6 +53,12 @@
     </div>
 
     <div class="header-right">
+      <!-- Testbook Pass Pro Badge Indicator -->
+      <div class="tb-pass-pro-pill" id="headerPassProPill" title="Testbook Pass Pro Active">
+        <span class="pass-star">⭐</span>
+        <span class="pass-label">PASS PRO</span>
+      </div>
+
       <!-- Calculator Button (Active Test only) -->
       <button class="btn-calc" id="calcBtn" title="Open Virtual Calculator" onclick="app.toggleCalculator()" style="display:none;">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
@@ -66,7 +81,6 @@
       </div>
 
       <!-- Auth Controls (Logged Out State) -->
-      <!-- Guest Access / Login Actions -->
       <div class="auth-guest-controls" id="authGuestControls" style="display:flex;">
         <button class="btn-login-header" onclick="app.openAuthModal('login')">Sign In</button>
         <button class="btn-register-header" onclick="app.openAuthModal('register')">Register Free</button>
@@ -89,7 +103,7 @@
         <div class="profile-dropdown-menu" id="profileDropdown" style="display:none;">
           <div class="dropdown-header">
             <div class="drop-user-name" id="dropUserName">Candidate</div>
-            <div class="drop-user-email" id="dropUserEmail">admin@cglstudy.com</div>
+            <div class="drop-user-email" id="dropUserEmail">student@cglstudy.com</div>
             <span class="drop-user-role" id="dropUserRole">STUDENT</span>
           </div>
           <div class="dropdown-items">
@@ -116,32 +130,50 @@
   <main class="app-container">
     <!-- VIEW 1: Dashboard / Tests Selection -->
     <section class="view-panel" id="dashboardView">
-      <div class="dashboard-hero">
+      <!-- Testbook Breadcrumbs -->
+      <div class="tb-breadcrumbs">
+        <a href="javascript:void(0)" onclick="app.showDashboard()">Home</a>
+        <span class="sep">›</span>
+        <span>Test Series</span>
+        <span class="sep">›</span>
+        <span>SSC Exams</span>
+        <span class="sep">›</span>
+        <span class="active">SSC CGL Tier-2 Mock Test 2026</span>
+      </div>
+
+      <!-- Testbook Hero Banner -->
+      <div class="dashboard-hero tb-hero">
         <div class="hero-content">
-          <div class="series-pill">SSC CGL</div>
-          <h1>Blackhole Live Test Series & Study Portal</h1>
-          <p>Practice latest TCS Examination Pattern questions with real-time timer, marking scheme (+3, -1), authentic Blackhole question palette, bilingual explanations, and cloud-saved attempt history.</p>
+          <div class="tb-hero-badge-strip">
+            <span class="tb-badge-pass">⭐ TESTBOOK PASS PRO</span>
+            <span class="tb-badge-free">🟢 FREE TESTS AVAILABLE</span>
+            <span class="tb-badge-tcs">LATEST 2025-26 TCS PATTERN</span>
+          </div>
+          <h1>SSC CGL (Tier-1 & Tier-2) Mock Test Series 2026</h1>
+          <p>Curated by SSC Exam Experts based on 2025-26 TCS Revised Syllabus & PYQs. Full Length Tests, Real Examination Interface, Bilingual Solutions & Speed Tricks.</p>
+          
+          <div class="tb-hero-highlights">
+            <div class="tb-hh-item"><span class="icon">📝</span> <strong>10</strong> Full Length Mocks</div>
+            <div class="tb-hh-item"><span class="icon">⚡</span> <strong>1</strong> Free Mock Test</div>
+            <div class="tb-hh-item"><span class="icon">⏱️</span> <strong>25 Mins</strong> Real Timer</div>
+            <div class="tb-hh-item"><span class="icon">🎯</span> <strong>+3.0 / -1.0</strong> Marking</div>
+            <div class="tb-hh-item"><span class="icon">🌐</span> <strong>English & हिन्दी</strong> Bilingual</div>
+            <div class="tb-hh-item"><span class="icon">💡</span> <strong>Speed Tricks</strong> & Solutions</div>
+          </div>
         </div>
-        <div class="hero-actions">
-          <button class="btn btn-secondary" onclick="app.showStudyMaterialsView()">
+        <div class="hero-actions tb-hero-actions">
+          <button class="btn btn-secondary tb-btn-vault" onclick="app.showStudyMaterialsView()">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
             </svg>
             Study Vault & Notes
           </button>
-          <button class="btn btn-secondary" onclick="app.showHistoryView()">
+          <button class="btn btn-secondary tb-btn-history" onclick="app.showHistoryView()">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
             Attempt History
-          </button>
-          <button class="btn btn-outline-light" onclick="app.openNewTestModal()">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            + Add New Test
           </button>
         </div>
       </div>
@@ -168,12 +200,34 @@
       <!-- Recent Attempt Banner -->
       <div id="recentAttemptBanner" class="recent-attempt-container" style="display:none;"></div>
 
+      <!-- Testbook Test Series Tabs & Filter Bar -->
+      <div class="tb-tabs-filter-bar">
+        <div class="tb-category-tabs">
+          <button class="tb-cat-tab active" id="filterTab_all" onclick="app.setTestFilter('all')">
+            All Tests (<span id="catCountAll">10</span>)
+          </button>
+          <button class="tb-cat-tab" id="filterTab_tier2" onclick="app.setTestFilter('tier2')">
+            Full Length Mocks
+          </button>
+          <button class="tb-cat-tab" id="filterTab_free" onclick="app.setTestFilter('free')">
+            Free Tests (1)
+          </button>
+          <button class="tb-cat-tab" id="filterTab_inprogress" onclick="app.setTestFilter('inprogress')">
+            ⏱️ In Progress (<span id="catCountProgress">0</span>)
+          </button>
+        </div>
+
+        <div class="tb-search-box">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="tbSearchInput" placeholder="Search mock tests by name or topic..." oninput="app.handleTestSearch(this.value)">
+        </div>
+      </div>
+
       <!-- Test Cards List -->
       <div class="test-cards-section">
-        <div class="section-heading-row">
-          <h2>Available 25-Question Mock Tests</h2>
-          <span class="test-count-badge" id="testListCountBadge">10 Tests Available</span>
-        </div>
         <div class="test-grid" id="testListGrid">
           <!-- Dynamically populated tests -->
         </div>
@@ -726,6 +780,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=8.1"></script>
+  <script src="app.js?v=9.0"></script>
 </body>
 </html>

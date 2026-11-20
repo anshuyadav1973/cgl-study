@@ -27,6 +27,8 @@ class TestbookApp {
     this.materialsLoaded = false;
     this.currentStudyTab = 'ga';
     this.userNotes = [];
+    this.testFilter = 'all';
+    this.testSearchQuery = '';
 
     this.init();
   }
@@ -364,6 +366,10 @@ class TestbookApp {
       this.renderTestCards();
       const badge = document.getElementById('testListCountBadge');
       if (badge) badge.innerText = `${this.tests.length} Tests Available`;
+      const navBadge = document.getElementById('navTestCountBadge');
+      if (navBadge) navBadge.innerText = this.tests.length;
+      const catCountAll = document.getElementById('catCountAll');
+      if (catCountAll) catCountAll.innerText = this.tests.length;
       const statTotal = document.getElementById('statTotalTests');
       if (statTotal) statTotal.innerText = this.tests.length;
     } catch (err) {
@@ -371,58 +377,123 @@ class TestbookApp {
     }
   }
 
+  setTestFilter(filter) {
+    this.testFilter = filter;
+    document.querySelectorAll('.tb-cat-tab').forEach(b => b.classList.remove('active'));
+    const tabEl = document.getElementById(`filterTab_${filter}`);
+    if (tabEl) tabEl.classList.add('active');
+    this.renderTestCards();
+  }
+
+  handleTestSearch(query) {
+    this.testSearchQuery = query;
+    this.renderTestCards();
+  }
+
   renderTestCards() {
     const grid = document.getElementById('testListGrid');
     if (!grid) return;
     grid.innerHTML = '';
 
-    this.tests.forEach((t) => {
+    const filter = this.testFilter || 'all';
+    const query = (this.testSearchQuery || '').toLowerCase().trim();
+
+    // Update in-progress count in tab
+    let inProgCount = 0;
+    this.tests.forEach(t => { if (this.getActiveTestProgress(t.id)) inProgCount++; });
+    const progTabEl = document.getElementById('catCountProgress');
+    if (progTabEl) progTabEl.innerText = inProgCount;
+
+    let filteredTests = this.tests.filter((t, idx) => {
+      const hasProg = !!this.getActiveTestProgress(t.id);
+      const isFree = (t.id === 'cgl-mains-mock-01' || idx === 0);
+
+      if (filter === 'free') {
+        if (!isFree) return false;
+      } else if (filter === 'inprogress') {
+        if (!hasProg) return false;
+      }
+
+      if (query) {
+        const titleMatch = (t.title || '').toLowerCase().includes(query);
+        const subMatch = (t.subtitle || '').toLowerCase().includes(query);
+        if (!titleMatch && !subMatch) return false;
+      }
+      return true;
+    });
+
+    if (filteredTests.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0;">
+          <div style="font-size: 40px; margin-bottom: 12px;">🔍</div>
+          <h3 style="font-size: 18px; color: #1e293b; margin-bottom: 6px;">No Mock Tests Found</h3>
+          <p style="color: #64748b; font-size: 14px;">Try selecting a different filter or clearing your search keywords.</p>
+          <button class="btn tb-btn-start" onclick="app.setTestFilter('all')" style="margin-top: 14px;">View All Mock Tests</button>
+        </div>
+      `;
+      return;
+    }
+
+    filteredTests.forEach((t, idx) => {
       const card = document.createElement('div');
-      card.className = 'test-card';
+      card.className = 'test-card tb-card';
       const hasProgress = !!this.getActiveTestProgress(t.id);
+      const isFree = (t.id === 'cgl-mains-mock-01' || idx === 0);
 
       let actionHtml = '';
       if (!this.currentUser) {
-        actionHtml = `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')" style="background:#2563eb; display:inline-flex; align-items:center; gap:6px;"><span>🔒</span> Sign In to Start</button>`;
+        actionHtml = `<button class="btn tb-btn-start" onclick="app.selectTest('${t.id}')" style="display:inline-flex; align-items:center; gap:6px;"><span>🔒</span> Sign In to Start</button>`;
       } else if (hasProgress) {
         actionHtml = `
           <div style="display:flex; gap:8px; width:100%; justify-content:flex-end; align-items:center;">
-            <button class="btn btn-outline" onclick="app.promptRestartTest('${t.id}')" style="color:#dc2626; border-color:#fca5a5; font-size:12px; padding:6px 10px; display:inline-flex; align-items:center; gap:4px;" title="Reset progress and start over from 25:00">
+            <button class="btn btn-outline" onclick="app.promptRestartTest('${t.id}')" style="color:#dc2626; border-color:#fca5a5; font-size:12px; padding:6px 12px; display:inline-flex; align-items:center; gap:4px;" title="Reset progress and start over from 25:00">
               <span>🔄</span> Restart
             </button>
-            <button class="btn btn-primary" onclick="app.resumeTest('${t.id}')" style="background:#059669; border-color:#059669; font-size:12px; padding:6px 14px; display:inline-flex; align-items:center; gap:5px;">
-              <span>▶️</span> Resume
+            <button class="btn tb-btn-start" onclick="app.resumeTest('${t.id}')" style="font-size:12px; padding:7px 16px; display:inline-flex; align-items:center; gap:6px;">
+              <span>▶️</span> Resume Test
             </button>
           </div>
         `;
       } else {
-        actionHtml = `<button class="btn btn-primary" onclick="app.selectTest('${t.id}')">Start Test</button>`;
+        actionHtml = `<button class="btn tb-btn-start" onclick="app.selectTest('${t.id}')">Start Now</button>`;
       }
 
       card.innerHTML = `
         <div class="test-card-top">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span class="test-card-category">${t.category || 'SSC CGL Tier-2'}</span>
-            ${hasProgress ? `<span style="background:#fef3c7; color:#b45309; font-weight:700; font-size:11px; padding:2px 8px; border-radius:12px; border:1px solid #fde68a; display:inline-flex; align-items:center; gap:3px;">⏱️ IN PROGRESS</span>` : ''}
+          <div class="tb-card-badges-row">
+            ${isFree 
+              ? `<span class="tb-badge-free-card">FREE TEST</span>` 
+              : `<span class="tb-badge-tier2-card">TIER-2 FULL MOCK</span>`}
+            <span class="tb-badge-lang">🌐 English, हिन्दी</span>
+            ${hasProgress ? `<span class="tb-badge-in-progress">⏱️ IN PROGRESS</span>` : ''}
           </div>
           <h3 class="test-card-title">${t.title}</h3>
           <p class="test-card-desc">${t.subtitle || '25 Questions with Real-time Exam Timer & TCS Marking'}</p>
         </div>
-        <div class="test-card-meta">
-          <span>
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            ${t.durationMinutes} Mins
-          </span>
-          <span>
+
+        <div class="tb-card-specs-row">
+          <span class="tb-spec-item">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-            ${t.numQuestions} Questions
+            <strong>${t.numQuestions}</strong> Qs
           </span>
-          <span>
+          <span class="tb-spec-dot">•</span>
+          <span class="tb-spec-item">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-            ${t.numQuestions * (t.marksPerQuestion || 3)} Marks
+            <strong>${t.numQuestions * (t.marksPerQuestion || 3)}</strong> Marks
+          </span>
+          <span class="tb-spec-dot">•</span>
+          <span class="tb-spec-item">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <strong>${t.durationMinutes}</strong> Mins
           </span>
         </div>
-        <div class="test-card-actions">
+
+        <div class="tb-card-features">
+          <div class="tb-feat-bullet">✓ Latest 2025-26 TCS Pattern</div>
+          <div class="tb-feat-bullet">✓ Detailed Solutions & Speed Tricks</div>
+        </div>
+
+        <div class="test-card-actions tb-card-footer">
           <span class="test-past-score">+3.0 Correct / -1.0 Wrong</span>
           ${actionHtml}
         </div>
